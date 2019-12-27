@@ -1,0 +1,27 @@
+{
+    "name": "__MSG_application_title__",
+    "description": "__MSG_application_description__",
+    "version": "1.10",
+    "default_locale": "en",
+    "icons": {
+        "16": "assets/img/icon_16.png",
+        "32": "assets/img/icon_32.png",
+        "48": "assets/img/icon_48.png",
+        "64": "assets/img/icon_64.png",
+        "128": "assets/img/icon_128.png"
+    },
+    "manifest_version": 2,
+    "permissions": [ "history", "chrome://favicon/", "tabs" ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "chrome_url_overrides": {
+        "history": "history.html"
+    },
+    "browser_action": {
+        "default_icon": {
+            "16": "assets/img/icon_16.png",
+            "32": "assets/img/icon_32.png"
+        },
+        "default_title": "__MSG_application_title__",
+        "default_popup": "popup.html"
+    }
+}

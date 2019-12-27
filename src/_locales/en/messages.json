@@ -1,0 +1,55 @@
+{
+    "language": {
+        "message": "en"
+    },
+    "application_title": {
+        "message": "Dragon Better History"
+    },
+    "application_description": {
+        "message": "Replace the default browser history with this better history display."
+    },
+    "btn_delete": {
+        "message": "Delete"
+    },
+    "btn_cancel": {
+        "message": "Cancel"
+    },
+    "search_placeholder": {
+        "message": "Search in history"
+    },
+    "search_display": {
+        "message": "Search results for"
+    },
+    "search_found": {
+        "message": "Found $count$ result(s)",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "No results found"
+    },
+    "history_remove_single": {
+        "message": "Remove entry"
+    },
+    "history_remove_confirm_count": {
+        "message": "selected"
+    },
+    "history_date_empty": {
+        "message": "This day has no history entries"
+    },
+    "datepicker_go_today": {
+        "message": "Display today"
+    },
+    "history_view_more": {
+        "message": "View full history"
+    },
+    "history_recent": {
+        "message": "Recent history"
+    },
+    "date_format": {
+        "message": "dddd, MMMM Do, YYYY"
+    }
+}

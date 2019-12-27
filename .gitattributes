@@ -1,0 +1,10 @@
+
+* text eol=lf
+
+*.php eol=lf
+*.js eol=lf
+*.css eol=lf
+
+*.png binary
+*.jpg binary
+*.gif binary
