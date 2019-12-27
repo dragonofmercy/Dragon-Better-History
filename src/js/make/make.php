@@ -1,6 +1,6 @@
 <?php
 $handle = fopen(realpath(dirname(__FILE__)) . '/make.txt', "r");
-$destination = realpath(dirname(__FILE__) . '/../../../src/assets');
+$destination = realpath(dirname(__FILE__) . '/../../../build/assets');
 $buffer = '';
 
 if($handle)
