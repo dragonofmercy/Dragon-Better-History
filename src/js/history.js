@@ -108,9 +108,7 @@ var application = {
 
         $('.remove-confirmation>#clear_confirm').on('click', function(e){
             e.preventDefault();
-            $('.history-container .entry.selected').each(function(){
-                $(this).find('.entry-remove').click();
-            });
+            $this.removeSelectedEntires();
         });
 
         $('.remove-confirmation>#clear_cancel').on('click', function(e){
@@ -396,8 +394,6 @@ var application = {
                             tmp.addClass('selected');
                         }
                     }
-
-                    delete tmp;
                 } else {
                     $this.multiSelectLastEntry = $(this);
 
@@ -426,6 +422,12 @@ var application = {
                 this.updateConfirm();
             }
         }
+
+        if(e.which == 46){
+            if($('.history-container .entry.selected').length > 0){
+                this.removeSelectedEntires();
+            }
+        }
     },
 
     /**
@@ -449,6 +451,15 @@ var application = {
         $('.history-container .entry.selected').removeClass('selected');
         this.multiSelectLastEntry = null;
         this.updateConfirm();
+    },
+
+    /**
+     * Remove selected entries
+     */
+    removeSelectedEntires: function(){
+        $('.history-container .entry.selected').each(function(){
+            $(this).find('.entry-remove').click();
+        });
     },
 
     /**
