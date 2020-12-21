@@ -82,8 +82,14 @@ var application = {
      * Init main
      */
     initMain: function(){
+
         let $this = this;
         this.trottleSearch = _.debounce(this.historySearch, 500);
+
+        if($(window).width() == 360)
+        {
+            chrome.tabs.create({url: 'chrome://history'});
+        }
 
         $('#search_input').focusin(function(){
             $(this).parent().addClass('focus');
