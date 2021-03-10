@@ -142,6 +142,8 @@ var application = {
             }
         });
 
+        $('#search_input').focus();
+
         this.historyGetDay(this.today);
     },
 
