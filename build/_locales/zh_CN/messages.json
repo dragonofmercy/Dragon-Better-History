@@ -3,10 +3,10 @@
         "message": "zh_CN"
     },
     "application_title": {
-        "message": "Dragon Better History"
+        "message": "Dragon 历史记录"
     },
     "application_description": {
-        "message": "用这个更好的历史记录显示替换默认的浏览器历史记录。"
+        "message": "将浏览器默认的历史记录页面替换成更好用的历史记录工具。"
     },
     "btn_delete": {
         "message": "删除"
@@ -15,13 +15,13 @@
         "message": "取消"
     },
     "search_placeholder": {
-        "message": "输入内容以便搜索历史记录"
+        "message": "搜索历史记录"
     },
     "search_display": {
-        "message": "搜索结果"
+        "message": "搜索结果:"
     },
     "search_found": {
-        "message": "找到 $count$ 结果(s)",
+        "message": "找到了 $count$ 个结果",
         "placeholders": {
             "count": {
                 "content": "$1"
@@ -35,21 +35,21 @@
         "message": "删除该条目"
     },
     "history_remove_confirm_count": {
-        "message": "已选"
+        "message": "条已选"
     },
     "history_date_empty": {
-        "message": "这一天没有历史记录"
+        "message": "该日没有历史记录"
     },
     "datepicker_go_today": {
-        "message": "显示今日历史记录"
+        "message": "显示今日"
     },
     "history_view_more": {
-        "message": "查看完整的历史记录"
+        "message": "查看完整历史记录"
     },
     "history_recent": {
-        "message": "最近历史"
+        "message": "最近历史记录"
     },
     "date_format": {
-        "message": "dddd, MMMM Do, YYYY"
+        "message": "LL, dddd"
     }
 }
