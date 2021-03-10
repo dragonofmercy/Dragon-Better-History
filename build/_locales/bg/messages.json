@@ -1,0 +1,56 @@
+{
+    "language": {
+        "message": "bg"
+    },
+    "application_title": {
+        "message": "Dragon Better History"
+    },
+    "application_description": {
+        "message": " Заменя стандартната история на браузъра и подобрява показването и."
+
+    },
+    "btn_delete": {
+        "message": "Изтрий"
+    },
+    "btn_cancel": {
+        "message": "Отказ"
+    },
+    "search_placeholder": {
+        "message": "Търси в историята"
+    },
+    "search_display": {
+        "message": "Резултати за"
+    },
+    "search_found": {
+        "message": "Намерени $count$ резултат(а)",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "Няма разултати"
+    },
+    "history_remove_single": {
+        "message": "Премахни"
+    },
+    "history_remove_confirm_count": {
+        "message": "избрани"
+    },
+    "history_date_empty": {
+        "message": "Няма история от този ден"
+    },
+    "datepicker_go_today": {
+        "message": "Покажи днес"
+    },
+    "history_view_more": {
+        "message": "Виж цялата история"
+    },
+    "history_recent": {
+        "message": "Текуща история"
+    },
+    "date_format": {
+        "message": "dddd, MMMM Do, YYYY"
+    }
+}
