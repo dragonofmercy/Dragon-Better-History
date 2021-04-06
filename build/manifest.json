@@ -1,7 +1,7 @@
 {
     "name": "__MSG_application_title__",
     "description": "__MSG_application_description__",
-    "version": "1.12",
+    "version": "1.2",
     "default_locale": "en",
     "icons": {
         "16": "assets/img/icon_16.png",
