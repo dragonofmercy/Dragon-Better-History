@@ -32,7 +32,9 @@
                 </div>
                 <div class="nav">
                     <div class="content">
-                        <a i18n="datepicker_go_today" id="go_today"></a>
+                        <p><a i18n="datepicker_go_today" id="go_today"></a></p>
+                        <p class="space"></p>
+                        <p class="subnav"><a id="go_options">Options</a></p>
                     </div>
                 </div>
                 <div class="footer">
@@ -54,6 +56,35 @@
                 </div>
             </div>
             <div class="content"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal_options">
+        <div class="modal-content">
+            <div class="modal-heading">
+                <div id="options_close" class="close"><svg width="20" height="20" viewBox="0 0 20 20" class="c012251 c012274"><path d="M4.09 4.22l.06-.07a.5.5 0 01.63-.06l.07.06L10 9.29l5.15-5.14a.5.5 0 01.63-.06l.07.06c.18.17.2.44.06.63l-.06.07L10.71 10l5.14 5.15c.18.17.2.44.06.63l-.06.07a.5.5 0 01-.63.06l-.07-.06L10 10.71l-5.15 5.14a.5.5 0 01-.63.06l-.07-.06a.5.5 0 01-.06-.63l.06-.07L9.29 10 4.15 4.85a.5.5 0 01-.06-.63l.06-.07-.06.07z" fill-rule="nonzero"></path></svg></div>
+            </div>
+            <div class="modal-body">
+                <h1>Options</h1>
+                <div class="form-group">
+                    <label i18n="options_time_12_24"></label>
+                    <div class="toggle-switch">
+                        <input id="options_field_24hoursformat" type="checkbox" tabindex="-1" value="1" />
+                        <span class="dot"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label i18n="options_display_time_before_title"></label>
+                    <div class="toggle-switch">
+                        <input id="options_field_displaytitlebeforetime" type="checkbox" tabindex="-1" value="1" />
+                        <span class="dot"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button i18n="btn_save" id="options_save" class="btn btn-primary"></button>
+                <button i18n="btn_cancel" id="options_cancel" class="btn btn-grey"></button>
+            </div>
         </div>
     </div>
 

@@ -51,5 +51,11 @@
     },
     "date_format": {
         "message": "dddd, MMMM Do, YYYY"
+    },
+    "options_time_12_24": {
+        "message": "使用24小时格式"
+    },
+    "options_display_time_before_title": {
+        "message": "标题前显示时间"
     }
 }

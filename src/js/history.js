@@ -10,6 +10,14 @@ var application = {
     now: new Date(),
 
     /**
+     * Options {Object}
+     */
+    options: {
+        use24HoursFormat: true,
+        timeBeforeTitle: false
+    },
+
+    /**
      * @type {Date}
      */
     today: null,
@@ -53,17 +61,23 @@ var application = {
      * Init application
      */
     init: function(){
+        let $this = this;
+
         moment.locale(this.getCurrentLocale());
 
         this.i18n();
         this.today = new Date(this.now.getFullYear(), this.now.getMonth(), this.now.getDate(), 0, 0, 0, 0);
 
-        if($('body.popup').length){
-            this.initPopup();
-        } else {
-            this.initMain();
-        }
+        chrome.storage.sync.get(function(items){
+            $this.options.use24HoursFormat = items.use24HoursFormat === undefined ? true : items.use24HoursFormat;
+            $this.options.timeBeforeTitle = items.timeBeforeTitle === undefined ? false : items.timeBeforeTitle;
 
+            if($('body.popup').length){
+                $this.initPopup();
+            } else {
+                $this.initMain();
+            }
+        });
     },
 
     /**
@@ -90,6 +104,18 @@ var application = {
         {
             chrome.tabs.create({url: 'chrome://history'});
         }
+
+        $('#go_options').on('click', function(){
+             $this.openOptions();
+        });
+
+        $('#options_cancel, #options_close').on('click', function(){
+            $this.closeOptions();
+        });
+
+        $('#options_save').on('click', function(){
+            $this.saveOptions();
+        });
 
         $('#search_input').focusin(function(){
             $(this).parent().addClass('focus');
@@ -341,9 +367,19 @@ var application = {
         let html = '';
 
         html+= '<div class="entry">';
+
+        if(this.options.timeBeforeTitle){
+            html+= '<div class="entry-time">' + moment(new Date(entry.lastVisitTime)).format(this.options.use24HoursFormat ? 'HH:mm' : 'hh:mm A') + '</div>';
+        }
+
         html+= '<img class="entry-icon" src="' + this.getFavicon(entry.url, 2) + '" />';
         html+= '<div class="entry-link"><a href="' + this.escape(entry.url) + '" target="_blank" title="' + this.escape(entry.url) + '">' + this.escape(entry.title ? entry.title : entry.url) + '</a></div>';
-        html+= '<div class="entry-time">' + moment(new Date(entry.lastVisitTime)).format('LT') + '</div>';
+
+        if(!this.options.timeBeforeTitle)
+        {
+            html+= '<div class="entry-time">' + moment(new Date(entry.lastVisitTime)).format(this.options.use24HoursFormat ? 'HH:mm' : 'hh:mm A') + '</div>';
+        }
+
         html+= '<a class="entry-remove" title="' + chrome.i18n.getMessage('history_remove_single') + '"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" width="12px" height="12px" slot="before"><path d="M14.1016 1.60156L8.20312 7.5L14.1016 13.3984L13.3984 14.1016L7.5 8.20312L1.60156 14.1016L0.898438 13.3984L6.79688 7.5L0.898438 1.60156L1.60156 0.898438L7.5 6.79688L13.3984 0.898438L14.1016 1.60156Z"></path></svg></a>';
         html+= '</div>';
 
@@ -547,6 +583,45 @@ var application = {
     getFavicon: function(url, size){
         size = size || 1;
         return "chrome://favicon/size/16@" + size + "x/" + this.escape(url);
+    },
+
+    /**
+     * Open options modal
+     *
+     * @returns {void}
+     */
+    openOptions: function(){
+        $('#options_field_24hoursformat').prop('checked', this.options.use24HoursFormat);
+        $('#options_field_displaytitlebeforetime').prop('checked', this.options.timeBeforeTitle);
+        $('#modal_options').css('display', 'flex');
+    },
+
+    /**
+     * Close options modal
+     *
+     * @param {boolean} reload
+     * @returns {void}
+     */
+    closeOptions: function(reload){
+        $('#modal_options').css('display', 'none');
+        if(reload){
+            location.reload();
+        }
+    },
+
+    /**
+     * Save options
+     *
+     * @returns {void}
+     */
+    saveOptions: function(){
+        let $this = this;
+        chrome.storage.sync.set({
+            use24HoursFormat: $('#options_field_24hoursformat').prop('checked'),
+            timeBeforeTitle: $('#options_field_displaytitlebeforetime').prop('checked')
+        }, function(){
+            $this.closeOptions(true);
+        });
     },
 
     /**

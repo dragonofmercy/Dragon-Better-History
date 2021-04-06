@@ -66,6 +66,8 @@ body {
     }
 
     .entry {
+        display: flex;
+        align-items: center;
         margin-bottom: 5px;
         background-color: @panel-background-color;
         border-radius: 4px;
@@ -99,6 +101,8 @@ body {
             text-overflow: ellipsis;
             white-space: nowrap;
             line-height: 24px;
+            flex-grow: 1;
+            padding-right: 10px;
 
             a {
                 color: @text-color;
@@ -113,8 +117,11 @@ body {
             color: @text-grey-color;
             line-height: 40px;
             font-size: 12px;
-            width: 80px;
             cursor: default;
+        }
+
+        :first-child.entry-time {
+            text-align: left;
         }
 
         .entry-remove {
@@ -219,8 +226,13 @@ body {
 
                         &>.content {
                             text-align: center;
+                            padding-bottom: 20px;
+                            display: flex;
+                            flex-direction: column;
 
                             .calendar {
+                                flex-grow: 0;
+
                                 &:after {
                                     display: table;
                                     content: " ";
@@ -228,9 +240,21 @@ body {
                                 }
                             }
 
-                            #go_today {
-                                display: inline-block;
-                                margin-top: 20px;
+                            p {
+                                flex-grow: 0;
+                                min-height: 22px;
+
+                                &:last-child {
+                                    margin-bottom: 0;
+                                }
+
+                                &.space {
+                                    flex-grow: 1;
+                                }
+
+                                #go_today, #go_options {
+                                    display: inline-block;
+                                }
                             }
                         }
                     }
@@ -317,6 +341,117 @@ body {
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        display: flex;
+
+        label {
+            flex-grow: 1;
+        }
+
+        .toggle-switch {
+            position: relative;
+
+            input {
+                appearance: none;
+                cursor: pointer;
+                display: block;
+                outline: none;
+                width: 40px;
+                height: 20px;
+                background-color: @panel-background-color;
+                border: 1px solid @border-color;
+                border-radius: 20px;
+            }
+
+            .dot {
+                position: absolute;
+                transition: all .1s ease;
+                pointer-events: none;
+                top: 5px;
+                left: 5px;
+                right: unset;
+                border-radius: 10px;
+                width: 10px;
+                height: 10px;
+                background: #2B2B2B;
+            }
+
+            input:checked {
+                background-color: @link-text-color;
+                border-color: @link-text-color;
+                &+.dot {
+                    left: 25px;
+                    right: unset;
+                    background: @panel-background-color;
+                }
+            }
+        }
+
+
+    }
+
+    .modal {
+        position: fixed;
+        display: none;
+        justify-content: center;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        overflow: hidden;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+
+        .modal-content {
+            background-color: @panel-background-color;
+            width: 400px;
+            border-radius: 4px;
+            height: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+
+            .modal-heading {
+                display: flex;
+                justify-content: flex-end;
+                padding: 5px 5px 0 5px;
+
+                .close {
+                    display: flex;
+                    padding: 3px;
+
+                    &:hover {
+                        background-color: @backgound-color;
+                        border-radius: 2px;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .modal-body {
+                padding: 0 20px 10px 20px;
+            }
+
+            .modal-footer {
+                padding: 0 20px 20px 20px;
+                display: flex;
+
+                button {
+                    flex-grow: 1;
+
+                    &:first-child {
+                        margin-right: 5px;
+                    }
+
+                    &:last-child {
+                        margin-left: 5px;
+                    }
+                }
+            }
+        }
     }
 }
 

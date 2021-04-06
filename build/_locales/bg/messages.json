@@ -51,5 +51,11 @@
     },
     "date_format": {
         "message": "dddd, MMMM Do, YYYY"
+    },
+    "options_time_12_24": {
+        "message": "Използвайте формат 24 часа"
+    },
+    "options_display_time_before_title": {
+        "message": "Показване на времето преди заглавието"
     }
 }

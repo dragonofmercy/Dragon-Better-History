@@ -51,5 +51,11 @@
     },
     "date_format": {
         "message": "dddd, D MMMM YYYY"
+    },
+    "options_time_12_24": {
+        "message": "Utiliser le format 24 heures"
+    },
+    "options_display_time_before_title": {
+        "message": "Afficher le temps en début de ligne"
     }
 }

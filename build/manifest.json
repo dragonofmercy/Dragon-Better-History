@@ -11,7 +11,7 @@
         "128": "assets/img/icon_128.png"
     },
     "manifest_version": 2,
-    "permissions": [ "history", "chrome://favicon/", "tabs" ],
+    "permissions": [ "history", "chrome://favicon/", "tabs", "storage" ],
     "content_security_policy": "script-src 'self' 'sha256-WOdSzz11/3cpqOdrm89LBL2UPwEU9EhbDtMy2OciEhs='; object-src 'self'",
     "chrome_url_overrides": {
         "history": "history.html"
