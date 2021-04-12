@@ -1,0 +1,64 @@
+{
+	"language" : {
+		"message" : "tr"
+	},
+	"application_title" : {
+		"message" : "Dragon Better History"
+	},
+	"application_description" : {
+		"message" : "Varsayılan tarayıcı Geçmiş'ini Better History ile değiştirir."
+	},
+	"btn_delete" : {
+		"message" : "Sil"
+	},
+	"btn_cancel" : {
+		"message" : "İptal"
+	},
+	"btn_save" : {
+		"message" : "Kaydet"
+	},
+	"search_placeholder" : {
+		"message" : "Geçmişte ara"
+	},
+	"search_display" : {
+		"message" : "Aranılan netice(ler):"
+	},
+	"search_found" : {
+		"message" : "$count$ sayıda netice var.",
+		"placeholders" : {
+			"count" : {
+				"content" : "$1"
+			}
+		}
+	},
+	"search_empty" : {
+		"message" : "Hiçbir netice bulunmadı"
+	},
+	"history_remove_single" : {
+		"message" : "Kaydı sil"
+	},
+	"history_remove_confirm_count" : {
+		"message" : "seçildi"
+	},
+	"history_date_empty" : {
+		"message" : "Bu tarihte kayıt yok"
+	},
+	"datepicker_go_today" : {
+		"message" : "Bugünü göster"
+	},
+	"history_view_more" : {
+		"message" : "Bütün geçmişi göster"
+	},
+	"history_recent" : {
+		"message" : "Son geçmiş"
+	},
+	"date_format" : {
+		"message" : "Do MMMM YYYY dddd"
+	},
+	"options_time_12_24" : {
+		"message" : "24 saat biçimi kullanılsın"
+	},
+	"options_display_time_before_title" : {
+		"message" : "Saat başlığın önünde gösterilsin"
+	}
+}
