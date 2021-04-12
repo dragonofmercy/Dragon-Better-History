@@ -17,6 +17,9 @@
     "btn_save": {
         "message": "Save"
     },
+    "btn_options": {
+        "message": "Options"
+    },
     "search_placeholder": {
         "message": "Search in history"
     },

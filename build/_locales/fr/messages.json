@@ -14,6 +14,12 @@
     "btn_cancel": {
         "message": "Annuler"
     },
+    "btn_save": {
+        "message": "Sauvegarder"
+    },
+    "btn_options": {
+        "message": "Options"
+    },
     "search_placeholder": {
         "message": "Rechercher dans l'historique"
     },
