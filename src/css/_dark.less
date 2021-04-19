@@ -1,11 +1,5 @@
-.scrollbar-variant() {
-    &::-webkit-scrollbar {
-        background: @input-background-dark;
-    }
-    &::-webkit-scrollbar-thumb {
-        background: @border-color-dark;
-        border: 1px solid lighten(@border-color-dark, 5%);
-    }
+:root {
+    color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,8 +7,6 @@
     body {
         background-color: @backgound-color-dark;
         color: @text-color-dark;
-
-        .scrollbar-variant();
 
         a {
             color: @link-text-color-dark;
