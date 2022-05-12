@@ -8,7 +8,6 @@
 // Released under MIT licence:
 // http://ionden.com/a/plugins/licence-en.html
 // =====================================================================================================================
-
 (function($){
     try {
         var timeNow = moment();
