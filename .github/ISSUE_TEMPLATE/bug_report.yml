@@ -30,13 +30,8 @@ body:
   validations:
     required: false
 
-- type: textarea
+- type: input
   attributes:
-    label: Bowser informations
-    description: please complete the following information
-    placeholder: |
-      OS: [e.g. iOS]
-      Browser [e.g. chrome, safari]
-      Version [e.g. 22]
+    label: Bowser version
   validations:
-    required: false
+    required: true
