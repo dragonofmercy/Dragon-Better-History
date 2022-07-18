@@ -33,6 +33,6 @@ body:
 - type: input
   attributes:
     label: Microsoft Edge Version
-    description: Please fill your Edge version. Can be found here [edge://settings/help](edge://settings/help)
+    description: Please fill your Edge version. Can be found by typing this "edge://settings/help" in your address bar.
   validations:
     required: true
