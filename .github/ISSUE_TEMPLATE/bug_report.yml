@@ -32,6 +32,7 @@ body:
 
 - type: input
   attributes:
-    label: Bowser version
+    label: Microsoft Edge Version
+    description: Please fill your Edge version. Can be found here [edge://settings/help](edge://settings/help)
   validations:
     required: true
