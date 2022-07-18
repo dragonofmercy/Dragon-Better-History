@@ -7,7 +7,7 @@ body:
   attributes:
     value: |
       Please make sure to [search for existing issues](https://github.com/dragonofmercy/Dragon-Better-History/issues) before filing a new one!
-
+      Note: Please stop asking me for *Chrome Better History*, The project has been discontinued.
 - type: textarea
   attributes:
     label: Steps to reproduce
