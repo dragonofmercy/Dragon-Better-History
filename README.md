@@ -10,9 +10,9 @@ Compile all less files with
 ## How to compile javascript
 
 Compile all javascript files to the compile folder using this command:  
-````uglifyjs $FileName$ -o compiled/$FileNameWithoutExtension$.js````
+````terser $FileName$ --output compiled/$FileNameWithoutExtension$.js --comments false````
 
-Then execute the "make.php" file to merge all file into a single javascript file:  
-````php $ProjectFileDir$\src\js\make\make.php````
+Then execute in powershell merge all file into a single javascript file:  
+````powershell Get-Content .\src\js\_merge.txt | foreach { Get-Content .\src\js\compiled\$_ } | Set-Content .\build\assets\application.js````
 
-If you need to add more javascript file don't forget to add it inside "make.txt" file.
+If you need to add more javascript file don't forget to add it inside "_merge.txt" file.
