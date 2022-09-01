@@ -63,5 +63,8 @@
     },
     "options_display_time_before_title": {
         "message": "时间显示在标题之前"
+    },
+    "options_popup_nb_items": {
+        "message": "弹出窗口中的项目数"
     }
 }

@@ -63,5 +63,8 @@
     },
     "options_display_time_before_title": {
         "message": "Afficher le temps en début de ligne"
+    },
+    "options_popup_nb_items": {
+        "message": "Nombre d'éléments dans le popup"
     }
 }

@@ -14,7 +14,8 @@ var application = {
      */
     options: {
         use24HoursFormat: true,
-        timeBeforeTitle: false
+        timeBeforeTitle: false,
+        popupNbItems: 10
     },
 
     /**
@@ -71,6 +72,7 @@ var application = {
         chrome.storage.sync.get(function(items){
             $this.options.use24HoursFormat = items.use24HoursFormat === undefined ? true : items.use24HoursFormat;
             $this.options.timeBeforeTitle = items.timeBeforeTitle === undefined ? false : items.timeBeforeTitle;
+            $this.options.popupNbItems = items.popupNbItems === undefined ? 10 : items.popupNbItems;
 
             if($('body.popup').length){
                 $this.initPopup();
@@ -84,7 +86,7 @@ var application = {
      * Init popup
      */
     initPopup: function(){
-        this.historyGetDay(this.today, 10);
+        this.historyGetDay(this.today, this.options.popupNbItems);
 
         $('#go_history').on('click', function(e){
             e.preventDefault();
@@ -253,7 +255,7 @@ var application = {
         let date_end = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 23, 59, 59);
 
         this.clearContent();
-        this.historyQuery('', date_start, date_end, nb_entries);
+        this.historyQuery('', date_start, date_end, parseInt(nb_entries));
     },
 
     /**
@@ -593,6 +595,7 @@ var application = {
     openOptions: function(){
         $('#options_field_24hoursformat').prop('checked', this.options.use24HoursFormat);
         $('#options_field_displaytitlebeforetime').prop('checked', this.options.timeBeforeTitle);
+        $('#options_field_popupnbitems').val(this.options.popupNbItems);
         $('#modal_options').css('display', 'flex');
     },
 
@@ -618,7 +621,8 @@ var application = {
         let $this = this;
         chrome.storage.sync.set({
             use24HoursFormat: $('#options_field_24hoursformat').prop('checked'),
-            timeBeforeTitle: $('#options_field_displaytitlebeforetime').prop('checked')
+            timeBeforeTitle: $('#options_field_displaytitlebeforetime').prop('checked'),
+            popupNbItems: $('#options_field_popupnbitems').val()
         }, function(){
             $this.closeOptions(true);
         });
