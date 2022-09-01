@@ -374,7 +374,7 @@ var application = {
             html+= '<div class="entry-time">' + moment(new Date(entry.lastVisitTime)).format(this.options.use24HoursFormat ? 'HH:mm' : 'hh:mm A') + '</div>';
         }
 
-        html+= '<img class="entry-icon" src="' + this.getFavicon(entry.url, 2) + '" />';
+        html+= '<img class="entry-icon" src="' + this.getFavicon(entry.url) + '" />';
         html+= '<div class="entry-link"><a href="' + this.escape(entry.url) + '" target="_blank" title="' + this.escape(entry.url) + '">' + this.escape(entry.title ? entry.title : entry.url) + '</a></div>';
 
         if(!this.options.timeBeforeTitle)
@@ -582,9 +582,8 @@ var application = {
      * @param {int} size
      * @returns {string}
      */
-    getFavicon: function(url, size){
-        size = size || 1;
-        return "chrome://favicon/size/16@" + size + "x/" + this.escape(url);
+    getFavicon: function(url){
+        return "chrome-extension://" + chrome.runtime.id + "/_favicon/?pageUrl=" + encodeURIComponent(this.escape(url)) + "&size=16";
     },
 
     /**
