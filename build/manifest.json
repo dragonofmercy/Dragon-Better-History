@@ -1,7 +1,7 @@
 {
     "name": "__MSG_application_title__",
     "description": "__MSG_application_description__",
-    "version": "1.30",
+    "version": "1.31",
     "default_locale": "en",
     "icons": {
         "16": "assets/img/icon_16.png",
@@ -11,7 +11,7 @@
         "128": "assets/img/icon_128.png"
     },
     "manifest_version": 3,
-    "permissions": ["favicon", "history", "chrome://favicon/", "tabs", "storage" ],
+    "permissions": ["favicon", "history", "tabs", "storage" ],
     "chrome_url_overrides": {
         "history": "history.html"
     },
