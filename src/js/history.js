@@ -583,7 +583,7 @@ var application = {
      * @returns {string}
      */
     getFavicon: function(url){
-        return "chrome-extension://" + chrome.runtime.id + "/_favicon/?pageUrl=" + encodeURIComponent(this.escape(url)) + "&size=16";
+        return "chrome-extension://" + chrome.runtime.id + "/_favicon/?size=32&pageUrl=" + encodeURIComponent(this.escape(url));
     },
 
     /**
@@ -635,7 +635,6 @@ var application = {
      */
     escape: function(string) {
         return string
-            .replace(/&/g, "&amp;")
             .replace(/</g, "&#x3C;")
             .replace(/>/g, "&#x3E;")
             .replace(/"/g, "&quot;")
