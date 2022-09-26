@@ -1,5 +1,7 @@
 # Dragon-Better-History
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://ko-fi.com/dragonofmercy)
+
 Better history for Microsoft Edge Chromium
 
 ## How to compile less
@@ -22,3 +24,9 @@ powershell Get-Content .\src\js\_merge.txt | foreach { Get-Content .\src\js\comp
 ```
 
 If you need to add more javascript file don't forget to add it inside "_merge.txt" file.
+
+## 
+
+If this project help you reduce time to develop, you can give me a cup of coffee :) 
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://ko-fi.com/dragonofmercy)
