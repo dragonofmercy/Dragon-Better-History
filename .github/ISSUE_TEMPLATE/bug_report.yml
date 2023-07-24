@@ -6,7 +6,8 @@ body:
 - type: markdown
   attributes:
     value: |
-      Please make sure to [search for existing issues](https://github.com/dragonofmercy/Dragon-Better-History/issues) before filing a new one!
+      Please make sure to [search for existing issues](https://github.com/dragonofmercy/Dragon-Better-History/issues) before filing a new one!  
+      I accepte only issue from the Edge version of the extension, I am not responsible for the development of the Chrome version.  
       Note: Please stop asking me for **Chrome Better History**, The project has been discontinued.
 - type: textarea
   attributes:
