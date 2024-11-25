@@ -12,6 +12,7 @@
     },
     "manifest_version": 3,
     "permissions": ["favicon", "history", "tabs", "storage" ],
+    "host_permissions": ["file:///*", "*://*/*"],
     "chrome_url_overrides": {
         "history": "history.html"
     },
