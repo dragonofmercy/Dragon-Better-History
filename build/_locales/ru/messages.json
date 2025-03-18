@@ -1,0 +1,70 @@
+{
+    "language": {
+        "message": "ru"
+    },
+    "application_title": {
+        "message": "Улучшенная история Dragon"
+    },
+    "application_description": {
+        "message": "Замена встроенной истории браузера этим улучшенным расширением"
+    },
+    "btn_delete": {
+        "message": "Удалить"
+    },
+    "btn_cancel": {
+        "message": "Отмена"
+    },
+    "btn_save": {
+        "message": "Сохранить"
+    },
+    "btn_options": {
+        "message": "Настройки"
+    },
+    "search_placeholder": {
+        "message": "Поиск в истории"
+    },
+    "search_display": {
+        "message": "Результат поиска"
+    },
+    "search_found": {
+        "message": "Найдено: $count$",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "Ничего не найдено"
+    },
+    "history_remove_single": {
+        "message": "Удалить запись"
+    },
+    "history_remove_confirm_count": {
+        "message": "выбрано"
+    },
+    "history_date_empty": {
+        "message": "Этот день не имеет записей в истории"
+    },
+    "datepicker_go_today": {
+        "message": "Показать сегодня"
+    },
+    "history_view_more": {
+        "message": "Просмотреть всю историю"
+    },
+    "history_recent": {
+        "message": "Недавняя история"
+    },
+    "date_format": {
+        "message": "dddd, D MMMM YYYY"
+    },
+    "options_time_12_24": {
+        "message": "Использовать 24-часовой формат"
+    },
+    "options_display_time_before_title": {
+        "message": "Показывать время перед заголовком"
+    },
+    "options_popup_nb_items": {
+        "message": "Количество записей в всплывающем окне"
+    }
+}
