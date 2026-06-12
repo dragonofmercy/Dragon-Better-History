@@ -62,7 +62,9 @@ export function useHistory() {
 
   async function remove(url: string): Promise<void> {
     await historyDeleteUrl({ url })
-    days.value = days.value.map((g) => ({ ...g, entries: g.entries.filter((e) => e.url !== url) }))
+    days.value = days.value
+      .map((g) => ({ ...g, entries: g.entries.filter((e) => e.url !== url) }))
+      .filter((g) => g.entries.length > 0)
   }
 
   return { days, loading, searching, getDay, search, remove }

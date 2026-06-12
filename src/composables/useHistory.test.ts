@@ -55,4 +55,16 @@ describe('useHistory', () => {
     expect(h.days.value[0].entries.length).toBe(1)
     expect(h.days.value[0].entries[0].url).toBe('https://b')
   })
+
+  it('drops the day group when its last entry is removed', async () => {
+    const t = new Date(2024, 0, 2, 12, 0).getTime()
+    vi.spyOn(chrome.history, 'search').mockImplementation((_q: unknown, cb: (r: chrome.history.HistoryItem[]) => void) =>
+      cb([item('https://a', t, 'A')]))
+    vi.spyOn(chrome.history, 'deleteUrl').mockImplementation((_d: unknown, cb: () => void) => cb())
+    const h = useHistory()
+    await h.getDay(new Date(2024, 0, 2))
+    expect(h.days.value.length).toBe(1)
+    await h.remove('https://a')
+    expect(h.days.value.length).toBe(0)
+  })
 })
