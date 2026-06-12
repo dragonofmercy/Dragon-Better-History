@@ -18,7 +18,7 @@ function time(): string { return formatTime(new Date(props.entry.lastVisitTime),
 </script>
 
 <template>
-  <div class="flex cursor-pointer select-none items-center gap-3 rounded-md px-4 py-2.5 text-sm" :class="selected ? 'glass-card-selected' : 'glass-card'" @click="emit('toggle', $event)">
+  <div class="flex cursor-pointer select-none items-center gap-3 rounded-md border px-4 py-2.5 text-sm transition-colors" :class="selected ? 'border-blue-400 bg-blue-50 dark:border-blue-500/50 dark:bg-blue-500/15' : 'border-neutral-200 bg-white hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-neutral-600'" @click="emit('toggle', $event)">
     <span v-if="timeBeforeTitle" class="w-14 shrink-0 text-xs tabular-nums text-neutral-500 dark:text-neutral-400">{{ time() }}</span>
     <img class="h-4 w-4 shrink-0" :src="faviconUrl(entry.url)" alt="" />
     <a class="flex-1 truncate text-blue-700 hover:underline dark:text-blue-300" :href="entry.url" :title="entry.url" target="_blank" @click.stop>{{ entry.title }}</a>
