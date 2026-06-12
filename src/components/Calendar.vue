@@ -65,15 +65,15 @@ function isToday(ts: number): boolean { return ts === startOfDay(props.today).ge
 <template>
   <div class="text-sm">
     <div class="mb-2 flex items-center justify-between">
-      <button :disabled="!canPrev" class="px-2 disabled:opacity-30" @click="prev">&lsaquo;</button>
+      <button :disabled="!canPrev" class="dbh-nav px-2 disabled:opacity-30" @click="prev">&lsaquo;</button>
       <span class="font-medium capitalize">{{ monthLabel }}</span>
-      <button :disabled="!canNext" class="px-2 disabled:opacity-30" @click="next">&rsaquo;</button>
+      <button :disabled="!canNext" class="dbh-nav px-2 disabled:opacity-30" @click="next">&rsaquo;</button>
     </div>
-    <div class="grid grid-cols-7 gap-0.5 text-center text-xs text-neutral-500">
+    <div class="dbh-faint grid grid-cols-7 gap-0.5 text-center text-xs">
       <span v-for="w in weekdayLabels" :key="w" data-weekday>{{ w }}</span>
     </div>
     <div class="grid grid-cols-7 gap-0.5 text-center">
-      <button v-for="c in cells" :key="c.ts" data-day :data-ts="c.ts" :disabled="c.disabled" class="aspect-square rounded text-xs disabled:opacity-25" :class="[c.inMonth ? '' : 'text-neutral-400', isToday(c.ts) ? 'ring-1 ring-blue-500' : '', !c.disabled ? 'hover:bg-blue-500 hover:text-white' : '']" @click="pick(c)">{{ c.date.getDate() }}</button>
+      <button v-for="c in cells" :key="c.ts" data-day :data-ts="c.ts" :disabled="c.disabled" class="dbh-cal-day aspect-square rounded-md text-xs disabled:opacity-25" :class="[c.inMonth ? '' : 'is-out', isToday(c.ts) ? 'is-today' : '']" @click="pick(c)">{{ c.date.getDate() }}</button>
     </div>
   </div>
 </template>

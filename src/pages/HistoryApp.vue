@@ -64,25 +64,25 @@ function onKeydown(e: KeyboardEvent): void {
 </script>
 
 <template>
-  <div class="flex h-screen bg-white text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200" tabindex="0" @keydown="onKeydown" @click.self="selection.clear()">
-    <aside class="flex w-72 shrink-0 flex-col gap-4 border-r border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-950">
+  <div class="compact dbh-root flex h-screen" tabindex="0" @keydown="onKeydown" @click.self="selection.clear()">
+    <aside class="dbh-panel flex w-72 shrink-0 flex-col gap-4 p-4">
       <h1 class="text-lg font-bold">{{ t('application_title') }}</h1>
       <SearchBar ref="searchBar" :placeholder="t('search_placeholder')" @search="onSearch" @clear="onClear" />
       <Calendar :key="calendarKey" :locale="locale" :today="today" :min-year="minYear" @select="onSelectDay" />
-      <a class="cursor-pointer text-sm text-blue-600 hover:underline dark:text-blue-400" @click="onToday">{{ t('datepicker_go_today') }}</a>
-      <a class="cursor-pointer text-sm hover:underline" @click="optionsOpen = true">{{ t('btn_options') }}</a>
-      <footer class="mt-auto flex flex-col items-start gap-1 text-xs text-neutral-500 dark:text-neutral-400">
+      <a class="dbh-link text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
+      <a class="dbh-link text-sm" @click="optionsOpen = true">{{ t('btn_options') }}</a>
+      <footer class="dbh-faint mt-auto flex flex-col items-start gap-1 text-xs">
         <img src="/icons/dom_logo.png" alt="" class="h-8 w-auto" />
         <div>Created by DragonOfMercy</div>
-        <a href="https://github.com/dragonofmercy" target="_blank" class="text-blue-600 hover:underline dark:text-blue-400">https://github.com/dragonofmercy</a>
+        <a href="https://github.com/dragonofmercy" target="_blank" class="dbh-link">https://github.com/dragonofmercy</a>
       </footer>
     </aside>
     <main class="flex-1 overflow-y-auto p-6">
       <ConfirmBar :count="selection.count.value" :selected-label="t('history_remove_confirm_count')" :delete-label="t('btn_delete')" :cancel-label="t('btn_cancel')" class="mb-4" @confirm="removeSelected" @cancel="selection.clear()" />
       <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
-      <p v-if="history.searching.value && totalCount > 0" class="mb-3 text-sm text-neutral-500 dark:text-neutral-400">{{ t('search_found', String(totalCount)) }}</p>
+      <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
       <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :empty-label="t('history_date_empty')" :remove-label="t('history_remove_single')" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" />
-      <p v-if="!history.days.value.length" class="text-sm text-neutral-500">{{ t(history.searching.value ? 'search_empty' : 'history_date_empty') }}</p>
+      <p v-if="!history.days.value.length" class="dbh-muted text-sm">{{ t(history.searching.value ? 'search_empty' : 'history_date_empty') }}</p>
     </main>
     <OptionsModal :open="optionsOpen" :options="options" :t="t" @close="optionsOpen = false" @save="onSave" />
   </div>

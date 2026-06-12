@@ -10,3 +10,93 @@
     cursor: pointer;
   }
 }
+
+@layer components {
+  /* Compact "command center" theme. Dark-first, light supported.
+     Palette is exposed as CSS variables on .compact so every surface
+     stays consistent; .dark overrides them. */
+  .compact {
+    --bg: #ffffff;
+    --panel: #f7f8fa;
+    --border: #e7e9ee;
+    --row-border: #eef0f3;
+    --text: #1f2329;
+    --muted: #6b7280;
+    --faint: #9aa1ac;
+    --accent: #d97706;
+    --accent-strong: #b45309;
+    --accent-soft: rgba(217, 119, 6, 0.10);
+    --hover: rgba(0, 0, 0, 0.035);
+    --input: #ffffff;
+    --on-accent: #ffffff;
+    --ghost: #e7e9ee;
+    --ghost-hover: #dcdfe5;
+  }
+
+  .dark .compact {
+    --bg: #0d1016;
+    --panel: #0a0d12;
+    --border: #1c2129;
+    --row-border: #171b22;
+    --text: #dfe3ea;
+    --muted: #8b94a3;
+    --faint: #5b6472;
+    --accent: #f59e0b;
+    --accent-strong: #fbbf24;
+    --accent-soft: rgba(245, 158, 11, 0.13);
+    --hover: rgba(255, 255, 255, 0.03);
+    --input: #11151d;
+    --on-accent: #1a1205;
+    --ghost: #1c2129;
+    --ghost-hover: #262c36;
+  }
+
+  .mono { font-family: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, Consolas, monospace; }
+
+  .dbh-root { background: var(--bg); color: var(--text); }
+  .dbh-panel { background: var(--panel); border-right: 1px solid var(--border); }
+  .dbh-card { background: var(--panel); border: 1px solid var(--border); color: var(--text); }
+  .dbh-muted { color: var(--muted); }
+  .dbh-faint { color: var(--faint); }
+
+  .dbh-link { color: var(--accent); cursor: pointer; }
+  .dbh-link:hover { text-decoration: underline; }
+
+  .dbh-nav { color: var(--muted); }
+  .dbh-nav:not(:disabled):hover { color: var(--text); }
+
+  /* Day heading: small uppercase label + hairline rule + count. */
+  .dbh-day {
+    display: flex; align-items: center; gap: 10px;
+    text-transform: uppercase; letter-spacing: 0.09em;
+    font-size: 11px; font-weight: 700; color: var(--faint);
+  }
+  .dbh-rule { flex: 1; height: 1px; background: var(--border); }
+  .dbh-count { font-size: 11px; font-weight: 600; color: var(--faint); letter-spacing: normal; }
+
+  /* Dense rows separated by hairlines, accent bar on hover/selection. */
+  .dbh-entries > * + * { border-top: 1px solid var(--row-border); }
+  .dbh-entry { box-shadow: inset 2px 0 0 transparent; transition: background-color 0.12s ease, box-shadow 0.12s ease; }
+  .dbh-entry:hover { background: var(--hover); box-shadow: inset 2px 0 0 var(--accent); }
+  .dbh-entry.is-selected { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent); }
+  .dbh-title { color: var(--text); }
+  .dbh-entry:hover .dbh-title { text-decoration: underline; }
+  .dbh-time { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .dbh-rm { color: var(--faint); }
+  .dbh-rm:hover { color: #ef4444; }
+
+  .dbh-input { background: var(--input); border: 1px solid var(--border); color: var(--text); }
+  .dbh-input::placeholder { color: var(--faint); }
+  .dbh-input:focus { border-color: var(--accent); outline: none; }
+
+  .dbh-btn-primary { background: var(--accent); color: var(--on-accent); }
+  .dbh-btn-primary:hover { background: var(--accent-strong); }
+  .dbh-btn-ghost { background: var(--ghost); color: var(--text); }
+  .dbh-btn-ghost:hover { background: var(--ghost-hover); }
+
+  .dbh-cal-day { color: var(--text); }
+  .dbh-cal-day:not(:disabled):hover { background: var(--accent-soft); }
+  .dbh-cal-day.is-out { color: var(--faint); }
+  .dbh-cal-day.is-today { background: var(--accent); color: var(--on-accent); font-weight: 600; }
+  .dbh-cal-day.is-today:not(:disabled):hover { background: var(--accent-strong); }
+}
