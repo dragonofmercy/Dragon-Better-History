@@ -55,6 +55,23 @@
     "history_recent": {
         "message": "Recent history"
     },
+    "tab_recently_closed": {
+        "message": "Recently closed"
+    },
+    "closed_restore": {
+        "message": "Restore"
+    },
+    "closed_window_tabs": {
+        "message": "Window - $count$ tabs",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "No recently closed tabs"
+    },
     "date_format": {
         "message": "dddd, MMMM Do, YYYY"
     },

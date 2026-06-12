@@ -55,6 +55,23 @@
 	"history_recent": {
 		"message": "Son geçmiş"
 	},
+    "tab_recently_closed": {
+        "message": "Son kapatilanlar"
+    },
+    "closed_restore": {
+        "message": "Geri yukle"
+    },
+    "closed_window_tabs": {
+        "message": "Pencere - $count$ sekme",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "Son kapatilan sekme yok"
+    },
 	"date_format": {
 		"message": "Do MMMM YYYY dddd"
 	},

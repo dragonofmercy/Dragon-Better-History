@@ -55,6 +55,23 @@
     "history_recent": {
         "message": "Недавняя история"
     },
+    "tab_recently_closed": {
+        "message": "Недавно закрытые"
+    },
+    "closed_restore": {
+        "message": "Восстановить"
+    },
+    "closed_window_tabs": {
+        "message": "Окно - $count$ вкладок",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "Нет недавно закрытых вкладок"
+    },
     "date_format": {
         "message": "dddd, D MMMM YYYY"
     },

@@ -55,6 +55,23 @@
     "history_recent": {
         "message": "最近历史记录"
     },
+    "tab_recently_closed": {
+        "message": "最近关闭"
+    },
+    "closed_restore": {
+        "message": "恢复"
+    },
+    "closed_window_tabs": {
+        "message": "窗口 - $count$ 个标签页",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "没有最近关闭的标签页"
+    },
     "date_format": {
         "message": "LL, dddd"
     },

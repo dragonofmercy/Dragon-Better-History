@@ -55,6 +55,23 @@
     "history_recent": {
         "message": "Текуща история"
     },
+    "tab_recently_closed": {
+        "message": "Наскоро затворени"
+    },
+    "closed_restore": {
+        "message": "Възстанови"
+    },
+    "closed_window_tabs": {
+        "message": "Прозорец - $count$ раздела",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "Няма наскоро затворени раздели"
+    },
     "date_format": {
         "message": "dddd, MMMM Do, YYYY"
     },
