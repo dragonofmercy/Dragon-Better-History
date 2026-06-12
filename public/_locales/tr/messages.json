@@ -56,10 +56,10 @@
 		"message": "Son geçmiş"
 	},
     "tab_recently_closed": {
-        "message": "Son kapatilanlar"
+        "message": "Son kapatılanlar"
     },
     "closed_restore": {
-        "message": "Geri yukle"
+        "message": "Geri yükle"
     },
     "closed_window_tabs": {
         "message": "Pencere - $count$ sekme",
@@ -70,7 +70,7 @@
         }
     },
     "closed_empty": {
-        "message": "Son kapatilan sekme yok"
+        "message": "Son kapatılan sekme yok"
     },
 	"date_format": {
 		"message": "Do MMMM YYYY dddd"

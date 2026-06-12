@@ -56,13 +56,13 @@
         "message": "Historique récent"
     },
     "tab_recently_closed": {
-        "message": "Recemment fermes"
+        "message": "Récemment fermés"
     },
     "closed_restore": {
         "message": "Restaurer"
     },
     "closed_window_tabs": {
-        "message": "Fenetre - $count$ onglets",
+        "message": "Fenêtre - $count$ onglets",
         "placeholders": {
             "count": {
                 "content": "$1"
@@ -70,7 +70,7 @@
         }
     },
     "closed_empty": {
-        "message": "Aucun onglet recemment ferme"
+        "message": "Aucun onglet récemment fermé"
     },
     "date_format": {
         "message": "dddd, D MMMM YYYY"
