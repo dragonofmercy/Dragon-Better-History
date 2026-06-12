@@ -55,6 +55,14 @@
     --ghost-hover: #475569;
   }
 
+  /* Scrollbars follow the active theme: the thumb uses palette variables that
+     the .dark block above already recolors, so they recolor with it. Chromium
+     extension, so the webkit pseudo-elements give full control of width/shape. */
+  .compact ::-webkit-scrollbar { width: 10px; height: 10px; }
+  .compact ::-webkit-scrollbar-track { background: transparent; }
+  .compact ::-webkit-scrollbar-thumb { background: var(--ghost-hover); border-radius: 9999px; border: 2px solid transparent; background-clip: padding-box; }
+  .compact ::-webkit-scrollbar-thumb:hover { background: var(--faint); background-clip: padding-box; }
+
   .mono { font-family: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, Consolas, monospace; }
 
   .dbh-root { background: var(--bg); color: var(--text); }
