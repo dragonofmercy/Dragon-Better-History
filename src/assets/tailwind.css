@@ -28,6 +28,7 @@
     --accent-soft: rgba(217, 119, 6, 0.10);
     --hover: rgba(0, 0, 0, 0.035);
     --input: #ffffff;
+    --raised: #ffffff;
     --on-accent: #ffffff;
     --ghost: #e7e9ee;
     --ghost-hover: #dcdfe5;
@@ -46,6 +47,7 @@
     --accent-soft: rgba(245, 158, 11, 0.13);
     --hover: rgba(255, 255, 255, 0.03);
     --input: #11151d;
+    --raised: #171c26;
     --on-accent: #1a1205;
     --ghost: #1c2129;
     --ghost-hover: #262c36;
@@ -56,6 +58,7 @@
   .dbh-root { background: var(--bg); color: var(--text); }
   .dbh-panel { background: var(--panel); border-right: 1px solid var(--border); }
   .dbh-card { background: var(--panel); border: 1px solid var(--border); color: var(--text); }
+  .dbh-raised { background: var(--raised); border: 1px solid var(--border); color: var(--text); }
   .dbh-muted { color: var(--muted); }
   .dbh-faint { color: var(--faint); }
 

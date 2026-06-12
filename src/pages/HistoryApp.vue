@@ -72,7 +72,7 @@ function onKeydown(e: KeyboardEvent): void {
     <aside class="dbh-panel flex w-72 shrink-0 flex-col gap-4 p-4">
       <h1 class="text-lg font-bold">{{ t('application_title') }}</h1>
       <SearchBar ref="searchBar" :placeholder="t('search_placeholder')" @search="onSearch" @clear="onClear" />
-      <div class="dbh-card rounded-lg p-3">
+      <div class="dbh-raised rounded-lg p-3">
         <Calendar :key="calendarKey" :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" @select="onSelectDay" />
       </div>
       <a class="dbh-link text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
