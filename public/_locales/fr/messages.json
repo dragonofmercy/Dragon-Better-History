@@ -66,5 +66,17 @@
     },
     "options_popup_nb_items": {
         "message": "Nombre d'éléments dans le popup"
+    },
+    "options_theme": {
+        "message": "Theme"
+    },
+    "options_theme_system": {
+        "message": "Systeme"
+    },
+    "options_theme_light": {
+        "message": "Clair"
+    },
+    "options_theme_dark": {
+        "message": "Sombre"
     }
 }

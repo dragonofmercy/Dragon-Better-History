@@ -66,5 +66,17 @@
     },
     "options_popup_nb_items": {
         "message": "Количество записей в всплывающем окне"
+    },
+    "options_theme": {
+        "message": "Тема"
+    },
+    "options_theme_system": {
+        "message": "Системная"
+    },
+    "options_theme_light": {
+        "message": "Светлая"
+    },
+    "options_theme_dark": {
+        "message": "Темная"
     }
 }

@@ -66,5 +66,17 @@
 	},
     "options_popup_nb_items": {
         "message": "Açılır penceredeki öğe sayısı"
+    },
+    "options_theme": {
+        "message": "Tema"
+    },
+    "options_theme_system": {
+        "message": "Sistem"
+    },
+    "options_theme_light": {
+        "message": "Acik"
+    },
+    "options_theme_dark": {
+        "message": "Koyu"
     }
 }

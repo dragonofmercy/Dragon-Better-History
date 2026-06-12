@@ -66,5 +66,17 @@
     },
     "options_popup_nb_items": {
         "message": "弹出窗口中的项目数"
+    },
+    "options_theme": {
+        "message": "主题"
+    },
+    "options_theme_system": {
+        "message": "跟随系统"
+    },
+    "options_theme_light": {
+        "message": "浅色"
+    },
+    "options_theme_dark": {
+        "message": "深色"
     }
 }

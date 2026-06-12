@@ -66,5 +66,17 @@
     },
     "options_popup_nb_items": {
         "message": "Брой елементи в изскачащия прозорец"
+    },
+    "options_theme": {
+        "message": "Тема"
+    },
+    "options_theme_system": {
+        "message": "Системна"
+    },
+    "options_theme_light": {
+        "message": "Светла"
+    },
+    "options_theme_dark": {
+        "message": "Тъмна"
     }
 }
