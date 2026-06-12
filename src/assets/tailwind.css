@@ -59,6 +59,9 @@
   .dbh-panel { background: var(--panel); border-right: 1px solid var(--border); }
   .dbh-card { background: var(--panel); border: 1px solid var(--border); color: var(--text); }
   .dbh-raised { background: var(--raised); border: 1px solid var(--border); color: var(--text); }
+  .dbh-headerbar { background: var(--bg); border-bottom: 1px solid var(--border); }
+  .dbh-iconbtn { color: var(--muted); }
+  .dbh-iconbtn:hover { color: var(--text); background: var(--hover); }
   .dbh-muted { color: var(--muted); }
   .dbh-faint { color: var(--faint); }
 

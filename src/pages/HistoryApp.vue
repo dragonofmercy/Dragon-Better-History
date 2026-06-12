@@ -33,6 +33,11 @@ const mainEl = ref<HTMLElement | null>(null)
 
 function scrollMainTop(): void { mainEl.value?.scrollTo({ top: 0 }) }
 
+const mq = window.matchMedia('(prefers-color-scheme: dark)')
+const isDark = computed(() => options.theme === 'dark' || (options.theme === 'system' && mq.matches))
+const themeTitle = computed(() => t(isDark.value ? 'options_theme_light' : 'options_theme_dark'))
+function toggleTheme(): void { save({ theme: isDark.value ? 'light' : 'dark' }) }
+
 onMounted(async () => {
   await load()
   await history.getDay(today)
@@ -76,19 +81,31 @@ function onKeydown(e: KeyboardEvent): void {
         <Calendar :key="calendarKey" :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" @select="onSelectDay" />
         <a class="dbh-link mt-3 block border-t border-[color:var(--border)] pt-2 text-center text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
       </div>
-      <a class="dbh-link text-sm" @click="optionsOpen = true">{{ t('btn_options') }}</a>
       <footer class="dbh-faint mt-auto flex flex-col items-start gap-1 text-xs">
         <img src="/icons/dom_logo.png" alt="" class="h-8 w-auto" />
         <div>Created by DragonOfMercy</div>
         <a href="https://github.com/dragonofmercy" target="_blank" class="dbh-link">https://github.com/dragonofmercy</a>
       </footer>
     </aside>
-    <main ref="mainEl" class="flex-1 overflow-y-auto p-6">
-      <ConfirmBar :count="selection.count.value" :selected-label="t('history_remove_confirm_count')" :delete-label="t('btn_delete')" :cancel-label="t('btn_cancel')" class="fixed top-6 right-6 z-40 shadow-2xl" @confirm="removeSelected" @cancel="selection.clear()" />
-      <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
-      <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
-      <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :empty-label="t('history_date_empty')" :remove-label="t('history_remove_single')" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" />
-      <p v-if="!history.days.value.length" class="dbh-muted text-sm">{{ t(history.searching.value ? 'search_empty' : 'history_date_empty') }}</p>
+    <main ref="mainEl" class="flex-1 overflow-y-auto">
+      <header class="dbh-headerbar sticky top-0 z-30 flex items-center gap-3 px-6 py-2.5">
+        <ConfirmBar :count="selection.count.value" :selected-label="t('history_remove_confirm_count')" :delete-label="t('btn_delete')" :cancel-label="t('btn_cancel')" @confirm="removeSelected" @cancel="selection.clear()" />
+        <div class="ml-auto flex items-center gap-1">
+          <button class="dbh-iconbtn rounded-md p-2" :title="t('btn_options')" @click="optionsOpen = true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" /></svg>
+          </button>
+          <button class="dbh-iconbtn rounded-md p-2" :title="themeTitle" @click="toggleTheme">
+            <svg v-if="isDark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" /></svg>
+            <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
+          </button>
+        </div>
+      </header>
+      <div class="px-6 pb-6 pt-4">
+        <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
+        <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
+        <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :empty-label="t('history_date_empty')" :remove-label="t('history_remove_single')" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" />
+        <p v-if="!history.days.value.length" class="dbh-muted text-sm">{{ t(history.searching.value ? 'search_empty' : 'history_date_empty') }}</p>
+      </div>
     </main>
     <OptionsModal :open="optionsOpen" :options="options" :t="t" @close="optionsOpen = false" @save="onSave" />
   </div>

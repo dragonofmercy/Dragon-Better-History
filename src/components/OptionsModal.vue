@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
-import type { Options, Theme } from '@/composables/useOptions'
+import type { Options } from '@/composables/useOptions'
 
 const props = defineProps<{ open: boolean; options: Options; t: (key: string) => string }>()
 const emit = defineEmits<{ (e: 'close'): void; (e: 'save', value: Options): void }>()
 
 const form = reactive<Options>({ ...props.options })
-const themes: Theme[] = ['system', 'light', 'dark']
 
 watch(() => props.open, (o) => { if (o) Object.assign(form, props.options) })
 </script>
@@ -23,15 +22,9 @@ watch(() => props.open, (o) => { if (o) Object.assign(form, props.options) })
         <span>{{ t('options_display_time_before_title') }}</span>
         <input v-model="form.timeBeforeTitle" type="checkbox" />
       </label>
-      <label class="mb-3 flex items-center justify-between">
+      <label class="mb-4 flex items-center justify-between">
         <span>{{ t('options_popup_nb_items') }}</span>
         <input v-model.number="form.popupNbItems" type="number" min="1" class="dbh-input w-20 rounded-md px-2 py-1" />
-      </label>
-      <label class="mb-4 flex items-center justify-between">
-        <span>{{ t('options_theme') }}</span>
-        <select v-model="form.theme" class="dbh-input rounded-md px-2 py-1">
-          <option v-for="th in themes" :key="th" :value="th">{{ t('options_theme_' + th) }}</option>
-        </select>
       </label>
       <div class="flex justify-end gap-2">
         <button class="dbh-btn-primary rounded-md px-3 py-1" @click="emit('save', { ...form })">{{ t('btn_save') }}</button>
