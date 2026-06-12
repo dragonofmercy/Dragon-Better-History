@@ -16,41 +16,41 @@
      Palette is exposed as CSS variables on .compact so every surface
      stays consistent; .dark overrides them. */
   .compact {
-    --bg: #f0f9ff;
+    --bg: #ffffff;
     --panel: #ffffff;
-    --border: #cad5e2;
-    --row-border: #dbe7f1;
-    --text: #1f2329;
-    --muted: #6b7280;
-    --faint: #9aa1ac;
-    --accent: #d97706;
-    --accent-strong: #b45309;
-    --accent-soft: rgba(217, 119, 6, 0.10);
-    --hover: rgba(0, 0, 0, 0.035);
-    --input: #f0f9ff;
-    --raised: #f0f9ff;
+    --border: #e2e8f0;
+    --row-border: #f1f5f9;
+    --text: #1e293b;
+    --muted: #64748b;
+    --faint: #94a3b8;
+    --accent: #0284c7;
+    --accent-strong: #0369a1;
+    --accent-soft: rgba(2, 132, 199, 0.10);
+    --hover: rgba(15, 23, 42, 0.04);
+    --input: #f8fafc;
+    --raised: #f8fafc;
     --on-accent: #ffffff;
     --ghost: #e2e8f0;
-    --ghost-hover: #cad5e2;
+    --ghost-hover: #cbd5e1;
   }
 
   .dark .compact {
-    --bg: #0d1016;
-    --panel: #0a0d12;
-    --border: #1c2129;
-    --row-border: #171b22;
-    --text: #dfe3ea;
-    --muted: #8b94a3;
-    --faint: #5b6472;
-    --accent: #f59e0b;
-    --accent-strong: #fbbf24;
-    --accent-soft: rgba(245, 158, 11, 0.13);
-    --hover: rgba(255, 255, 255, 0.03);
-    --input: #11151d;
-    --raised: #171c26;
-    --on-accent: #1a1205;
-    --ghost: #1c2129;
-    --ghost-hover: #262c36;
+    --bg: #0f172a;
+    --panel: #0f172a;
+    --border: #1e293b;
+    --row-border: #1b2435;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --faint: #64748b;
+    --accent: #38bdf8;
+    --accent-strong: #7dd3fc;
+    --accent-soft: rgba(56, 189, 248, 0.14);
+    --hover: rgba(255, 255, 255, 0.04);
+    --input: #1e293b;
+    --raised: #1e293b;
+    --on-accent: #0f172a;
+    --ghost: #334155;
+    --ghost-hover: #475569;
   }
 
   .mono { font-family: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, Consolas, monospace; }
@@ -59,7 +59,13 @@
   .dbh-panel { background: var(--panel); border-right: 1px solid var(--border); }
   .dbh-card { background: var(--panel); border: 1px solid var(--border); color: var(--text); }
   .dbh-raised { background: var(--raised); border: 1px solid var(--border); color: var(--text); }
-  .dbh-headerbar { background: var(--panel); border-bottom: 1px solid var(--border); }
+  .dbh-headerbar {
+    background:
+      radial-gradient(60% 140% at 12% -40%, rgba(56, 189, 248, 0.12), transparent 70%),
+      radial-gradient(55% 140% at 32% -40%, rgba(99, 102, 241, 0.10), transparent 70%),
+      var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
   .dbh-iconbtn { color: var(--muted); }
   .dbh-iconbtn:hover { color: var(--text); background: var(--hover); }
   .dbh-muted { color: var(--muted); }
