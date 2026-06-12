@@ -1,9 +1,10 @@
-
 * text eol=lf
 
-*.php eol=lf
-*.js eol=lf
+*.ts eol=lf
+*.vue eol=lf
 *.css eol=lf
+*.json eol=lf
+*.html eol=lf
 
 *.png binary
 *.jpg binary

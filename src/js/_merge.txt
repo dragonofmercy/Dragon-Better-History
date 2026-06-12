@@ -1,5 +1,0 @@
-jquery.js
-underscore.js
-moment.js
-calendar.js
-history.js
