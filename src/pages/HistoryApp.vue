@@ -74,8 +74,8 @@ function onKeydown(e: KeyboardEvent): void {
       <SearchBar ref="searchBar" :placeholder="t('search_placeholder')" @search="onSearch" @clear="onClear" />
       <div class="dbh-raised rounded-lg p-3">
         <Calendar :key="calendarKey" :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" @select="onSelectDay" />
+        <a class="dbh-link mt-3 block border-t border-[color:var(--border)] pt-2 text-center text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
       </div>
-      <a class="dbh-link text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
       <a class="dbh-link text-sm" @click="optionsOpen = true">{{ t('btn_options') }}</a>
       <footer class="dbh-faint mt-auto flex flex-col items-start gap-1 text-xs">
         <img src="/icons/dom_logo.png" alt="" class="h-8 w-auto" />
