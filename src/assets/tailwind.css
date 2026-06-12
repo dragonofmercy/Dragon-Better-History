@@ -16,10 +16,10 @@
      Palette is exposed as CSS variables on .compact so every surface
      stays consistent; .dark overrides them. */
   .compact {
-    --bg: #ffffff;
-    --panel: #f7f8fa;
-    --border: #e7e9ee;
-    --row-border: #eef0f3;
+    --bg: #f0f9ff;
+    --panel: #ffffff;
+    --border: #cad5e2;
+    --row-border: #dbe7f1;
     --text: #1f2329;
     --muted: #6b7280;
     --faint: #9aa1ac;
@@ -27,11 +27,11 @@
     --accent-strong: #b45309;
     --accent-soft: rgba(217, 119, 6, 0.10);
     --hover: rgba(0, 0, 0, 0.035);
-    --input: #ffffff;
-    --raised: #ffffff;
+    --input: #f0f9ff;
+    --raised: #f0f9ff;
     --on-accent: #ffffff;
-    --ghost: #e7e9ee;
-    --ghost-hover: #dcdfe5;
+    --ghost: #e2e8f0;
+    --ghost-hover: #cad5e2;
   }
 
   .dark .compact {
