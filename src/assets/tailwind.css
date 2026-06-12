@@ -96,6 +96,8 @@
   .dbh-cal-day { color: var(--text); }
   .dbh-cal-day:not(:disabled):hover { background: var(--accent-soft); }
   .dbh-cal-day.is-out { color: var(--faint); }
-  .dbh-cal-day.is-today { background: var(--accent); color: var(--on-accent); font-weight: 600; }
-  .dbh-cal-day.is-today:not(:disabled):hover { background: var(--accent-strong); }
+  /* Today is just a locator outline; the selected (viewed) day is the filled one. */
+  .dbh-cal-day.is-today { box-shadow: inset 0 0 0 1.5px var(--accent); color: var(--accent); font-weight: 600; }
+  .dbh-cal-day.is-selected { background: var(--accent); color: var(--on-accent); font-weight: 600; box-shadow: none; }
+  .dbh-cal-day.is-selected:not(:disabled):hover { background: var(--accent-strong); }
 }

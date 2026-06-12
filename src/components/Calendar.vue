@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { startOfDay, normalizeLocale } from '@/lib/dates'
 
-const props = defineProps<{ locale: string; today: Date; minYear: number }>()
+const props = defineProps<{ locale: string; today: Date; minYear: number; selected?: Date | null }>()
 const emit = defineEmits<{ (e: 'select', d: Date): void }>()
 
 const view = ref({ year: props.today.getFullYear(), month: props.today.getMonth() })
@@ -60,6 +60,7 @@ function pick(c: Cell): void {
   emit('select', startOfDay(c.date))
 }
 function isToday(ts: number): boolean { return ts === startOfDay(props.today).getTime() }
+function isSelected(ts: number): boolean { return props.selected != null && startOfDay(props.selected).getTime() === ts }
 </script>
 
 <template>
@@ -73,7 +74,7 @@ function isToday(ts: number): boolean { return ts === startOfDay(props.today).ge
       <span v-for="w in weekdayLabels" :key="w" data-weekday>{{ w }}</span>
     </div>
     <div class="grid grid-cols-7 gap-0.5 text-center">
-      <button v-for="c in cells" :key="c.ts" data-day :data-ts="c.ts" :disabled="c.disabled" class="dbh-cal-day aspect-square rounded-md text-xs disabled:opacity-25" :class="[c.inMonth ? '' : 'is-out', isToday(c.ts) ? 'is-today' : '']" @click="pick(c)">{{ c.date.getDate() }}</button>
+      <button v-for="c in cells" :key="c.ts" data-day :data-ts="c.ts" :disabled="c.disabled" class="dbh-cal-day aspect-square rounded-md text-xs disabled:opacity-25" :class="[c.inMonth ? '' : 'is-out', isToday(c.ts) ? 'is-today' : '', isSelected(c.ts) ? 'is-selected' : '']" @click="pick(c)">{{ c.date.getDate() }}</button>
     </div>
   </div>
 </template>

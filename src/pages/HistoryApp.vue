@@ -28,16 +28,20 @@ const searchBar = ref<InstanceType<typeof SearchBar> | null>(null)
 const orderedKeys = computed(() => history.days.value.flatMap((g) => g.entries.map((e) => e.key)))
 const totalCount = computed(() => orderedKeys.value.length)
 const calendarKey = ref(0)
+const selectedDay = ref<Date | null>(today)
+const mainEl = ref<HTMLElement | null>(null)
+
+function scrollMainTop(): void { mainEl.value?.scrollTo({ top: 0 }) }
 
 onMounted(async () => {
   await load()
   await history.getDay(today)
 })
 
-function onSelectDay(d: Date): void { query.value = ''; searchBar.value?.clear(); selection.clear(); history.getDay(d) }
+function onSelectDay(d: Date): void { query.value = ''; searchBar.value?.clear(); selection.clear(); selectedDay.value = startOfDay(d); history.getDay(d); scrollMainTop() }
 function onToday(): void { onSelectDay(today); calendarKey.value++ }
-function onSearch(q: string): void { query.value = q; selection.clear(); history.search(q, today) }
-function onClear(): void { query.value = ''; selection.clear(); history.getDay(today) }
+function onSearch(q: string): void { query.value = q; selection.clear(); selectedDay.value = null; history.search(q, today); scrollMainTop() }
+function onClear(): void { query.value = ''; selection.clear(); selectedDay.value = today; history.getDay(today); scrollMainTop() }
 
 function onToggle(entry: HistoryEntry, ev: MouseEvent): void {
   if (ev.shiftKey) selection.range(entry.key, orderedKeys.value)
@@ -68,7 +72,9 @@ function onKeydown(e: KeyboardEvent): void {
     <aside class="dbh-panel flex w-72 shrink-0 flex-col gap-4 p-4">
       <h1 class="text-lg font-bold">{{ t('application_title') }}</h1>
       <SearchBar ref="searchBar" :placeholder="t('search_placeholder')" @search="onSearch" @clear="onClear" />
-      <Calendar :key="calendarKey" :locale="locale" :today="today" :min-year="minYear" @select="onSelectDay" />
+      <div class="dbh-card rounded-lg p-3">
+        <Calendar :key="calendarKey" :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" @select="onSelectDay" />
+      </div>
       <a class="dbh-link text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
       <a class="dbh-link text-sm" @click="optionsOpen = true">{{ t('btn_options') }}</a>
       <footer class="dbh-faint mt-auto flex flex-col items-start gap-1 text-xs">
@@ -77,7 +83,7 @@ function onKeydown(e: KeyboardEvent): void {
         <a href="https://github.com/dragonofmercy" target="_blank" class="dbh-link">https://github.com/dragonofmercy</a>
       </footer>
     </aside>
-    <main class="flex-1 overflow-y-auto p-6">
+    <main ref="mainEl" class="flex-1 overflow-y-auto p-6">
       <ConfirmBar :count="selection.count.value" :selected-label="t('history_remove_confirm_count')" :delete-label="t('btn_delete')" :cancel-label="t('btn_cancel')" class="fixed top-6 right-6 z-40 shadow-2xl" @confirm="removeSelected" @cancel="selection.clear()" />
       <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
       <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
