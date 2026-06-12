@@ -4,3 +4,4 @@ dist/
 *.zip
 *.local
 *.tsbuildinfo
+*.stackdump
