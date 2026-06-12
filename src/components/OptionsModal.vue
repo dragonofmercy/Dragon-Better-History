@@ -16,19 +16,19 @@ watch(() => props.open, (o) => { if (o) Object.assign(form, props.options) })
       <h1 class="mb-4 text-lg font-semibold">{{ t('btn_options') }}</h1>
       <label class="mb-3 flex items-center justify-between">
         <span>{{ t('options_time_12_24') }}</span>
-        <input v-model="form.use24HoursFormat" type="checkbox" />
+        <input v-model="form.use24HoursFormat" type="checkbox" class="dbh-switch" />
       </label>
       <label class="mb-3 flex items-center justify-between">
         <span>{{ t('options_display_time_before_title') }}</span>
-        <input v-model="form.timeBeforeTitle" type="checkbox" />
+        <input v-model="form.timeBeforeTitle" type="checkbox" class="dbh-switch" />
       </label>
-      <label class="mb-4 flex items-center justify-between">
+      <label class="mb-5 flex items-center justify-between">
         <span>{{ t('options_popup_nb_items') }}</span>
-        <input v-model.number="form.popupNbItems" type="number" min="1" class="dbh-input w-20 rounded-md px-2 py-1" />
+        <input v-model.number="form.popupNbItems" type="number" min="1" class="dbh-input h-9 w-20 rounded-md px-3 text-sm" />
       </label>
       <div class="flex justify-end gap-2">
-        <button class="dbh-btn-primary rounded-md px-3 py-1" @click="emit('save', { ...form })">{{ t('btn_save') }}</button>
-        <button class="dbh-btn-ghost rounded-md px-3 py-1" @click="emit('close')">{{ t('btn_cancel') }}</button>
+        <button class="dbh-btn-primary h-9 rounded-md px-4 text-sm" @click="emit('save', { ...form })">{{ t('btn_save') }}</button>
+        <button class="dbh-btn-ghost h-9 rounded-md px-4 text-sm" @click="emit('close')">{{ t('btn_cancel') }}</button>
       </div>
     </div>
   </div>

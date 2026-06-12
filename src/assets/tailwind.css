@@ -26,6 +26,7 @@
     --accent: #0284c7;
     --accent-strong: #0369a1;
     --accent-soft: rgba(2, 132, 199, 0.10);
+    --ring: rgba(2, 132, 199, 0.30);
     --hover: rgba(15, 23, 42, 0.04);
     --input: #f8fafc;
     --raised: #f8fafc;
@@ -45,6 +46,7 @@
     --accent: #38bdf8;
     --accent-strong: #7dd3fc;
     --accent-soft: rgba(56, 189, 248, 0.14);
+    --ring: rgba(56, 189, 248, 0.30);
     --hover: rgba(255, 255, 255, 0.04);
     --input: #1e293b;
     --raised: #1e293b;
@@ -96,14 +98,45 @@
   .dbh-rm { color: var(--faint); }
   .dbh-rm:hover { color: #ef4444; }
 
-  .dbh-input { background: var(--input); border: 1px solid var(--border); color: var(--text); }
+  .dbh-input { background: var(--input); border: 1px solid var(--border); color: var(--text); transition: border-color 0.15s ease, box-shadow 0.15s ease; }
   .dbh-input::placeholder { color: var(--faint); }
-  .dbh-input:focus { border-color: var(--accent); outline: none; }
+  .dbh-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
+  .dbh-btn-primary,
+  .dbh-btn-ghost { font-weight: 500; transition: background-color 0.15s ease; }
+  .dbh-btn-primary:focus-visible,
+  .dbh-btn-ghost:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
   .dbh-btn-primary { background: var(--accent); color: var(--on-accent); }
   .dbh-btn-primary:hover { background: var(--accent-strong); }
   .dbh-btn-ghost { background: var(--ghost); color: var(--text); }
   .dbh-btn-ghost:hover { background: var(--ghost-hover); }
+
+  /* Native checkbox rendered as a toggle switch. */
+  .dbh-switch {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    flex: none;
+    width: 2rem;
+    height: 1.125rem;
+    border-radius: 9999px;
+    background: var(--ghost-hover);
+    transition: background-color 0.15s ease;
+  }
+  .dbh-switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 9999px;
+    background: #ffffff;
+    transition: transform 0.15s ease;
+  }
+  .dbh-switch:checked { background: var(--accent); }
+  .dbh-switch:checked::after { transform: translateX(0.875rem); }
+  .dbh-switch:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
   .dbh-cal-day { color: var(--text); }
   .dbh-cal-day:not(:disabled):hover { background: var(--accent-soft); }
