@@ -12,7 +12,7 @@ watch(() => props.open, (o) => { if (o) Object.assign(form, props.options) })
 
 <template>
   <div v-if="open" class="compact fixed inset-0 z-50 flex items-center justify-center bg-black/50" @click.self="emit('close')">
-    <div class="dbh-card w-80 rounded-lg p-5 shadow-xl">
+    <div class="dbh-card w-80 rounded-lg p-5">
       <h1 class="mb-4 text-lg font-semibold">{{ t('btn_options') }}</h1>
       <label class="mb-3 flex items-center justify-between">
         <span>{{ t('options_time_12_24') }}</span>

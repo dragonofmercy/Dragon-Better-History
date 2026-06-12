@@ -59,7 +59,7 @@
   .dbh-panel { background: var(--panel); border-right: 1px solid var(--border); }
   .dbh-card { background: var(--panel); border: 1px solid var(--border); color: var(--text); }
   .dbh-raised { background: var(--raised); border: 1px solid var(--border); color: var(--text); }
-  .dbh-headerbar { background: var(--panel); border-bottom: 1px solid var(--border); box-shadow: 0 6px 16px -10px rgba(0, 0, 0, 0.30); }
+  .dbh-headerbar { background: var(--panel); border-bottom: 1px solid var(--border); }
   .dbh-iconbtn { color: var(--muted); }
   .dbh-iconbtn:hover { color: var(--text); background: var(--hover); }
   .dbh-muted { color: var(--muted); }
