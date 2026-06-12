@@ -14,7 +14,7 @@ import OptionsModal from '@/components/OptionsModal.vue'
 
 const { options, load, save } = useOptions()
 const { t, locale } = useI18n()
-useTheme(() => options.theme)
+const { isDark } = useTheme(() => options.theme)
 const history = useHistory()
 const selection = useSelection()
 
@@ -33,8 +33,6 @@ const mainEl = ref<HTMLElement | null>(null)
 
 function scrollMainTop(): void { mainEl.value?.scrollTo({ top: 0 }) }
 
-const mq = window.matchMedia('(prefers-color-scheme: dark)')
-const isDark = computed(() => options.theme === 'dark' || (options.theme === 'system' && mq.matches))
 const themeTitle = computed(() => t(isDark.value ? 'options_theme_light' : 'options_theme_dark'))
 function toggleTheme(): void { save({ theme: isDark.value ? 'light' : 'dark' }) }
 

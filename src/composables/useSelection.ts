@@ -4,14 +4,10 @@ export function useSelection() {
   const selected = ref<Set<string>>(new Set())
   let lastKey: string | null = null
 
-  function commit(next: Set<string>): void {
-    selected.value = next
-  }
-
   function toggle(key: string): void {
     const next = new Set(selected.value)
     if (next.has(key)) next.delete(key); else next.add(key)
-    commit(next)
+    selected.value = next
     lastKey = key
   }
 
@@ -23,16 +19,16 @@ export function useSelection() {
     const [lo, hi] = a < b ? [a, b] : [b, a]
     const next = new Set(selected.value)
     for (let i = lo; i <= hi; i++) next.add(orderedKeys[i])
-    commit(next)
+    selected.value = next
     lastKey = key
   }
 
   function selectAll(orderedKeys: string[]): void {
-    commit(new Set(orderedKeys))
+    selected.value = new Set(orderedKeys)
   }
 
   function clear(): void {
-    commit(new Set())
+    selected.value = new Set()
     lastKey = null
   }
 

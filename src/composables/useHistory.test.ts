@@ -45,9 +45,8 @@ describe('groupByDay', () => {
 describe('useHistory', () => {
   it('remove filters the deleted url from all day groups', async () => {
     const t = new Date(2024, 0, 2, 12, 0).getTime()
-    vi.spyOn(chrome.history, 'search').mockImplementation((_q: unknown, cb: (r: chrome.history.HistoryItem[]) => void) =>
-      cb([item('https://a', t, 'A'), item('https://b', t, 'B')]))
-    vi.spyOn(chrome.history, 'deleteUrl').mockImplementation((_d: unknown, cb: () => void) => cb())
+    vi.spyOn(chrome.history, 'search').mockResolvedValue([item('https://a', t, 'A'), item('https://b', t, 'B')] as never)
+    vi.spyOn(chrome.history, 'deleteUrl').mockResolvedValue()
     const h = useHistory()
     await h.getDay(new Date(2024, 0, 2))
     expect(h.days.value[0].entries.length).toBe(2)
@@ -58,9 +57,8 @@ describe('useHistory', () => {
 
   it('drops the day group when its last entry is removed', async () => {
     const t = new Date(2024, 0, 2, 12, 0).getTime()
-    vi.spyOn(chrome.history, 'search').mockImplementation((_q: unknown, cb: (r: chrome.history.HistoryItem[]) => void) =>
-      cb([item('https://a', t, 'A')]))
-    vi.spyOn(chrome.history, 'deleteUrl').mockImplementation((_d: unknown, cb: () => void) => cb())
+    vi.spyOn(chrome.history, 'search').mockResolvedValue([item('https://a', t, 'A')] as never)
+    vi.spyOn(chrome.history, 'deleteUrl').mockResolvedValue()
     const h = useHistory()
     await h.getDay(new Date(2024, 0, 2))
     expect(h.days.value.length).toBe(1)

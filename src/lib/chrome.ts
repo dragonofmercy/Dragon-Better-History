@@ -1,37 +1,20 @@
+// The MV3 chrome.* APIs return promises when called without a callback, so the
+// composables can await them directly. These thin wrappers keep the call sites typed.
+
 export function storageGet(): Promise<Record<string, unknown>> {
-  return new Promise((resolve, reject) => {
-    chrome.storage.sync.get(null, (items) => {
-      const err = chrome.runtime.lastError
-      if (err) reject(new Error(err.message)); else resolve(items)
-    })
-  })
+  return chrome.storage.sync.get(null)
 }
 
 export function storageSet(items: Record<string, unknown>): Promise<void> {
-  return new Promise((resolve, reject) => {
-    chrome.storage.sync.set(items, () => {
-      const err = chrome.runtime.lastError
-      if (err) reject(new Error(err.message)); else resolve()
-    })
-  })
+  return chrome.storage.sync.set(items)
 }
 
 export function historySearch(query: chrome.history.HistoryQuery): Promise<chrome.history.HistoryItem[]> {
-  return new Promise((resolve, reject) => {
-    chrome.history.search(query, (results) => {
-      const err = chrome.runtime.lastError
-      if (err) reject(new Error(err.message)); else resolve(results)
-    })
-  })
+  return chrome.history.search(query)
 }
 
 export function historyDeleteUrl(details: { url: string }): Promise<void> {
-  return new Promise((resolve, reject) => {
-    chrome.history.deleteUrl(details, () => {
-      const err = chrome.runtime.lastError
-      if (err) reject(new Error(err.message)); else resolve()
-    })
-  })
+  return chrome.history.deleteUrl(details)
 }
 
 export function faviconUrl(pageUrl: string, size = 32): string {

@@ -3,7 +3,7 @@ import { useOptions, DEFAULT_OPTIONS } from '@/composables/useOptions'
 
 describe('useOptions', () => {
   beforeEach(() => {
-    vi.spyOn(chrome.storage.sync, 'get').mockImplementation((_keys: unknown, cb: (i: Record<string, unknown>) => void) => cb({}))
+    vi.spyOn(chrome.storage.sync, 'get').mockResolvedValue({} as never)
   })
 
   it('uses defaults when storage is empty', async () => {
@@ -15,8 +15,7 @@ describe('useOptions', () => {
   })
 
   it('loads stored values and coerces popupNbItems to a number', async () => {
-    vi.spyOn(chrome.storage.sync, 'get').mockImplementation((_keys: unknown, cb: (i: Record<string, unknown>) => void) =>
-      cb({ use24HoursFormat: false, timeBeforeTitle: true, popupNbItems: '25', theme: 'dark' }))
+    vi.spyOn(chrome.storage.sync, 'get').mockResolvedValue({ use24HoursFormat: false, timeBeforeTitle: true, popupNbItems: '25', theme: 'dark' } as never)
     const { options, load } = useOptions()
     await load()
     expect(options.use24HoursFormat).toBe(false)
@@ -26,7 +25,7 @@ describe('useOptions', () => {
   })
 
   it('save persists merged options to storage', async () => {
-    const set = vi.spyOn(chrome.storage.sync, 'set').mockImplementation((_i: unknown, cb: () => void) => cb())
+    const set = vi.spyOn(chrome.storage.sync, 'set').mockResolvedValue()
     const { options, save } = useOptions()
     await save({ theme: 'light' })
     expect(options.theme).toBe('light')

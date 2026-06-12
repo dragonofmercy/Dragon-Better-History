@@ -7,13 +7,13 @@ const store: Record<string, unknown> = {}
   i18n: { getMessage: (key: string) => key },
   storage: {
     sync: {
-      get: (_keys: unknown, cb: (items: Record<string, unknown>) => void) => cb({ ...store }),
-      set: (items: Record<string, unknown>, cb: () => void) => { Object.assign(store, items); cb() }
+      get: () => Promise.resolve({ ...store }),
+      set: (items: Record<string, unknown>) => { Object.assign(store, items); return Promise.resolve() }
     }
   },
   history: {
-    search: (_q: unknown, cb: (results: unknown[]) => void) => cb([]),
-    deleteUrl: (_d: unknown, cb: () => void) => cb()
+    search: () => Promise.resolve([]),
+    deleteUrl: () => Promise.resolve()
   },
   tabs: { create: vi.fn() }
 }
