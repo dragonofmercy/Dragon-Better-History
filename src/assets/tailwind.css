@@ -108,8 +108,17 @@
   .dbh-cal-day { color: var(--text); }
   .dbh-cal-day:not(:disabled):hover { background: var(--accent-soft); }
   .dbh-cal-day.is-out { color: var(--faint); }
-  /* Today is just a locator outline; the selected (viewed) day is the filled one. */
-  .dbh-cal-day.is-today { box-shadow: inset 0 0 0 1.5px var(--accent); color: var(--accent); font-weight: 600; }
-  .dbh-cal-day.is-selected { background: var(--accent); color: var(--on-accent); font-weight: 600; box-shadow: none; }
+  /* Today is marked by a small corner triangle; the selected (viewed) day is the filled one. */
+  .dbh-cal-day.is-today { position: relative; }
+  .dbh-cal-day.is-today::after {
+    content: "";
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    border: 4px solid transparent;
+    border-right-color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .dbh-cal-day.is-selected { background: var(--accent); color: var(--on-accent); font-weight: 600; }
   .dbh-cal-day.is-selected:not(:disabled):hover { background: var(--accent-strong); }
 }
