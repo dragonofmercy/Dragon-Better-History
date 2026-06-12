@@ -64,8 +64,8 @@ function onKeydown(e: KeyboardEvent): void {
 </script>
 
 <template>
-  <div class="flex h-screen bg-white text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200" tabindex="0" @keydown="onKeydown" @click.self="selection.clear()">
-    <aside class="flex w-72 shrink-0 flex-col gap-4 border-r border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-950">
+  <div class="flex h-screen app-surface text-neutral-800 dark:text-neutral-200" tabindex="0" @keydown="onKeydown" @click.self="selection.clear()">
+    <aside class="glass flex w-72 shrink-0 flex-col gap-4 p-4">
       <h1 class="text-lg font-bold">{{ t('application_title') }}</h1>
       <SearchBar ref="searchBar" :placeholder="t('search_placeholder')" @search="onSearch" @clear="onClear" />
       <Calendar :key="calendarKey" :locale="locale" :today="today" :min-year="minYear" @select="onSelectDay" />
