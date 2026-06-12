@@ -80,7 +80,6 @@
   .dbh-entry:hover { background: var(--hover); box-shadow: inset 2px 0 0 var(--accent); }
   .dbh-entry.is-selected { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent); }
   .dbh-title { color: var(--text); }
-  .dbh-entry:hover .dbh-title { text-decoration: underline; }
   .dbh-time { color: var(--muted); font-variant-numeric: tabular-nums; }
   .dbh-rm { color: var(--faint); }
   .dbh-rm:hover { color: #ef4444; }

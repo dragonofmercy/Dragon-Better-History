@@ -78,7 +78,7 @@ function onKeydown(e: KeyboardEvent): void {
       </footer>
     </aside>
     <main class="flex-1 overflow-y-auto p-6">
-      <ConfirmBar :count="selection.count.value" :selected-label="t('history_remove_confirm_count')" :delete-label="t('btn_delete')" :cancel-label="t('btn_cancel')" class="fixed bottom-6 right-6 z-40 shadow-2xl" @confirm="removeSelected" @cancel="selection.clear()" />
+      <ConfirmBar :count="selection.count.value" :selected-label="t('history_remove_confirm_count')" :delete-label="t('btn_delete')" :cancel-label="t('btn_cancel')" class="fixed top-6 right-6 z-40 shadow-2xl" @confirm="removeSelected" @cancel="selection.clear()" />
       <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
       <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
       <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :empty-label="t('history_date_empty')" :remove-label="t('history_remove_single')" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" />
