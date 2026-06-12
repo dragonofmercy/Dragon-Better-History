@@ -15,6 +15,11 @@ const store: Record<string, unknown> = {}
     search: () => Promise.resolve([]),
     deleteUrl: () => Promise.resolve()
   },
+  sessions: {
+    MAX_SESSION_RESULTS: 25,
+    getRecentlyClosed: () => Promise.resolve([]),
+    restore: () => Promise.resolve()
+  },
   tabs: { create: vi.fn() }
 }
 

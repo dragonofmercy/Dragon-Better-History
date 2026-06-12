@@ -17,6 +17,14 @@ export function historyDeleteUrl(details: { url: string }): Promise<void> {
   return chrome.history.deleteUrl(details)
 }
 
+export function sessionsGetRecentlyClosed(): Promise<chrome.sessions.Session[]> {
+  return chrome.sessions.getRecentlyClosed()
+}
+
+export function sessionsRestore(sessionId: string): Promise<chrome.sessions.Session> {
+  return chrome.sessions.restore(sessionId)
+}
+
 export function faviconUrl(pageUrl: string, size = 32): string {
   const url = new URL(chrome.runtime.getURL('/_favicon/'))
   url.searchParams.set('pageUrl', pageUrl)
