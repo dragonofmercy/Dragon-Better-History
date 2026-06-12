@@ -121,6 +121,7 @@
     height: 1.125rem;
     border-radius: 9999px;
     background: var(--ghost-hover);
+    cursor: pointer;
     transition: background-color 0.15s ease;
   }
   .dbh-switch::after {
