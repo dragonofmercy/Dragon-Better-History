@@ -72,6 +72,12 @@
     "closed_empty": {
         "message": "Нет недавно закрытых вкладок"
     },
+    "closed_loading": {
+        "message": "Загрузка..."
+    },
+    "closed_error": {
+        "message": "Не удалось загрузить недавно закрытые вкладки"
+    },
     "date_format": {
         "message": "dddd, D MMMM YYYY"
     },

@@ -72,6 +72,12 @@
     "closed_empty": {
         "message": "No recently closed tabs"
     },
+    "closed_loading": {
+        "message": "Loading..."
+    },
+    "closed_error": {
+        "message": "Could not load recently closed tabs"
+    },
     "date_format": {
         "message": "dddd, MMMM Do, YYYY"
     },

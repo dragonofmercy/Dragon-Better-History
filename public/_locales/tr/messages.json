@@ -72,6 +72,12 @@
     "closed_empty": {
         "message": "Son kapatılan sekme yok"
     },
+    "closed_loading": {
+        "message": "Yükleniyor..."
+    },
+    "closed_error": {
+        "message": "Son kapatılan sekmeler yüklenemedi"
+    },
 	"date_format": {
 		"message": "Do MMMM YYYY dddd"
 	},

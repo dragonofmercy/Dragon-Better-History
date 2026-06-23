@@ -46,13 +46,39 @@ describe('useRecentlyClosed', () => {
     expect(rc.sessions.value[0].sessionId).toBe('t1')
   })
 
-  it('restore calls sessions.restore with the id and refetches', async () => {
-    const getSpy = vi.spyOn(chrome.sessions, 'getRecentlyClosed').mockResolvedValue([tabSession('t1', 'https://a', 'A', 100)] as never)
+  it('load forwards maxResults to getRecentlyClosed', async () => {
+    const getSpy = vi.spyOn(chrome.sessions, 'getRecentlyClosed').mockResolvedValue([] as never)
+    const rc = useRecentlyClosed()
+    await rc.load(10)
+    expect(getSpy).toHaveBeenCalledWith({ maxResults: 10 })
+  })
+
+  it('load sets error and clears loading when getRecentlyClosed rejects', async () => {
+    vi.spyOn(chrome.sessions, 'getRecentlyClosed').mockRejectedValue(new Error('boom') as never)
+    const rc = useRecentlyClosed()
+    await rc.load()
+    expect(rc.error.value).toBe(true)
+    expect(rc.loading.value).toBe(false)
+    expect(rc.sessions.value).toEqual([])
+  })
+
+  it('restore removes the entry locally without refetching', async () => {
+    const getSpy = vi.spyOn(chrome.sessions, 'getRecentlyClosed').mockResolvedValue([tabSession('t1', 'https://a', 'A', 100), tabSession('t2', 'https://b', 'B', 50)] as never)
     const restoreSpy = vi.spyOn(chrome.sessions, 'restore').mockResolvedValue({} as never)
     const rc = useRecentlyClosed()
     await rc.load()
     await rc.restore('t1')
     expect(restoreSpy).toHaveBeenCalledWith('t1')
+    expect(getSpy).toHaveBeenCalledTimes(1)
+    expect(rc.sessions.value.map((s) => s.sessionId)).toEqual(['t2'])
+  })
+
+  it('restore falls back to a full reload when sessions.restore rejects', async () => {
+    const getSpy = vi.spyOn(chrome.sessions, 'getRecentlyClosed').mockResolvedValue([tabSession('t1', 'https://a', 'A', 100)] as never)
+    vi.spyOn(chrome.sessions, 'restore').mockRejectedValue(new Error('invalid') as never)
+    const rc = useRecentlyClosed()
+    await rc.load()
+    await rc.restore('t1')
     expect(getSpy).toHaveBeenCalledTimes(2)
   })
 })

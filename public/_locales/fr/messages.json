@@ -72,6 +72,12 @@
     "closed_empty": {
         "message": "Aucun onglet récemment fermé"
     },
+    "closed_loading": {
+        "message": "Chargement..."
+    },
+    "closed_error": {
+        "message": "Impossible de charger les onglets récemment fermés"
+    },
     "date_format": {
         "message": "dddd, D MMMM YYYY"
     },

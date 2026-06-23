@@ -17,8 +17,8 @@ export function historyDeleteUrl(details: { url: string }): Promise<void> {
   return chrome.history.deleteUrl(details)
 }
 
-export function sessionsGetRecentlyClosed(): Promise<chrome.sessions.Session[]> {
-  return chrome.sessions.getRecentlyClosed()
+export function sessionsGetRecentlyClosed(filter?: chrome.sessions.Filter): Promise<chrome.sessions.Session[]> {
+  return chrome.sessions.getRecentlyClosed(filter)
 }
 
 export function sessionsRestore(sessionId: string): Promise<chrome.sessions.Session> {

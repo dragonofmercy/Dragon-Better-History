@@ -72,6 +72,12 @@
     "closed_empty": {
         "message": "Няма наскоро затворени раздели"
     },
+    "closed_loading": {
+        "message": "Зареждане..."
+    },
+    "closed_error": {
+        "message": "Неуспешно зареждане на наскоро затворените раздели"
+    },
     "date_format": {
         "message": "dddd, MMMM Do, YYYY"
     },

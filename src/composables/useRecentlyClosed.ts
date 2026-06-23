@@ -21,15 +21,30 @@ export function normalizeSessions(raw: chrome.sessions.Session[]): ClosedSession
 
 export function useRecentlyClosed() {
   const sessions = ref<ClosedSession[]>([])
+  const loading = ref(false)
+  const error = ref(false)
 
-  async function load(): Promise<void> {
-    sessions.value = normalizeSessions(await sessionsGetRecentlyClosed())
+  async function load(maxResults?: number): Promise<void> {
+    loading.value = true
+    error.value = false
+    try {
+      const raw = await sessionsGetRecentlyClosed(maxResults ? { maxResults } : undefined)
+      sessions.value = normalizeSessions(raw)
+    } catch {
+      error.value = true
+    } finally {
+      loading.value = false
+    }
   }
 
   async function restore(sessionId: string): Promise<void> {
-    await sessionsRestore(sessionId)
-    await load()
+    try {
+      await sessionsRestore(sessionId)
+      sessions.value = sessions.value.filter((s) => s.sessionId !== sessionId)
+    } catch {
+      await load()
+    }
   }
 
-  return { sessions, load, restore }
+  return { sessions, loading, error, load, restore }
 }

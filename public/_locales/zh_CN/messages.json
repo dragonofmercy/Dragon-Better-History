@@ -72,6 +72,12 @@
     "closed_empty": {
         "message": "没有最近关闭的标签页"
     },
+    "closed_loading": {
+        "message": "加载中..."
+    },
+    "closed_error": {
+        "message": "无法加载最近关闭的标签页"
+    },
     "date_format": {
         "message": "LL, dddd"
     },
