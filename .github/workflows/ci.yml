@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chrome, edge]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
@@ -18,9 +21,9 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Type-check and build
-        run: npm run build
+        run: npm run build:${{ matrix.browser }}
       - name: Upload extension build
         uses: actions/upload-artifact@v7
         with:
-          name: dist
+          name: dist-${{ matrix.browser }}
           path: dist

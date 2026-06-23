@@ -35,11 +35,19 @@ and adds a toolbar popup that shows your most recent visits at a glance.
 - **Localized** in 9 languages: English, French, German, Italian, Spanish, Turkish,
   Simplified Chinese, Bulgarian and Russian.
 
+## Download
+
+Download the latest release from [GitHub Releases](https://github.com/dragonofmercy/Dragon-Better-History/releases):
+
+- **Chrome Version** - Replaces the built-in `chrome://history` page
+- **Edge Version** - Access via toolbar icon click (Edge no longer supports history page replacement)
+
 ## Installation
 
-1. Clone this repository and run a production build (see [Development](#development)).
-2. Open `chrome://extensions` (or `edge://extensions`) and enable **Developer mode**.
-3. Click **Load unpacked** and select the `dist/` folder.
+1. Download the appropriate version for your browser from [GitHub Releases](https://github.com/dragonofmercy/Dragon-Better-History/releases).
+2. Extract the downloaded zip file.
+3. Open `chrome://extensions` (or `edge://extensions`) and enable **Developer mode**.
+4. Click **Load unpacked** and select the extracted folder.
 
 ## Development
 
@@ -49,9 +57,11 @@ Built with Vite, `@crxjs/vite-plugin`, Vue 3, TypeScript and Tailwind v4.
 git clone https://github.com/dragonofmercy/Dragon-Better-History.git
 cd Dragon-Better-History
 npm install
-npm run dev      # Vite dev server with HMR; load dist/ as an unpacked extension
-npm run build    # type-check + production build into dist/
-npm test         # run the Vitest suite
+npm run dev          # Vite dev server with HMR; load dist/ as an unpacked extension
+npm run build        # type-check + production build (default: Chrome)
+npm run build:chrome # build Chrome version with history page replacement
+npm run build:edge   # build Edge version (toolbar icon only)
+npm test             # run the Vitest suite
 ```
 
 Load `dist/` as an unpacked extension at `chrome://extensions` (or `edge://extensions`)

@@ -3,7 +3,17 @@ import { fileURLToPath, URL } from 'node:url'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { crx } from '@crxjs/vite-plugin'
-import manifest from './manifest.config'
+import chromeManifest from './manifest.chrome.ts'
+import edgeManifest from './manifest.edge.ts'
+
+const browser = process.env.BROWSER || 'chrome'
+
+const manifestMap: Record<string, any> = {
+  chrome: chromeManifest,
+  edge: edgeManifest
+}
+
+const manifest = manifestMap[browser]
 
 export default defineConfig({
   plugins: [vue(), tailwindcss(), crx({ manifest })],

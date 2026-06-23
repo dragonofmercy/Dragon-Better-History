@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build:chrome": "cross-env BROWSER=chrome vue-tsc --noEmit && cross-env BROWSER=chrome vite build",
+    "build:edge": "cross-env BROWSER=edge vue-tsc --noEmit && cross-env BROWSER=edge vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -20,6 +22,7 @@
     "@types/chrome": "^0.0.287",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vue/test-utils": "^2.4.6",
+    "cross-env": "^7.0.3",
     "jsdom": "^25.0.1",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2",
