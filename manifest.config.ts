@@ -16,7 +16,6 @@ export default defineManifest({
   },
   permissions: ['favicon', 'history', 'tabs', 'storage', 'sessions'],
   host_permissions: ['file:///*'],
-  chrome_url_overrides: { history: 'history.html' },
   background: {
     service_worker: 'src/background.ts'
   },
