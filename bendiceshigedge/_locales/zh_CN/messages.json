@@ -1,0 +1,105 @@
+{
+    "language": {
+        "message": "zh_CN"
+    },
+    "application_title": {
+        "message": "Dragon 历史记录"
+    },
+    "application_description": {
+        "message": "将浏览器默认的历史记录页面替换成更好用的历史记录工具。"
+    },
+    "btn_delete": {
+        "message": "删除"
+    },
+    "btn_cancel": {
+        "message": "取消"
+    },
+    "btn_save": {
+        "message": "保存"
+    },
+    "btn_options": {
+        "message": "设置"
+    },
+    "search_placeholder": {
+        "message": "搜索历史记录"
+    },
+    "search_display": {
+        "message": "搜索结果:"
+    },
+    "search_found": {
+        "message": "找到了 $count$ 个结果",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "未搜索到任何信息"
+    },
+    "history_remove_single": {
+        "message": "删除该条目"
+    },
+    "history_remove_confirm_count": {
+        "message": "条已选"
+    },
+    "history_date_empty": {
+        "message": "该日没有历史记录"
+    },
+    "datepicker_go_today": {
+        "message": "显示今日"
+    },
+    "history_view_more": {
+        "message": "查看完整历史记录"
+    },
+    "history_recent": {
+        "message": "最近历史记录"
+    },
+    "tab_recently_closed": {
+        "message": "最近关闭"
+    },
+    "closed_restore": {
+        "message": "恢复"
+    },
+    "closed_window_tabs": {
+        "message": "窗口 - $count$ 个标签页",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "没有最近关闭的标签页"
+    },
+    "closed_loading": {
+        "message": "加载中..."
+    },
+    "closed_error": {
+        "message": "无法加载最近关闭的标签页"
+    },
+    "date_format": {
+        "message": "LL, dddd"
+    },
+    "options_time_12_24": {
+        "message": "使用 24 小时制"
+    },
+    "options_display_time_before_title": {
+        "message": "时间显示在标题之前"
+    },
+    "options_popup_nb_items": {
+        "message": "弹出窗口中的项目数"
+    },
+    "options_theme": {
+        "message": "主题"
+    },
+    "options_theme_system": {
+        "message": "跟随系统"
+    },
+    "options_theme_light": {
+        "message": "浅色"
+    },
+    "options_theme_dark": {
+        "message": "深色"
+    }
+}

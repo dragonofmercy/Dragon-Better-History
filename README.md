@@ -49,6 +49,10 @@ Download the latest release from [GitHub Releases](https://github.com/dragonofme
 3. Open `chrome://extensions` (or `edge://extensions`) and enable **Developer mode**.
 4. Click **Load unpacked** and select the extracted folder.
 
+## Known Issues
+
+> **Note:** Due to a recent Microsoft Edge update, the history page override feature is temporarily unavailable. The extension cannot replace the built-in `edge://history` page. As a workaround, please pin the extension to the toolbar and click the icon to access the history interface.
+
 ## Development
 
 Built with Vite, `@crxjs/vite-plugin`, Vue 3, TypeScript and Tailwind v4.

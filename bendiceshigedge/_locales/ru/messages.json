@@ -1,0 +1,105 @@
+{
+    "language": {
+        "message": "ru"
+    },
+    "application_title": {
+        "message": "Улучшенная история Dragon"
+    },
+    "application_description": {
+        "message": "Замена встроенной истории браузера этим улучшенным расширением"
+    },
+    "btn_delete": {
+        "message": "Удалить"
+    },
+    "btn_cancel": {
+        "message": "Отмена"
+    },
+    "btn_save": {
+        "message": "Сохранить"
+    },
+    "btn_options": {
+        "message": "Настройки"
+    },
+    "search_placeholder": {
+        "message": "Поиск в истории"
+    },
+    "search_display": {
+        "message": "Результат поиска"
+    },
+    "search_found": {
+        "message": "Найдено: $count$",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "Ничего не найдено"
+    },
+    "history_remove_single": {
+        "message": "Удалить запись"
+    },
+    "history_remove_confirm_count": {
+        "message": "выбрано"
+    },
+    "history_date_empty": {
+        "message": "Этот день не имеет записей в истории"
+    },
+    "datepicker_go_today": {
+        "message": "Показать сегодня"
+    },
+    "history_view_more": {
+        "message": "Просмотреть всю историю"
+    },
+    "history_recent": {
+        "message": "Недавняя история"
+    },
+    "tab_recently_closed": {
+        "message": "Недавно закрытые"
+    },
+    "closed_restore": {
+        "message": "Восстановить"
+    },
+    "closed_window_tabs": {
+        "message": "Окно - $count$ вкладок",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "Нет недавно закрытых вкладок"
+    },
+    "closed_loading": {
+        "message": "Загрузка..."
+    },
+    "closed_error": {
+        "message": "Не удалось загрузить недавно закрытые вкладки"
+    },
+    "date_format": {
+        "message": "dddd, D MMMM YYYY"
+    },
+    "options_time_12_24": {
+        "message": "Использовать 24-часовой формат"
+    },
+    "options_display_time_before_title": {
+        "message": "Показывать время перед заголовком"
+    },
+    "options_popup_nb_items": {
+        "message": "Количество записей в всплывающем окне"
+    },
+    "options_theme": {
+        "message": "Тема"
+    },
+    "options_theme_system": {
+        "message": "Системная"
+    },
+    "options_theme_light": {
+        "message": "Светлая"
+    },
+    "options_theme_dark": {
+        "message": "Темная"
+    }
+}

@@ -1,0 +1,105 @@
+{
+	"language": {
+		"message": "tr"
+	},
+	"application_title": {
+		"message": "Dragon Better History"
+	},
+	"application_description": {
+		"message": "Varsayılan tarayıcı Geçmiş'ini Better History ile değiştirir."
+	},
+	"btn_delete": {
+		"message": "Sil"
+	},
+	"btn_cancel": {
+		"message": "İptal"
+	},
+	"btn_save": {
+		"message": "Kaydet"
+	},
+    "btn_options": {
+        "message": "Seçenekler"
+    },
+	"search_placeholder": {
+		"message": "Geçmişte ara"
+	},
+	"search_display": {
+		"message": "Aranılan netice(ler):"
+	},
+	"search_found": {
+		"message": "$count$ sayıda netice var.",
+		"placeholders": {
+			"count": {
+				"content": "$1"
+			}
+		}
+	},
+	"search_empty": {
+		"message": "Hiçbir netice bulunmadı"
+	},
+	"history_remove_single": {
+		"message": "Kaydı sil"
+	},
+	"history_remove_confirm_count": {
+		"message": "seçildi"
+	},
+	"history_date_empty": {
+		"message": "Bu tarihte kayıt yok"
+	},
+	"datepicker_go_today": {
+		"message": "Bugünü göster"
+	},
+	"history_view_more": {
+		"message": "Bütün geçmişi göster"
+	},
+	"history_recent": {
+		"message": "Son geçmiş"
+	},
+    "tab_recently_closed": {
+        "message": "Son kapatılanlar"
+    },
+    "closed_restore": {
+        "message": "Geri yükle"
+    },
+    "closed_window_tabs": {
+        "message": "Pencere - $count$ sekme",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "Son kapatılan sekme yok"
+    },
+    "closed_loading": {
+        "message": "Yükleniyor..."
+    },
+    "closed_error": {
+        "message": "Son kapatılan sekmeler yüklenemedi"
+    },
+	"date_format": {
+		"message": "Do MMMM YYYY dddd"
+	},
+	"options_time_12_24": {
+		"message": "24 saat biçimi kullanılsın"
+	},
+	"options_display_time_before_title": {
+		"message": "Saat başlığın önünde gösterilsin"
+	},
+    "options_popup_nb_items": {
+        "message": "Açılır penceredeki öğe sayısı"
+    },
+    "options_theme": {
+        "message": "Tema"
+    },
+    "options_theme_system": {
+        "message": "Sistem"
+    },
+    "options_theme_light": {
+        "message": "Acik"
+    },
+    "options_theme_dark": {
+        "message": "Koyu"
+    }
+}

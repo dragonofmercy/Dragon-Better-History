@@ -1,0 +1,105 @@
+{
+    "language": {
+        "message": "en"
+    },
+    "application_title": {
+        "message": "Dragon Better History"
+    },
+    "application_description": {
+        "message": "Replace the default browser history with this better history display."
+    },
+    "btn_delete": {
+        "message": "Delete"
+    },
+    "btn_cancel": {
+        "message": "Cancel"
+    },
+    "btn_save": {
+        "message": "Save"
+    },
+    "btn_options": {
+        "message": "Options"
+    },
+    "search_placeholder": {
+        "message": "Search in history"
+    },
+    "search_display": {
+        "message": "Search results for"
+    },
+    "search_found": {
+        "message": "Found $count$ result(s)",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "No results found"
+    },
+    "history_remove_single": {
+        "message": "Remove entry"
+    },
+    "history_remove_confirm_count": {
+        "message": "selected"
+    },
+    "history_date_empty": {
+        "message": "This day has no history entries"
+    },
+    "datepicker_go_today": {
+        "message": "Display today"
+    },
+    "history_view_more": {
+        "message": "View full history"
+    },
+    "history_recent": {
+        "message": "Recent history"
+    },
+    "tab_recently_closed": {
+        "message": "Recently closed"
+    },
+    "closed_restore": {
+        "message": "Restore"
+    },
+    "closed_window_tabs": {
+        "message": "Window - $count$ tabs",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "No recently closed tabs"
+    },
+    "closed_loading": {
+        "message": "Loading..."
+    },
+    "closed_error": {
+        "message": "Could not load recently closed tabs"
+    },
+    "date_format": {
+        "message": "dddd, MMMM Do, YYYY"
+    },
+    "options_time_12_24": {
+        "message": "Use 24 hours format"
+    },
+    "options_display_time_before_title": {
+        "message": "Display time before title"
+    },
+    "options_popup_nb_items": {
+        "message": "Number of items in popup"
+    },
+    "options_theme": {
+        "message": "Theme"
+    },
+    "options_theme_system": {
+        "message": "System"
+    },
+    "options_theme_light": {
+        "message": "Light"
+    },
+    "options_theme_dark": {
+        "message": "Dark"
+    }
+}

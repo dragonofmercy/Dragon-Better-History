@@ -1,0 +1,105 @@
+{
+    "language": {
+        "message": "es"
+    },
+    "application_title": {
+        "message": "Dragon Better History"
+    },
+    "application_description": {
+        "message": "Reemplaza el historial predeterminado del navegador con una mejor visualización."
+    },
+    "btn_delete": {
+        "message": "Eliminar"
+    },
+    "btn_cancel": {
+        "message": "Cancelar"
+    },
+    "btn_save": {
+        "message": "Guardar"
+    },
+    "btn_options": {
+        "message": "Opciones"
+    },
+    "search_placeholder": {
+        "message": "Buscar en el historial"
+    },
+    "search_display": {
+        "message": "Resultados de búsqueda para"
+    },
+    "search_found": {
+        "message": "$count$ resultado(s)",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "No se encontraron resultados"
+    },
+    "history_remove_single": {
+        "message": "Eliminar entrada"
+    },
+    "history_remove_confirm_count": {
+        "message": "seleccionados"
+    },
+    "history_date_empty": {
+        "message": "No hay entradas de historial para este día"
+    },
+    "datepicker_go_today": {
+        "message": "Mostrar hoy"
+    },
+    "history_view_more": {
+        "message": "Ver historial completo"
+    },
+    "history_recent": {
+        "message": "Historial reciente"
+    },
+    "tab_recently_closed": {
+        "message": "Cerrados recientemente"
+    },
+    "closed_restore": {
+        "message": "Restaurar"
+    },
+    "closed_window_tabs": {
+        "message": "Ventana - $count$ pestañas",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "No hay pestañas cerradas recientemente"
+    },
+    "closed_loading": {
+        "message": "Cargando..."
+    },
+    "closed_error": {
+        "message": "No se pudieron cargar las pestañas cerradas recientemente"
+    },
+    "date_format": {
+        "message": "dddd, D MMMM YYYY"
+    },
+    "options_time_12_24": {
+        "message": "Usar formato de 24 horas"
+    },
+    "options_display_time_before_title": {
+        "message": "Mostrar la hora antes del título"
+    },
+    "options_popup_nb_items": {
+        "message": "Número de elementos en el popup"
+    },
+    "options_theme": {
+        "message": "Tema"
+    },
+    "options_theme_system": {
+        "message": "Sistema"
+    },
+    "options_theme_light": {
+        "message": "Claro"
+    },
+    "options_theme_dark": {
+        "message": "Oscuro"
+    }
+}

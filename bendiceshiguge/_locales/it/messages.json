@@ -1,0 +1,105 @@
+{
+    "language": {
+        "message": "it"
+    },
+    "application_title": {
+        "message": "Dragon Better History"
+    },
+    "application_description": {
+        "message": "Sostituisce la cronologia predefinita del browser con una visualizzazione migliore."
+    },
+    "btn_delete": {
+        "message": "Elimina"
+    },
+    "btn_cancel": {
+        "message": "Annulla"
+    },
+    "btn_save": {
+        "message": "Salva"
+    },
+    "btn_options": {
+        "message": "Opzioni"
+    },
+    "search_placeholder": {
+        "message": "Cerca nella cronologia"
+    },
+    "search_display": {
+        "message": "Risultati della ricerca per"
+    },
+    "search_found": {
+        "message": "$count$ risultato/i",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "Nessun risultato trovato"
+    },
+    "history_remove_single": {
+        "message": "Rimuovi voce"
+    },
+    "history_remove_confirm_count": {
+        "message": "selezionati"
+    },
+    "history_date_empty": {
+        "message": "Nessuna voce di cronologia per questo giorno"
+    },
+    "datepicker_go_today": {
+        "message": "Mostra oggi"
+    },
+    "history_view_more": {
+        "message": "Visualizza cronologia completa"
+    },
+    "history_recent": {
+        "message": "Cronologia recente"
+    },
+    "tab_recently_closed": {
+        "message": "Chiusi di recente"
+    },
+    "closed_restore": {
+        "message": "Ripristina"
+    },
+    "closed_window_tabs": {
+        "message": "Finestra - $count$ schede",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "Nessuna scheda chiusa di recente"
+    },
+    "closed_loading": {
+        "message": "Caricamento..."
+    },
+    "closed_error": {
+        "message": "Impossibile caricare le schede chiuse di recente"
+    },
+    "date_format": {
+        "message": "dddd D MMMM YYYY"
+    },
+    "options_time_12_24": {
+        "message": "Usa il formato 24 ore"
+    },
+    "options_display_time_before_title": {
+        "message": "Mostra l'ora prima del titolo"
+    },
+    "options_popup_nb_items": {
+        "message": "Numero di elementi nel popup"
+    },
+    "options_theme": {
+        "message": "Tema"
+    },
+    "options_theme_system": {
+        "message": "Sistema"
+    },
+    "options_theme_light": {
+        "message": "Chiaro"
+    },
+    "options_theme_dark": {
+        "message": "Scuro"
+    }
+}

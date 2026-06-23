@@ -1,0 +1,105 @@
+{
+    "language": {
+        "message": "de"
+    },
+    "application_title": {
+        "message": "Dragon Better History"
+    },
+    "application_description": {
+        "message": "Ersetzt den Standard-Browserverlauf durch eine bessere Verlaufsanzeige."
+    },
+    "btn_delete": {
+        "message": "Löschen"
+    },
+    "btn_cancel": {
+        "message": "Abbrechen"
+    },
+    "btn_save": {
+        "message": "Speichern"
+    },
+    "btn_options": {
+        "message": "Optionen"
+    },
+    "search_placeholder": {
+        "message": "Im Verlauf suchen"
+    },
+    "search_display": {
+        "message": "Suchergebnisse für"
+    },
+    "search_found": {
+        "message": "$count$ Ergebnis(se) gefunden",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "Keine Ergebnisse gefunden"
+    },
+    "history_remove_single": {
+        "message": "Eintrag entfernen"
+    },
+    "history_remove_confirm_count": {
+        "message": "ausgewählt"
+    },
+    "history_date_empty": {
+        "message": "Für diesen Tag gibt es keine Verlaufseinträge"
+    },
+    "datepicker_go_today": {
+        "message": "Heute anzeigen"
+    },
+    "history_view_more": {
+        "message": "Vollständigen Verlauf anzeigen"
+    },
+    "history_recent": {
+        "message": "Letzter Verlauf"
+    },
+    "tab_recently_closed": {
+        "message": "Zuletzt geschlossen"
+    },
+    "closed_restore": {
+        "message": "Wiederherstellen"
+    },
+    "closed_window_tabs": {
+        "message": "Fenster - $count$ Tabs",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "Keine kürzlich geschlossenen Tabs"
+    },
+    "closed_loading": {
+        "message": "Wird geladen..."
+    },
+    "closed_error": {
+        "message": "Kürzlich geschlossene Tabs konnten nicht geladen werden"
+    },
+    "date_format": {
+        "message": "dddd, D. MMMM YYYY"
+    },
+    "options_time_12_24": {
+        "message": "24-Stunden-Format verwenden"
+    },
+    "options_display_time_before_title": {
+        "message": "Uhrzeit vor dem Titel anzeigen"
+    },
+    "options_popup_nb_items": {
+        "message": "Anzahl der Einträge im Popup"
+    },
+    "options_theme": {
+        "message": "Design"
+    },
+    "options_theme_system": {
+        "message": "System"
+    },
+    "options_theme_light": {
+        "message": "Hell"
+    },
+    "options_theme_dark": {
+        "message": "Dunkel"
+    }
+}

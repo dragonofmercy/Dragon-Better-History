@@ -1,0 +1,105 @@
+{
+    "language": {
+        "message": "fr"
+    },
+    "application_title": {
+        "message": "Dragon Better History"
+    },
+    "application_description": {
+        "message": "Remplace l'historique du navigateur par défaut par un meilleur affichage."
+    },
+    "btn_delete": {
+        "message": "Supprimer"
+    },
+    "btn_cancel": {
+        "message": "Annuler"
+    },
+    "btn_save": {
+        "message": "Sauvegarder"
+    },
+    "btn_options": {
+        "message": "Options"
+    },
+    "search_placeholder": {
+        "message": "Rechercher dans l'historique"
+    },
+    "search_display": {
+        "message": "Resultat de la recherche pour"
+    },
+    "search_found": {
+        "message": "$count$ résultat(s)",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "Aucun résultat trouvé"
+    },
+    "history_remove_single": {
+        "message": "Supprimer l'entrée"
+    },
+    "history_remove_confirm_count": {
+        "message": "sélectioné(s)"
+    },
+    "history_date_empty": {
+        "message": "Aucune entrée pour ce jour"
+    },
+    "datepicker_go_today": {
+        "message": "Aujourd'hui"
+    },
+    "history_view_more": {
+        "message": "Afficher l'historique complet"
+    },
+    "history_recent": {
+        "message": "Historique récent"
+    },
+    "tab_recently_closed": {
+        "message": "Récemment fermés"
+    },
+    "closed_restore": {
+        "message": "Restaurer"
+    },
+    "closed_window_tabs": {
+        "message": "Fenêtre - $count$ onglets",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "Aucun onglet récemment fermé"
+    },
+    "closed_loading": {
+        "message": "Chargement..."
+    },
+    "closed_error": {
+        "message": "Impossible de charger les onglets récemment fermés"
+    },
+    "date_format": {
+        "message": "dddd, D MMMM YYYY"
+    },
+    "options_time_12_24": {
+        "message": "Utiliser le format 24 heures"
+    },
+    "options_display_time_before_title": {
+        "message": "Afficher le temps en début de ligne"
+    },
+    "options_popup_nb_items": {
+        "message": "Nombre d'éléments dans le popup"
+    },
+    "options_theme": {
+        "message": "Theme"
+    },
+    "options_theme_system": {
+        "message": "Systeme"
+    },
+    "options_theme_light": {
+        "message": "Clair"
+    },
+    "options_theme_dark": {
+        "message": "Sombre"
+    }
+}

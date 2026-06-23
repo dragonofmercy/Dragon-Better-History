@@ -1,0 +1,105 @@
+{
+    "language": {
+        "message": "bg"
+    },
+    "application_title": {
+        "message": "Dragon Better History"
+    },
+    "application_description": {
+        "message": "Заменя стандартната история на браузъра и подобрява показването и."
+    },
+    "btn_delete": {
+        "message": "Изтрий"
+    },
+    "btn_cancel": {
+        "message": "Отказ"
+    },
+    "btn_save": {
+        "message": "Запазете"
+    },
+    "btn_options": {
+        "message": "Опции"
+    },
+    "search_placeholder": {
+        "message": "Търси в историята"
+    },
+    "search_display": {
+        "message": "Резултати за"
+    },
+    "search_found": {
+        "message": "Намерени $count$ резултат(а)",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "search_empty": {
+        "message": "Няма разултати"
+    },
+    "history_remove_single": {
+        "message": "Премахни"
+    },
+    "history_remove_confirm_count": {
+        "message": "избрани"
+    },
+    "history_date_empty": {
+        "message": "Няма история от този ден"
+    },
+    "datepicker_go_today": {
+        "message": "Покажи днес"
+    },
+    "history_view_more": {
+        "message": "Виж цялата история"
+    },
+    "history_recent": {
+        "message": "Текуща история"
+    },
+    "tab_recently_closed": {
+        "message": "Наскоро затворени"
+    },
+    "closed_restore": {
+        "message": "Възстанови"
+    },
+    "closed_window_tabs": {
+        "message": "Прозорец - $count$ раздела",
+        "placeholders": {
+            "count": {
+                "content": "$1"
+            }
+        }
+    },
+    "closed_empty": {
+        "message": "Няма наскоро затворени раздели"
+    },
+    "closed_loading": {
+        "message": "Зареждане..."
+    },
+    "closed_error": {
+        "message": "Неуспешно зареждане на наскоро затворените раздели"
+    },
+    "date_format": {
+        "message": "dddd, MMMM Do, YYYY"
+    },
+    "options_time_12_24": {
+        "message": "Използвайте формат 24 часа"
+    },
+    "options_display_time_before_title": {
+        "message": "Показване на времето преди заглавието"
+    },
+    "options_popup_nb_items": {
+        "message": "Брой елементи в изскачащия прозорец"
+    },
+    "options_theme": {
+        "message": "Тема"
+    },
+    "options_theme_system": {
+        "message": "Системна"
+    },
+    "options_theme_light": {
+        "message": "Светла"
+    },
+    "options_theme_dark": {
+        "message": "Тъмна"
+    }
+}
