@@ -9,10 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
       - name: Install dependencies
         run: npm install
       - name: Run tests
@@ -20,7 +20,7 @@ jobs:
       - name: Type-check and build
         run: npm run build
       - name: Upload extension build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist
