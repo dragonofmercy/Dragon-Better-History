@@ -36,7 +36,7 @@ function selectTab(next: 'recent' | 'closed'): void {
   if (next === 'closed') void ensureClosed()
 }
 
-function openHistory(): void { chrome.tabs.create({ url: 'chrome://history' }) }
+function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('history.html') }) }
 function noop(): void { /* popup history entries are not interactive */ }
 </script>
 
