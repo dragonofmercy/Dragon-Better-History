@@ -16,10 +16,11 @@ export default defineManifest({
   },
   permissions: ['favicon', 'history', 'tabs', 'storage', 'sessions'],
   host_permissions: ['file:///*'],
-  chrome_url_overrides: { history: 'history.html' },
+  background: {
+    service_worker: 'src/background.ts'
+  },
   action: {
     default_icon: { 16: 'icons/icon_16.png', 32: 'icons/icon_32.png' },
-    default_title: '__MSG_application_title__',
-    default_popup: 'popup.html'
+    default_title: '__MSG_application_title__'
   }
 })

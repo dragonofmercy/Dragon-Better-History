@@ -8,6 +8,14 @@ import manifest from './manifest.config'
 export default defineConfig({
   plugins: [vue(), tailwindcss(), crx({ manifest })],
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
-  build: { outDir: 'dist', emptyOutDir: true },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        history: 'history.html'
+      }
+    }
+  },
   server: { port: 5173, strictPort: true, hmr: { port: 5173 } }
 })
