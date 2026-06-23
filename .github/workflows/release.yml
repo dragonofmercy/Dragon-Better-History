@@ -1,0 +1,42 @@
+name: Publish to Edge Add-ons
+
+# Runs when a GitHub release is published. Builds the extension, packages
+# dist/ into a zip, and uploads + publishes it to the Microsoft Edge Add-ons
+# store via the Publish API (v1.1, API key auth).
+#
+# Required repository secrets (Settings > Secrets and variables > Actions):
+#   EDGE_PRODUCT_ID  - the extension product ID from Partner Center
+#   EDGE_CLIENT_ID   - Client ID from the Publish API credentials
+#   EDGE_API_KEY     - API key from the Publish API credentials (expires every
+#                      72 days; rotate this secret when it does)
+#
+# The first store submission and all listing metadata (descriptions,
+# screenshots, permission justifications) must still be done manually in
+# Partner Center; this API only updates an existing extension. Remember to
+# bump the version in package.json before each release.
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: npm install
+      - name: Type-check and build
+        run: npm run build
+      - name: Package dist
+        run: cd dist && zip -r ../dist.zip .
+      - name: Publish to Microsoft Edge Add-ons
+        uses: wdzeng/edge-addon@v2
+        with:
+          product-id: ${{ secrets.EDGE_PRODUCT_ID }}
+          zip-path: dist.zip
+          client-id: ${{ secrets.EDGE_CLIENT_ID }}
+          api-key: ${{ secrets.EDGE_API_KEY }}
