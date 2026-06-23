@@ -15,7 +15,6 @@ export default defineManifest({
     128: 'icons/icon_128.png'
   },
   permissions: ['favicon', 'history', 'tabs', 'storage', 'sessions'],
-  host_permissions: ['file:///*', '*://*/*'],
   chrome_url_overrides: { history: 'history.html' },
   action: {
     default_icon: { 16: 'icons/icon_16.png', 32: 'icons/icon_32.png' },
