@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/badge/Manifest-V3-2563eb" alt="Manifest V3">
   <img src="https://img.shields.io/badge/Chrome-supported-4285F4?logo=googlechrome&logoColor=white" alt="Chrome">
   <img src="https://img.shields.io/badge/Edge-supported-0078D7?logo=microsoftedge&logoColor=white" alt="Edge">
-  <img src="https://img.shields.io/badge/i18n-6%20languages-f59e0b" alt="6 languages">
+  <img src="https://img.shields.io/badge/i18n-9%20languages-f59e0b" alt="9 languages">
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-16a34a" alt="License: MIT"></a>
   <a href="https://github.com/dragonofmercy/Dragon-Better-History/stargazers"><img src="https://img.shields.io/github/stars/dragonofmercy/Dragon-Better-History?style=flat&color=eab308" alt="Stars"></a>
   <a href="https://ko-fi.com/dragonofmercy"><img src="https://img.shields.io/badge/Donate-Ko--fi-ff5e5b?logo=kofi&logoColor=white" alt="Donate on Ko-fi"></a>
@@ -32,8 +32,8 @@ and adds a toolbar popup that shows your most recent visits at a glance.
   in bulk.
 - **Favicons** - page icons via the native MV3 favicon endpoint.
 - **Light / dark / system theme** and a 12h or 24h time format.
-- **Localized** in 6 languages: English, French, Turkish, Simplified Chinese, Bulgarian
-  and Russian.
+- **Localized** in 9 languages: English, French, German, Italian, Spanish, Turkish,
+  Simplified Chinese, Bulgarian and Russian.
 
 ## Installation
 
