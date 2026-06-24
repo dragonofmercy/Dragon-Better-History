@@ -20,7 +20,7 @@ const store: Record<string, unknown> = {}
     getRecentlyClosed: () => Promise.resolve([]),
     restore: () => Promise.resolve()
   },
-  tabs: { create: vi.fn() }
+  tabs: { create: vi.fn(() => Promise.resolve({})), getCurrent: vi.fn(() => Promise.resolve(undefined)) }
 }
 
 if (!window.matchMedia) {
