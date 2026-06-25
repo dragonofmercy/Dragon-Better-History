@@ -69,7 +69,6 @@ function noop(): void { /* popup history entries are not interactive */ }
               :session="s"
               :locale="locale"
               :use24="options.use24HoursFormat"
-              :restore-label="t('closed_restore')"
               :window-label="s.type === 'window' ? t('closed_window_tabs', String(s.tabCount)) : ''"
               @restore="closed.restore(s.sessionId)"
             />

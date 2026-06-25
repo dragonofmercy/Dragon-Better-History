@@ -8,7 +8,6 @@ const props = defineProps<{
   session: ClosedSession
   locale: string
   use24: boolean
-  restoreLabel: string
   windowLabel: string
 }>()
 
@@ -27,8 +26,5 @@ const time = computed(() => formatTime(new Date(props.session.lastModified), pro
       <span class="dbh-title" :title="session.type === 'tab' ? session.url : windowLabel">{{ session.type === 'tab' ? session.title : windowLabel }}</span>
     </div>
     <span class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
-    <button type="button" class="dbh-rm shrink-0" :title="restoreLabel" :aria-label="restoreLabel" @click.stop="emit('restore')">
-      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5" /></svg>
-    </button>
   </div>
 </template>
