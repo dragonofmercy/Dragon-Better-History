@@ -3,10 +3,6 @@ import { mount, flushPromises } from '@vue/test-utils'
 import PopupApp from '@/pages/PopupApp.vue'
 import SearchBar from '@/components/SearchBar.vue'
 
-function item(url: string, time: number, title = ''): chrome.history.HistoryItem {
-  return { id: url, url, title, lastVisitTime: time } as chrome.history.HistoryItem
-}
-
 describe('PopupApp search', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
