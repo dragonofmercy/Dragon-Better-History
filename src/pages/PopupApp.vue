@@ -42,7 +42,7 @@ function noop(): void { /* popup history entries are not interactive */ }
 </script>
 
 <template>
-  <div class="compact dbh-root flex max-h-[600px] w-102 flex-col">
+  <div class="compact dbh-root flex max-h-[600px] w-124 flex-col">
     <header class="dbh-headerbar flex shrink-0 items-center gap-1 px-3 py-2" role="tablist">
       <button class="dbh-tab rounded-md px-2 py-1 text-sm font-semibold" :class="tab === 'recent' ? 'is-active' : ''" role="tab" :aria-selected="tab === 'recent'" @click="selectTab('recent')">{{ t('history_recent') }}</button>
       <button class="dbh-tab rounded-md px-2 py-1 text-sm font-semibold" :class="tab === 'closed' ? 'is-active' : ''" role="tab" :aria-selected="tab === 'closed'" @click="selectTab('closed')">{{ t('tab_recently_closed') }}</button>
