@@ -54,7 +54,7 @@ function noop(): void { /* popup history entries are not interactive */ }
       <div v-show="tab === 'recent'">
         <SearchBar :placeholder="t('search_placeholder')" class="mb-2" @search="(q) => history.search(q, today, options.popupNbItems)" @clear="() => history.getDay(today, options.popupNbItems)" />
         <div class="dbh-entries">
-          <HistoryEntryRow v-for="e in entries" :key="e.key" :entry="e" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :selected="false" :remove-label="t('history_remove_single')" @toggle="noop" @remove="noop" />
+          <HistoryEntryRow v-for="e in entries" :key="e.key" :entry="e" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :selected="false" :removable="false" remove-label="" @toggle="noop" />
         </div>
         <p v-if="!entries.length" class="dbh-muted text-xs">{{ history.searching.value ? t('search_empty') : t('history_date_empty') }}</p>
       </div>
