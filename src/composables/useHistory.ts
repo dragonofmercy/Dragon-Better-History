@@ -50,12 +50,12 @@ export function useHistory() {
     loading.value = false
   }
 
-  async function search(query: string, today: Date): Promise<void> {
+  async function search(query: string, today: Date, max = 0): Promise<void> {
     const start = new Date(1970, 0, 1)
     const end = endOfDay(today)
     loading.value = true
     searching.value = true
-    const results = await historySearch({ text: query, startTime: start.getTime(), endTime: end.getTime(), maxResults: 0 })
+    const results = await historySearch({ text: query, startTime: start.getTime(), endTime: end.getTime(), maxResults: max })
     days.value = groupByDay(results, start, end)
     loading.value = false
   }

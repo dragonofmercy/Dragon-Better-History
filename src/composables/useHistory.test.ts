@@ -65,4 +65,20 @@ describe('useHistory', () => {
     await h.remove('https://a')
     expect(h.days.value.length).toBe(0)
   })
+
+  it('search forwards the max argument as maxResults', async () => {
+    const t = new Date(2024, 0, 2, 12, 0).getTime()
+    const spy = vi.spyOn(chrome.history, 'search').mockResolvedValue([item('https://a', t, 'A')] as never)
+    const h = useHistory()
+    await h.search('foo', new Date(2024, 0, 2), 10)
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({ text: 'foo', maxResults: 10 }))
+    expect(h.searching.value).toBe(true)
+  })
+
+  it('search defaults maxResults to 0 (unlimited)', async () => {
+    const spy = vi.spyOn(chrome.history, 'search').mockResolvedValue([] as never)
+    const h = useHistory()
+    await h.search('bar', new Date(2024, 0, 2))
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({ text: 'bar', maxResults: 0 }))
+  })
 })
