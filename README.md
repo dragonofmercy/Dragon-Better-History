@@ -11,6 +11,7 @@
   <img src="https://img.shields.io/badge/Manifest-V3-2563eb" alt="Manifest V3">
   <img src="https://img.shields.io/badge/Chrome-supported-4285F4?logo=googlechrome&logoColor=white" alt="Chrome">
   <img src="https://img.shields.io/badge/Edge-supported-0078D7?logo=microsoftedge&logoColor=white" alt="Edge">
+  <a href="https://microsoftedge.microsoft.com/addons/detail/lmnppmohpgndifoijdjcnljcdbffjdoo"><img src="https://img.shields.io/badge/dynamic/json?url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/lmnppmohpgndifoijdjcnljcdbffjdoo&query=$.activeInstallCount&label=Edge%20users&color=0078D7&logo=microsoftedge&logoColor=white" alt="Edge users"></a>
   <img src="https://img.shields.io/badge/i18n-9%20languages-f59e0b" alt="9 languages">
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-16a34a" alt="License: MIT"></a>
   <a href="https://github.com/dragonofmercy/Dragon-Better-History/stargazers"><img src="https://img.shields.io/github/stars/dragonofmercy/Dragon-Better-History?style=flat&color=eab308" alt="Stars"></a>
