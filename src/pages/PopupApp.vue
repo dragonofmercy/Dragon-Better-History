@@ -8,6 +8,7 @@ import { useRecentlyClosed } from '@/composables/useRecentlyClosed'
 import { startOfDay } from '@/lib/dates'
 import HistoryEntryRow from '@/components/HistoryEntry.vue'
 import ClosedRow from '@/components/ClosedRow.vue'
+import SearchBar from '@/components/SearchBar.vue'
 
 const { options, load } = useOptions()
 const { t, locale } = useI18n()
@@ -50,13 +51,14 @@ function noop(): void { /* popup history entries are not interactive */ }
       </button>
     </header>
     <div class="min-h-0 flex-1 overflow-y-auto p-3" role="tabpanel">
-      <div v-if="tab === 'recent'">
+      <div v-show="tab === 'recent'">
+        <SearchBar :placeholder="t('search_placeholder')" class="mb-2" @search="(q) => history.search(q, today, options.popupNbItems)" @clear="() => history.getDay(today, options.popupNbItems)" />
         <div class="dbh-entries">
           <HistoryEntryRow v-for="e in entries" :key="e.key" :entry="e" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :selected="false" :remove-label="t('history_remove_single')" @toggle="noop" @remove="noop" />
         </div>
-        <p v-if="!entries.length" class="dbh-muted text-xs">{{ t('history_date_empty') }}</p>
+        <p v-if="!entries.length" class="dbh-muted text-xs">{{ history.searching.value ? t('search_empty') : t('history_date_empty') }}</p>
       </div>
-      <div v-else>
+      <div v-show="tab === 'closed'">
         <p v-if="closed.loading.value" class="dbh-muted text-xs">{{ t('closed_loading') }}</p>
         <p v-else-if="closed.error.value" class="dbh-muted text-xs">{{ t('closed_error') }}</p>
         <template v-else>
