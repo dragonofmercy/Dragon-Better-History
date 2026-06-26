@@ -29,6 +29,16 @@ const orderedKeys = computed(() => history.days.value.flatMap((g) => g.entries.m
 const totalCount = computed(() => orderedKeys.value.length)
 const calendarKey = ref(0)
 const selectedDay = ref<Date | null>(today)
+const expanded = ref<Set<string>>(new Set())
+
+function toggleExpand(key: string): void {
+  const next = new Set(expanded.value)
+  if (next.has(key)) next.delete(key); else next.add(key)
+  expanded.value = next
+}
+function onToggleGroup(keys: string[]): void { selection.toggleGroup(keys) }
+function onRemoveGroup(keys: string[]): void { selection.selectAll(keys) }
+
 const mainEl = ref<HTMLElement | null>(null)
 
 function scrollMainTop(): void { mainEl.value?.scrollTo({ top: 0 }) }
@@ -41,10 +51,10 @@ onMounted(async () => {
   await history.getDay(today)
 })
 
-function onSelectDay(d: Date): void { query.value = ''; searchBar.value?.clear(); selection.clear(); selectedDay.value = startOfDay(d); history.getDay(d); scrollMainTop() }
+function onSelectDay(d: Date): void { expanded.value = new Set(); query.value = ''; searchBar.value?.clear(); selection.clear(); selectedDay.value = startOfDay(d); history.getDay(d); scrollMainTop() }
 function onToday(): void { onSelectDay(today); calendarKey.value++ }
-function onSearch(q: string): void { query.value = q; selection.clear(); selectedDay.value = null; history.search(q, today); scrollMainTop() }
-function onClear(): void { query.value = ''; selection.clear(); selectedDay.value = today; history.getDay(today); scrollMainTop() }
+function onSearch(q: string): void { expanded.value = new Set(); query.value = q; selection.clear(); selectedDay.value = null; history.search(q, today); scrollMainTop() }
+function onClear(): void { expanded.value = new Set(); query.value = ''; selection.clear(); selectedDay.value = today; history.getDay(today); scrollMainTop() }
 
 function onToggle(entry: HistoryEntry, ev: MouseEvent): void {
   if (ev.shiftKey) selection.range(entry.key, orderedKeys.value)
@@ -104,7 +114,7 @@ function onKeydown(e: KeyboardEvent): void {
         <div class="px-6 py-6">
           <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
           <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
-          <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :empty-label="t('history_date_empty')" :remove-label="t('history_remove_single')" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" />
+          <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-consecutive="options.groupConsecutive && !history.searching.value" :expanded="expanded" :empty-label="t('history_date_empty')" :remove-label="t('history_remove_single')" :group-remove-label="t('history_remove_group')" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @toggle-select="onToggleGroup" @remove-group="onRemoveGroup" />
           <p v-if="!history.days.value.length" class="dbh-muted text-sm">{{ t(history.searching.value ? 'search_empty' : 'history_date_empty') }}</p>
         </div>
       </main>
