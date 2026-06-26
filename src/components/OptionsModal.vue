@@ -22,6 +22,10 @@ watch(() => props.open, (o) => { if (o) Object.assign(form, props.options) })
         <span>{{ t('options_display_time_before_title') }}</span>
         <input v-model="form.timeBeforeTitle" type="checkbox" class="dbh-switch" />
       </label>
+      <label class="mb-3 flex h-9 items-center justify-between">
+        <span>{{ t('options_group_consecutive') }}</span>
+        <input v-model="form.groupConsecutive" type="checkbox" class="dbh-switch" />
+      </label>
       <label class="mb-5 flex h-9 items-center justify-between">
         <span>{{ t('options_popup_nb_items') }}</span>
         <input v-model.number="form.popupNbItems" type="number" min="1" class="dbh-input h-9 w-20 rounded-md px-3 text-sm" />
