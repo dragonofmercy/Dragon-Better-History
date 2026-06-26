@@ -110,7 +110,7 @@
   .dbh-chevron:hover { color: var(--text); }
   .dbh-chevron.is-open { transform: rotate(90deg); }
   .dbh-count-badge { color: var(--faint); font-variant-numeric: tabular-nums; }
-  .dbh-run-children { padding-left: 1.25rem; }
+  .dbh-run-children { padding-left: 1.75rem; }
   .dbh-run-children > * + * { border-top: 1px solid var(--row-border); }
 
   .dbh-input { background: var(--input); border: 1px solid var(--border); color: var(--text); transition: border-color 0.15s ease, box-shadow 0.15s ease; }

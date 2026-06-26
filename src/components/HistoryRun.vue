@@ -25,7 +25,7 @@ const emit = defineEmits<{
 <template>
   <div>
     <div class="dbh-entry flex cursor-pointer select-none items-center gap-3 px-3 py-2 text-[13px]" @click="emit('toggle-expand')">
-      <button class="dbh-chevron shrink-0" :class="expanded ? 'is-open' : ''" :aria-expanded="expanded" @click.stop="emit('toggle-expand')">
+      <button class="dbh-chevron flex w-4 shrink-0 items-center justify-center" :class="expanded ? 'is-open' : ''" :aria-expanded="expanded" @click.stop="emit('toggle-expand')">
         <svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor"><path d="M5 3l6 5-6 5z" /></svg>
       </button>
       <img class="h-4 w-4 shrink-0 rounded-sm" :src="faviconUrl(run.entries[0].url)" alt="" />
