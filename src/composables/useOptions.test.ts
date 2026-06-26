@@ -14,6 +14,16 @@ describe('useOptions', () => {
     expect(options.theme).toBe('system')
   })
 
+  it('defaults groupConsecutive to false and loads stored value', async () => {
+    const { options, load } = useOptions()
+    await load()
+    expect(options.groupConsecutive).toBe(false)
+    vi.spyOn(chrome.storage.sync, 'get').mockResolvedValue({ groupConsecutive: true } as never)
+    const second = useOptions()
+    await second.load()
+    expect(second.options.groupConsecutive).toBe(true)
+  })
+
   it('loads stored values and coerces popupNbItems to a number', async () => {
     vi.spyOn(chrome.storage.sync, 'get').mockResolvedValue({ use24HoursFormat: false, timeBeforeTitle: true, popupNbItems: '25', theme: 'dark' } as never)
     const { options, load } = useOptions()
