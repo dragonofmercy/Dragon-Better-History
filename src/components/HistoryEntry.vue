@@ -20,7 +20,7 @@ function time(): string { return formatTime(new Date(props.entry.lastVisitTime),
 
 <template>
   <div class="dbh-entry flex cursor-pointer select-none items-center gap-3 px-3 py-2 text-[13px]" :class="selected ? 'is-selected' : ''" @click="emit('toggle', $event)">
-    <span v-if="timeBeforeTitle" class="dbh-time mono w-16 shrink-0 text-xs">{{ time() }}</span>
+    <span v-if="timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time() }}</span>
     <img class="h-4 w-4 shrink-0 rounded-sm" :src="faviconUrl(entry.url)" alt="" />
     <div class="min-w-0 flex-1 truncate">
       <a class="dbh-title hover:underline" :href="entry.url" :title="entry.url" target="_blank" @click.stop>{{ entry.title }}</a>

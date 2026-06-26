@@ -27,6 +27,12 @@ describe('dates', () => {
     expect(formatTime(d, 'en', false)).toMatch(/2:05/)
   })
 
+  it('formatTime pads a single-digit hour to two digits', () => {
+    const d = new Date(2024, 0, 1, 9, 5)
+    expect(formatTime(d, 'en', true)).toMatch(/^09:05/)
+    expect(formatTime(d, 'fr', true)).toMatch(/^09:05/)
+  })
+
   it('formatDayHeading returns a non-empty localized string', () => {
     const d = new Date(2024, 0, 1)
     expect(formatDayHeading(d, 'en').length).toBeGreaterThan(0)
