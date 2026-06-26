@@ -9,7 +9,7 @@
 <p align="center">
   <img src="https://img.shields.io/github/package-json/v/dragonofmercy/Dragon-Better-History?color=2563eb&label=version" alt="Version">
   <img src="https://img.shields.io/badge/Manifest-V3-2563eb" alt="Manifest V3">
-  <img src="https://img.shields.io/badge/Chrome-supported-4285F4?logo=googlechrome&logoColor=white" alt="Chrome">
+  <a href="https://chromewebstore.google.com/detail/eagfijenmngbjkbmfaogdknnididhaoa"><img src="https://img.shields.io/chrome-web-store/users/eagfijenmngbjkbmfaogdknnididhaoa?label=Chrome&color=4285F4&logo=googlechrome&logoColor=white" alt="Chrome"></a>
   <a href="https://microsoftedge.microsoft.com/addons/detail/lmnppmohpgndifoijdjcnljcdbffjdoo"><img src="https://img.shields.io/badge/dynamic/json?url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/lmnppmohpgndifoijdjcnljcdbffjdoo&query=$.activeInstallCount&label=Edge&color=0078D7&logo=microsoftedge&logoColor=white" alt="Edge"></a>
   <img src="https://img.shields.io/badge/i18n-9%20languages-f59e0b" alt="9 languages">
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-16a34a" alt="License: MIT"></a>
