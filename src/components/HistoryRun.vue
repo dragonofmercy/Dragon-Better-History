@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { HistoryEntry as Entry, DisplayItem } from '@/composables/useHistory'
 import HistoryEntry from '@/components/HistoryEntry.vue'
 import { faviconUrl } from '@/lib/chrome'
 
-const props = defineProps<{
+defineProps<{
   run: Extract<DisplayItem, { type: 'run' }>
   locale: string
   use24: boolean
@@ -17,18 +16,15 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'toggle-expand'): void
-  (e: 'toggle-select'): void
   (e: 'remove-group'): void
   (e: 'toggle', entry: Entry, ev: MouseEvent): void
   (e: 'remove', entry: Entry): void
 }>()
-
-const allSelected = computed(() => props.run.entries.length > 0 && props.run.entries.every((en) => props.isSelected(en.key)))
 </script>
 
 <template>
   <div>
-    <div class="dbh-entry flex cursor-pointer select-none items-center gap-3 px-3 py-2 text-[13px]" :class="allSelected ? 'is-selected' : ''" @click="emit('toggle-select')">
+    <div class="dbh-entry flex cursor-pointer select-none items-center gap-3 px-3 py-2 text-[13px]" @click="emit('toggle-expand')">
       <button class="dbh-chevron shrink-0" :class="expanded ? 'is-open' : ''" :aria-expanded="expanded" @click.stop="emit('toggle-expand')">
         <svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor"><path d="M5 3l6 5-6 5z" /></svg>
       </button>

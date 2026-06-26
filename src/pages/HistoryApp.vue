@@ -36,7 +36,6 @@ function toggleExpand(key: string): void {
   if (next.has(key)) next.delete(key); else next.add(key)
   expanded.value = next
 }
-function onToggleGroup(keys: string[]): void { selection.toggleGroup(keys) }
 function onRemoveGroup(keys: string[]): void { selection.selectAll(keys) }
 
 const mainEl = ref<HTMLElement | null>(null)
@@ -114,7 +113,7 @@ function onKeydown(e: KeyboardEvent): void {
         <div class="px-6 py-6">
           <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
           <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
-          <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-consecutive="options.groupConsecutive && !history.searching.value" :expanded="expanded" :empty-label="t('history_date_empty')" :remove-label="t('history_remove_single')" :group-remove-label="t('history_remove_group')" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @toggle-select="onToggleGroup" @remove-group="onRemoveGroup" />
+          <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-consecutive="options.groupConsecutive && !history.searching.value" :expanded="expanded" :empty-label="t('history_date_empty')" :remove-label="t('history_remove_single')" :group-remove-label="t('history_remove_group')" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
           <p v-if="!history.days.value.length" class="dbh-muted text-sm">{{ t(history.searching.value ? 'search_empty' : 'history_date_empty') }}</p>
         </div>
       </main>

@@ -27,15 +27,6 @@ export function useSelection() {
     selected.value = new Set(orderedKeys)
   }
 
-  function toggleGroup(keys: string[]): void {
-    const next = new Set(selected.value)
-    const allSelected = keys.length > 0 && keys.every((k) => next.has(k))
-    if (allSelected) keys.forEach((k) => next.delete(k))
-    else keys.forEach((k) => next.add(k))
-    selected.value = next
-    lastKey = keys[keys.length - 1] ?? lastKey
-  }
-
   function clear(): void {
     selected.value = new Set()
     lastKey = null
@@ -47,5 +38,5 @@ export function useSelection() {
 
   const count = computed(() => selected.value.size)
 
-  return { selected, count, toggle, range, selectAll, toggleGroup, clear, isSelected }
+  return { selected, count, toggle, range, selectAll, clear, isSelected }
 }

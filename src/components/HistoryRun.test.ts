@@ -31,24 +31,18 @@ describe('HistoryRun', () => {
     const w = mountRun()
     await w.find('.dbh-chevron').trigger('click')
     expect(w.emitted('toggle-expand')).toBeTruthy()
-    expect(w.emitted('toggle-select')).toBeFalsy()
   })
 
-  it('emits toggle-select when the header body is clicked', async () => {
+  it('emits toggle-expand when the header body is clicked', async () => {
     const w = mountRun()
     await w.find('.dbh-entry').trigger('click')
-    expect(w.emitted('toggle-select')).toBeTruthy()
+    expect(w.emitted('toggle-expand')).toBeTruthy()
   })
 
-  it('emits remove-group when the header cross is clicked', async () => {
+  it('emits remove-group (not toggle-expand) when the header cross is clicked', async () => {
     const w = mountRun()
     await w.find('.dbh-entry > button.dbh-rm').trigger('click')
     expect(w.emitted('remove-group')).toBeTruthy()
-    expect(w.emitted('toggle-select')).toBeFalsy()
-  })
-
-  it('marks the header selected only when all entries are selected', () => {
-    expect(mountRun({ isSelected: () => true }).find('.dbh-entry').classes()).toContain('is-selected')
-    expect(mountRun({ isSelected: (k: string) => k === 'https://fb/1::1' }).find('.dbh-entry').classes()).not.toContain('is-selected')
+    expect(w.emitted('toggle-expand')).toBeFalsy()
   })
 })
