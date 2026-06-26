@@ -29,8 +29,10 @@ const emit = defineEmits<{
         <svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor"><path d="M5 3l6 5-6 5z" /></svg>
       </button>
       <img class="h-4 w-4 shrink-0 rounded-sm" :src="faviconUrl(run.entries[0].url)" alt="" />
-      <span class="dbh-title min-w-0 truncate">{{ run.title }}</span>
-      <span class="dbh-count-badge mono mr-auto shrink-0 text-xs">x{{ run.entries.length }}</span>
+      <div class="mr-auto flex min-w-0 items-baseline gap-2">
+        <span class="dbh-title min-w-0 truncate">{{ run.title }}</span>
+        <span class="dbh-count-badge mono shrink-0 text-xs">x{{ run.entries.length }}</span>
+      </div>
       <button class="dbh-rm shrink-0" :title="groupRemoveLabel" @click.stop="emit('remove-group')">
         <svg viewBox="0 0 15 15" width="12" height="12" fill="currentColor"><path d="M14.1 1.6L8.2 7.5l5.9 5.9-.7.7L7.5 8.2l-5.9 5.9-.7-.7L6.8 7.5.9 1.6l.7-.7L7.5 6.8 13.4.9z" /></svg>
       </button>
