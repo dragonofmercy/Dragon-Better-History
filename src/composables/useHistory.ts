@@ -15,6 +15,24 @@ export interface DayGroup {
   entries: HistoryEntry[]
 }
 
+export type DisplayItem =
+  | { type: 'single'; entry: HistoryEntry }
+  | { type: 'run'; key: string; title: string; entries: HistoryEntry[] }
+
+export function groupRuns(entries: HistoryEntry[]): DisplayItem[] {
+  const items: DisplayItem[] = []
+  let i = 0
+  while (i < entries.length) {
+    let j = i + 1
+    while (j < entries.length && entries[j].title === entries[i].title) j++
+    const run = entries.slice(i, j)
+    if (run.length >= 2) items.push({ type: 'run', key: run[0].key, title: run[0].title, entries: run })
+    else items.push({ type: 'single', entry: run[0] })
+    i = j
+  }
+  return items
+}
+
 export function entryKey(item: { url?: string; lastVisitTime?: number }): string {
   return `${item.url}::${item.lastVisitTime}`
 }

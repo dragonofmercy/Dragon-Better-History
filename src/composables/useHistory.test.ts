@@ -1,9 +1,46 @@
 import { describe, it, expect, vi } from 'vitest'
-import { groupByDay, entryKey, useHistory } from '@/composables/useHistory'
+import { groupByDay, entryKey, groupRuns, useHistory } from '@/composables/useHistory'
 
 function item(url: string, time: number, title = ''): chrome.history.HistoryItem {
   return { id: url, url, title, lastVisitTime: time } as chrome.history.HistoryItem
 }
+
+function entry(url: string, title: string, time = 1): { key: string; url: string; title: string; lastVisitTime: number } {
+  return { key: `${url}::${time}`, url, title, lastVisitTime: time }
+}
+
+describe('groupRuns', () => {
+  it('groups 2+ consecutive same-title entries into a run', () => {
+    const items = groupRuns([entry('https://fb/1', 'Facebook', 1), entry('https://fb/2', 'Facebook', 2), entry('https://fb/3', 'Facebook', 3)])
+    expect(items.length).toBe(1)
+    expect(items[0].type).toBe('run')
+    if (items[0].type === 'run') {
+      expect(items[0].entries.length).toBe(3)
+      expect(items[0].key).toBe('https://fb/1::1')
+      expect(items[0].title).toBe('Facebook')
+    }
+  })
+
+  it('keeps a lone entry as a single', () => {
+    const items = groupRuns([entry('https://a', 'A', 1)])
+    expect(items[0].type).toBe('single')
+  })
+
+  it('splits identical titles that are not adjacent into separate items', () => {
+    const items = groupRuns([
+      entry('https://fb/1', 'Facebook', 1), entry('https://fb/2', 'Facebook', 2),
+      entry('https://w', 'Wiki', 3),
+      entry('https://fb/3', 'Facebook', 4), entry('https://fb/4', 'Facebook', 5)
+    ])
+    expect(items.map((i) => i.type)).toEqual(['run', 'single', 'run'])
+  })
+
+  it('preserves order', () => {
+    const items = groupRuns([entry('https://a', 'A', 1), entry('https://b/1', 'B', 2), entry('https://b/2', 'B', 3)])
+    expect(items[0].type).toBe('single')
+    expect(items[1].type).toBe('run')
+  })
+})
 
 describe('groupByDay', () => {
   it('groups entries by midnight and sorts days descending', () => {
