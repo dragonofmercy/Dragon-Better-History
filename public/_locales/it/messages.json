@@ -40,6 +40,9 @@
     "history_remove_single": {
         "message": "Rimuovi voce"
     },
+    "history_remove_group": {
+        "message": "Elimina questo gruppo"
+    },
     "history_remove_confirm_count": {
         "message": "selezionati"
     },
@@ -86,6 +89,9 @@
     },
     "options_display_time_before_title": {
         "message": "Mostra l'ora prima del titolo"
+    },
+    "options_group_consecutive": {
+        "message": "Raggruppa le voci consecutive dello stesso sito"
     },
     "options_popup_nb_items": {
         "message": "Numero di elementi nel popup"

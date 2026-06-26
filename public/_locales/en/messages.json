@@ -40,6 +40,9 @@
     "history_remove_single": {
         "message": "Remove entry"
     },
+    "history_remove_group": {
+        "message": "Delete this group"
+    },
     "history_remove_confirm_count": {
         "message": "selected"
     },
@@ -86,6 +89,9 @@
     },
     "options_display_time_before_title": {
         "message": "Display time before title"
+    },
+    "options_group_consecutive": {
+        "message": "Group consecutive entries from the same site"
     },
     "options_popup_nb_items": {
         "message": "Number of items in popup"

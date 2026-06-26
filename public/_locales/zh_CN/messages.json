@@ -40,6 +40,9 @@
     "history_remove_single": {
         "message": "删除该条目"
     },
+    "history_remove_group": {
+        "message": "删除此分组"
+    },
     "history_remove_confirm_count": {
         "message": "条已选"
     },
@@ -86,6 +89,9 @@
     },
     "options_display_time_before_title": {
         "message": "时间显示在标题之前"
+    },
+    "options_group_consecutive": {
+        "message": "将同一网站的连续条目分组"
     },
     "options_popup_nb_items": {
         "message": "弹出窗口中的项目数"

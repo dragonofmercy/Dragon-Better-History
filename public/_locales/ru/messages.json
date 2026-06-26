@@ -40,6 +40,9 @@
     "history_remove_single": {
         "message": "Удалить запись"
     },
+    "history_remove_group": {
+        "message": "Удалить эту группу"
+    },
     "history_remove_confirm_count": {
         "message": "выбрано"
     },
@@ -86,6 +89,9 @@
     },
     "options_display_time_before_title": {
         "message": "Показывать время перед заголовком"
+    },
+    "options_group_consecutive": {
+        "message": "Группировать последовательные записи одного сайта"
     },
     "options_popup_nb_items": {
         "message": "Количество записей в всплывающем окне"

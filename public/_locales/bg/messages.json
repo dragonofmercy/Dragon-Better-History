@@ -40,6 +40,9 @@
     "history_remove_single": {
         "message": "Премахни"
     },
+    "history_remove_group": {
+        "message": "Изтриване на тази група"
+    },
     "history_remove_confirm_count": {
         "message": "избрани"
     },
@@ -86,6 +89,9 @@
     },
     "options_display_time_before_title": {
         "message": "Показване на времето преди заглавието"
+    },
+    "options_group_consecutive": {
+        "message": "Групиране на последователни записи от същия сайт"
     },
     "options_popup_nb_items": {
         "message": "Брой елементи в изскачащия прозорец"

@@ -40,6 +40,9 @@
 	"history_remove_single": {
 		"message": "Kaydı sil"
 	},
+	"history_remove_group": {
+		"message": "Bu grubu sil"
+	},
 	"history_remove_confirm_count": {
 		"message": "seçildi"
 	},
@@ -86,6 +89,9 @@
 	},
 	"options_display_time_before_title": {
 		"message": "Saat başlığın önünde gösterilsin"
+	},
+	"options_group_consecutive": {
+		"message": "Aynı sitenin ardışık girişlerini grupla"
 	},
     "options_popup_nb_items": {
         "message": "Açılır penceredeki öğe sayısı"

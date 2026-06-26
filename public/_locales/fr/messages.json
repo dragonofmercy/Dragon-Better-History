@@ -40,6 +40,9 @@
     "history_remove_single": {
         "message": "Supprimer l'entrée"
     },
+    "history_remove_group": {
+        "message": "Supprimer ce groupe"
+    },
     "history_remove_confirm_count": {
         "message": "sélectioné(s)"
     },
@@ -86,6 +89,9 @@
     },
     "options_display_time_before_title": {
         "message": "Afficher le temps en début de ligne"
+    },
+    "options_group_consecutive": {
+        "message": "Regrouper les entrées consécutives du même site"
     },
     "options_popup_nb_items": {
         "message": "Nombre d'éléments dans le popup"
