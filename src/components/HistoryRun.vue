@@ -23,7 +23,7 @@ const emit = defineEmits<{
   (e: 'remove', entry: Entry): void
 }>()
 
-const allSelected = computed(() => props.run.entries.every((en) => props.isSelected(en.key)))
+const allSelected = computed(() => props.run.entries.length > 0 && props.run.entries.every((en) => props.isSelected(en.key)))
 </script>
 
 <template>

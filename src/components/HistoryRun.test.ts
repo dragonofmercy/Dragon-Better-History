@@ -31,6 +31,7 @@ describe('HistoryRun', () => {
     const w = mountRun()
     await w.find('.dbh-chevron').trigger('click')
     expect(w.emitted('toggle-expand')).toBeTruthy()
+    expect(w.emitted('toggle-select')).toBeFalsy()
   })
 
   it('emits toggle-select when the header body is clicked', async () => {
