@@ -38,4 +38,15 @@ describe('useSelection', () => {
     s.clear()
     expect(s.count.value).toBe(0)
   })
+
+  it('toggleGroup adds all keys when none/some selected, removes all when all selected', () => {
+    const s = useSelection()
+    s.toggle('a')
+    s.toggleGroup(['a', 'b', 'c'])
+    expect(s.isSelected('a')).toBe(true)
+    expect(s.isSelected('b')).toBe(true)
+    expect(s.isSelected('c')).toBe(true)
+    s.toggleGroup(['a', 'b', 'c'])
+    expect(s.count.value).toBe(0)
+  })
 })
