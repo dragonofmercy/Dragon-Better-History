@@ -24,8 +24,13 @@ and adds a toolbar popup that shows your most recent visits at a glance.
 
 - **Redesigned history page** - a clean Vue interface grouped by day, in place of the
   native `chrome://history`.
-- **Toolbar popup** - your latest entries one click away, with a configurable item count.
-- **Instant search** - debounced full-text filtering across titles and URLs.
+- **Toolbar popup** - your latest entries one click away, with a built-in search bar and a
+  configurable item count.
+- **Recently closed tabs** - a popup tab to reopen recently closed tabs and windows.
+- **Group consecutive visits** - optionally fold runs of consecutive entries from the same
+  site under a collapsible header with a count (history page; off by default).
+- **Instant search** - debounced full-text filtering across titles and URLs, in the history
+  page and the popup.
 - **Date picker** - a locale-aware calendar to jump to any day (week start and formatting
   follow your language; future dates are disabled).
 - **Multi-select & delete** - click, Shift-range and Ctrl+A selection, then remove entries
@@ -37,7 +42,14 @@ and adds a toolbar popup that shows your most recent visits at a glance.
 
 ## Installation
 
-1. Clone this repository and run a production build (see [Development](#development)).
+Get it from your browser's store:
+
+- **Chrome** (and Chromium browsers) - [Chrome Web Store](https://chromewebstore.google.com/detail/eagfijenmngbjkbmfaogdknnididhaoa)
+- **Microsoft Edge** - [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/lmnppmohpgndifoijdjcnljcdbffjdoo)
+
+Or build it yourself and load it unpacked (see [Development](#development)):
+
+1. Clone this repository and run a production build.
 2. Open `chrome://extensions` (or `edge://extensions`) and enable **Developer mode**.
 3. Click **Load unpacked** and select the `dist/` folder.
 
