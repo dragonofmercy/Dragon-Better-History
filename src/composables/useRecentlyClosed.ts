@@ -1,5 +1,4 @@
 import { ref } from 'vue'
-import { sessionsGetRecentlyClosed, sessionsRestore } from '@/lib/chrome'
 
 export type ClosedSession =
   | { type: 'tab'; sessionId: string; title: string; url: string; lastModified: number }
@@ -28,7 +27,7 @@ export function useRecentlyClosed() {
     loading.value = true
     error.value = false
     try {
-      const raw = await sessionsGetRecentlyClosed(maxResults ? { maxResults } : undefined)
+      const raw = await chrome.sessions.getRecentlyClosed(maxResults ? { maxResults } : {})
       sessions.value = normalizeSessions(raw)
     } catch {
       error.value = true
@@ -39,7 +38,7 @@ export function useRecentlyClosed() {
 
   async function restore(sessionId: string): Promise<void> {
     try {
-      await sessionsRestore(sessionId)
+      await chrome.sessions.restore(sessionId)
       sessions.value = sessions.value.filter((s) => s.sessionId !== sessionId)
     } catch {
       await load()

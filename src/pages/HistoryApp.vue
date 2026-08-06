@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useOptions, type Options } from '@/composables/useOptions'
-import { useI18n } from '@/composables/useI18n'
 import { useTheme } from '@/composables/useTheme'
 import { useHistory, type HistoryEntry } from '@/composables/useHistory'
 import { useSelection } from '@/composables/useSelection'
 import { startOfDay } from '@/lib/dates'
+import { t, locale } from '@/lib/i18n'
 import Calendar from '@/components/Calendar.vue'
 import SearchBar from '@/components/SearchBar.vue'
-import ConfirmBar from '@/components/ConfirmBar.vue'
 import HistoryDay from '@/components/HistoryDay.vue'
 import OptionsModal from '@/components/OptionsModal.vue'
 
 const { options, load, save } = useOptions()
-const { t, locale } = useI18n()
 const { isDark } = useTheme(() => options.theme)
 const history = useHistory()
 const selection = useSelection()
@@ -84,7 +82,12 @@ function onKeydown(e: KeyboardEvent): void {
     <header class="dbh-headerbar flex items-center gap-3 px-4 py-2.5">
       <h1 class="text-base font-bold tracking-tight">{{ t('application_title') }}</h1>
       <div class="ml-auto flex items-center gap-3">
-        <ConfirmBar :count="selection.count.value" :selected-label="t('history_remove_confirm_count')" :delete-label="t('btn_delete')" :cancel-label="t('btn_cancel')" @confirm="removeSelected" @cancel="selection.clear()" />
+        <div v-if="selection.count.value > 0" class="flex items-center gap-2 text-sm">
+          <span class="font-semibold tabular-nums">{{ selection.count.value }}</span>
+          <span>{{ t('history_remove_confirm_count') }}</span>
+          <button class="dbh-btn-primary ml-auto rounded-md px-3 py-1" @click="removeSelected">{{ t('btn_delete') }}</button>
+          <button class="dbh-btn-ghost rounded-md px-3 py-1" @click="selection.clear()">{{ t('btn_cancel') }}</button>
+        </div>
         <div class="flex items-center gap-1">
           <button class="dbh-iconbtn rounded-md p-2" :title="t('btn_options')" @click="optionsOpen = true">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" /></svg>
@@ -98,7 +101,7 @@ function onKeydown(e: KeyboardEvent): void {
     </header>
     <div class="flex min-h-0 flex-1">
       <aside class="dbh-panel flex w-72 shrink-0 flex-col gap-4 overflow-y-auto p-4">
-        <SearchBar ref="searchBar" :placeholder="t('search_placeholder')" @search="onSearch" @clear="onClear" />
+        <SearchBar ref="searchBar" @search="onSearch" @clear="onClear" />
         <div class="dbh-raised rounded-lg p-3">
           <Calendar :key="calendarKey" :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" @select="onSelectDay" />
           <a class="dbh-link mt-3 block border-t border-[color:var(--border)] pt-2 text-center text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
@@ -113,11 +116,11 @@ function onKeydown(e: KeyboardEvent): void {
         <div class="px-6 py-6">
           <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
           <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
-          <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-consecutive="options.groupConsecutive && !history.searching.value" :expanded="expanded" :empty-label="t('history_date_empty')" :remove-label="t('history_remove_single')" :group-remove-label="t('history_remove_group')" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
+          <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-consecutive="options.groupConsecutive && !history.searching.value" :expanded="expanded" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
           <p v-if="!history.days.value.length" class="dbh-muted text-sm">{{ t(history.searching.value ? 'search_empty' : 'history_date_empty') }}</p>
         </div>
       </main>
     </div>
-    <OptionsModal :open="optionsOpen" :options="options" :t="t" @close="optionsOpen = false" @save="onSave" />
+    <OptionsModal :open="optionsOpen" :options="options" @close="optionsOpen = false" @save="onSave" />
   </div>
 </template>

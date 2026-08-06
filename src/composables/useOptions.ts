@@ -1,5 +1,4 @@
 import { reactive } from 'vue'
-import { storageGet, storageSet } from '@/lib/chrome'
 
 export type Theme = 'system' | 'light' | 'dark'
 
@@ -22,18 +21,15 @@ export const DEFAULT_OPTIONS: Options = {
 export function useOptions() {
   const options = reactive<Options>({ ...DEFAULT_OPTIONS })
 
+  // storage.sync.get(defaults) applies the defaults and returns only the known keys.
   async function load(): Promise<void> {
-    const items = await storageGet()
-    options.use24HoursFormat = (items.use24HoursFormat as boolean | undefined) ?? DEFAULT_OPTIONS.use24HoursFormat
-    options.timeBeforeTitle = (items.timeBeforeTitle as boolean | undefined) ?? DEFAULT_OPTIONS.timeBeforeTitle
-    options.groupConsecutive = (items.groupConsecutive as boolean | undefined) ?? DEFAULT_OPTIONS.groupConsecutive
-    options.popupNbItems = Number(items.popupNbItems ?? DEFAULT_OPTIONS.popupNbItems)
-    options.theme = (items.theme as Theme | undefined) ?? DEFAULT_OPTIONS.theme
+    Object.assign(options, await chrome.storage.sync.get(DEFAULT_OPTIONS))
+    options.popupNbItems = Number(options.popupNbItems)
   }
 
   async function save(next: Partial<Options>): Promise<void> {
     Object.assign(options, next)
-    await storageSet({ ...options })
+    await chrome.storage.sync.set({ ...options })
   }
 
   return { options, load, save }

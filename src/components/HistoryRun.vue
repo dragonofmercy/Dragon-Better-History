@@ -2,6 +2,7 @@
 import type { HistoryEntry as Entry, DisplayItem } from '@/composables/useHistory'
 import HistoryEntry from '@/components/HistoryEntry.vue'
 import { faviconUrl } from '@/lib/chrome'
+import { t } from '@/lib/i18n'
 
 defineProps<{
   run: Extract<DisplayItem, { type: 'run' }>
@@ -10,8 +11,6 @@ defineProps<{
   timeBeforeTitle: boolean
   expanded: boolean
   isSelected: (key: string) => boolean
-  removeLabel: string
-  groupRemoveLabel: string
 }>()
 
 const emit = defineEmits<{
@@ -33,12 +32,12 @@ const emit = defineEmits<{
         <span class="dbh-title min-w-0 truncate">{{ run.title }}</span>
         <span class="dbh-count-badge mono shrink-0 text-xs">x{{ run.entries.length }}</span>
       </div>
-      <button class="dbh-rm shrink-0" :title="groupRemoveLabel" @click.stop="emit('remove-group')">
+      <button class="dbh-rm shrink-0" :title="t('history_remove_group')" @click.stop="emit('remove-group')">
         <svg viewBox="0 0 15 15" width="12" height="12" fill="currentColor"><path d="M14.1 1.6L8.2 7.5l5.9 5.9-.7.7L7.5 8.2l-5.9 5.9-.7-.7L6.8 7.5.9 1.6l.7-.7L7.5 6.8 13.4.9z" /></svg>
       </button>
     </div>
     <div v-if="expanded" class="dbh-run-children">
-      <HistoryEntry v-for="entry in run.entries" :key="entry.key" :entry="entry" :locale="locale" :use24="use24" :time-before-title="timeBeforeTitle" :selected="isSelected(entry.key)" :remove-label="removeLabel" @toggle="(ev) => emit('toggle', entry, ev)" @remove="emit('remove', entry)" />
+      <HistoryEntry v-for="entry in run.entries" :key="entry.key" :entry="entry" :locale="locale" :use24="use24" :time-before-title="timeBeforeTitle" :selected="isSelected(entry.key)" @toggle="(ev) => emit('toggle', entry, ev)" @remove="emit('remove', entry)" />
     </div>
   </div>
 </template>

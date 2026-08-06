@@ -6,7 +6,7 @@ const entry = { key: 'https://a::1', url: 'https://a', title: 'A', lastVisitTime
 
 function mountRow(removable?: boolean) {
   return mount(HistoryEntryRow, {
-    props: { entry, locale: 'en', use24: true, timeBeforeTitle: false, selected: false, removeLabel: 'remove', ...(removable === undefined ? {} : { removable }) }
+    props: { entry, locale: 'en', use24: true, timeBeforeTitle: false, ...(removable === undefined ? {} : { removable }) }
   })
 }
 

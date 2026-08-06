@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from 'vue'
 import { useOptions } from '@/composables/useOptions'
-import { useI18n } from '@/composables/useI18n'
 import { useTheme } from '@/composables/useTheme'
 import { useHistory } from '@/composables/useHistory'
 import { useRecentlyClosed } from '@/composables/useRecentlyClosed'
 import { startOfDay } from '@/lib/dates'
+import { t, locale } from '@/lib/i18n'
 import HistoryEntryRow from '@/components/HistoryEntry.vue'
 import ClosedRow from '@/components/ClosedRow.vue'
 import SearchBar from '@/components/SearchBar.vue'
 
 const { options, load } = useOptions()
-const { t, locale } = useI18n()
 useTheme(() => options.theme)
 const history = useHistory()
 const closed = useRecentlyClosed()
@@ -38,7 +37,6 @@ function selectTab(next: 'recent' | 'closed'): void {
 }
 
 function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('history.html') }) }
-function noop(): void { /* popup history entries are not interactive */ }
 </script>
 
 <template>
@@ -52,9 +50,9 @@ function noop(): void { /* popup history entries are not interactive */ }
     </header>
     <div class="min-h-0 flex-1 overflow-y-auto p-3" role="tabpanel">
       <div v-show="tab === 'recent'">
-        <SearchBar :placeholder="t('search_placeholder')" class="mb-2" @search="(q) => history.search(q, today, options.popupNbItems)" @clear="() => history.getDay(today, options.popupNbItems)" />
+        <SearchBar class="mb-2" @search="(q) => history.search(q, today, options.popupNbItems)" @clear="() => history.getDay(today, options.popupNbItems)" />
         <div class="dbh-entries">
-          <HistoryEntryRow v-for="e in entries" :key="e.key" :entry="e" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :selected="false" :removable="false" remove-label="" @toggle="noop" />
+          <HistoryEntryRow v-for="e in entries" :key="e.key" :entry="e" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :removable="false" />
         </div>
         <p v-if="!entries.length" class="dbh-muted text-xs">{{ history.searching.value ? t('search_empty') : t('history_date_empty') }}</p>
       </div>
@@ -69,7 +67,6 @@ function noop(): void { /* popup history entries are not interactive */ }
               :session="s"
               :locale="locale"
               :use24="options.use24HoursFormat"
-              :window-label="s.type === 'window' ? t('closed_window_tabs', String(s.tabCount)) : ''"
               @restore="closed.restore(s.sessionId)"
             />
           </div>

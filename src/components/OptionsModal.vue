@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
 import type { Options } from '@/composables/useOptions'
+import { t } from '@/lib/i18n'
 
-const props = defineProps<{ open: boolean; options: Options; t: (key: string) => string }>()
+const props = defineProps<{ open: boolean; options: Options }>()
 const emit = defineEmits<{ (e: 'close'): void; (e: 'save', value: Options): void }>()
 
 const form = reactive<Options>({ ...props.options })

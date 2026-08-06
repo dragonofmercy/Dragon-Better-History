@@ -10,7 +10,7 @@ const run = { type: 'run' as const, key: 'https://fb/1::1', title: 'Facebook', e
 
 function mountRun(props: Record<string, unknown> = {}) {
   return mount(HistoryRun, {
-    props: { run, locale: 'en', use24: true, timeBeforeTitle: false, expanded: false, isSelected: () => false, removeLabel: 'remove', groupRemoveLabel: 'remove group', ...props }
+    props: { run, locale: 'en', use24: true, timeBeforeTitle: false, expanded: false, isSelected: () => false, ...props }
   })
 }
 

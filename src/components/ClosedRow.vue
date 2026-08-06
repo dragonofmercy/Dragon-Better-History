@@ -3,17 +3,19 @@ import { computed } from 'vue'
 import type { ClosedSession } from '@/composables/useRecentlyClosed'
 import { faviconUrl } from '@/lib/chrome'
 import { formatTime } from '@/lib/dates'
+import { t } from '@/lib/i18n'
 
 const props = defineProps<{
   session: ClosedSession
   locale: string
   use24: boolean
-  windowLabel: string
 }>()
 
 const emit = defineEmits<{ (e: 'restore'): void }>()
 
 const time = computed(() => formatTime(new Date(props.session.lastModified), props.locale, props.use24))
+const label = computed(() => (props.session.type === 'tab' ? props.session.title : t('closed_window_tabs', String(props.session.tabCount))))
+const tooltip = computed(() => (props.session.type === 'tab' ? props.session.url : label.value))
 </script>
 
 <template>
@@ -23,7 +25,7 @@ const time = computed(() => formatTime(new Date(props.session.lastModified), pro
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></svg>
     </span>
     <div class="min-w-0 flex-1 truncate">
-      <span class="dbh-title" :title="session.type === 'tab' ? session.url : windowLabel">{{ session.type === 'tab' ? session.title : windowLabel }}</span>
+      <span class="dbh-title" :title="tooltip">{{ label }}</span>
     </div>
     <span class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
   </div>
