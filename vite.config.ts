@@ -7,6 +7,8 @@ import manifest from './manifest.config'
 
 export default defineConfig({
   plugins: [vue(), tailwindcss(), crx({ manifest })],
+  // Extension pages fetch modules same-origin; Vite's crossorigin modulepreload hints are discarded by Chrome
+  build: { modulePreload: false },
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
   server: { port: 5173, strictPort: true }
 })
