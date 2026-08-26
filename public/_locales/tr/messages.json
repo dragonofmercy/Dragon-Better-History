@@ -107,5 +107,11 @@
     },
     "options_theme_dark": {
         "message": "Koyu"
+    },
+    "btn_sort_newest_first": {
+        "message": "Önce en yeniler"
+    },
+    "btn_sort_oldest_first": {
+        "message": "Önce en eskiler"
     }
 }

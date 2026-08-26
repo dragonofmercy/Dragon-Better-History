@@ -32,6 +32,11 @@ export function groupRuns(entries: HistoryEntry[]): DisplayItem[] {
   return items
 }
 
+export function orderDays(days: DayGroup[], oldestFirst: boolean): DayGroup[] {
+  if (!oldestFirst) return days
+  return days.map((g) => ({ ...g, entries: [...g.entries].reverse() })).reverse()
+}
+
 export function entryKey(item: { url?: string; lastVisitTime?: number }): string {
   return `${item.url}::${item.lastVisitTime}`
 }

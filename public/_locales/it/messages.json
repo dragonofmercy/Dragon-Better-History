@@ -107,5 +107,11 @@
     },
     "options_theme_dark": {
         "message": "Scuro"
+    },
+    "btn_sort_newest_first": {
+        "message": "Dal più recente al più vecchio"
+    },
+    "btn_sort_oldest_first": {
+        "message": "Dal più vecchio al più recente"
     }
 }

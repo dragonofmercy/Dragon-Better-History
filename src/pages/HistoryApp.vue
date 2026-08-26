@@ -2,7 +2,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { useOptions, type Options } from '@/composables/useOptions'
 import { useTheme } from '@/composables/useTheme'
-import { useHistory, type HistoryEntry } from '@/composables/useHistory'
+import { useHistory, orderDays, type HistoryEntry } from '@/composables/useHistory'
 import { useSelection } from '@/composables/useSelection'
 import { startOfDay } from '@/lib/dates'
 import { t, locale } from '@/lib/i18n'
@@ -23,7 +23,8 @@ const optionsOpen = ref(false)
 const query = ref('')
 const searchBar = ref<InstanceType<typeof SearchBar> | null>(null)
 
-const orderedKeys = computed(() => history.days.value.flatMap((g) => g.entries.map((e) => e.key)))
+const displayDays = computed(() => orderDays(history.days.value, options.sortOldestFirst))
+const orderedKeys = computed(() => displayDays.value.flatMap((g) => g.entries.map((e) => e.key)))
 const totalCount = computed(() => orderedKeys.value.length)
 const calendarKey = ref(0)
 const selectedDay = ref<Date | null>(today)
@@ -42,6 +43,9 @@ function scrollMainTop(): void { mainEl.value?.scrollTo({ top: 0 }) }
 
 const themeTitle = computed(() => t(isDark.value ? 'options_theme_light' : 'options_theme_dark'))
 function toggleTheme(): void { save({ theme: isDark.value ? 'light' : 'dark' }) }
+
+const sortTitle = computed(() => t(options.sortOldestFirst ? 'btn_sort_newest_first' : 'btn_sort_oldest_first'))
+function toggleSort(): void { save({ sortOldestFirst: !options.sortOldestFirst }) }
 
 onMounted(async () => {
   await load()
@@ -89,6 +93,10 @@ function onKeydown(e: KeyboardEvent): void {
           <button class="dbh-btn-ghost rounded-md px-3 py-1" @click="selection.clear()">{{ t('btn_cancel') }}</button>
         </div>
         <div class="flex items-center gap-1">
+          <button class="dbh-iconbtn rounded-md p-2" :title="sortTitle" @click="toggleSort">
+            <svg v-if="options.sortOldestFirst" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 16 4 4 4-4" /><path d="M7 20V4" /><path d="M11 4h4" /><path d="M11 8h7" /><path d="M11 12h10" /></svg>
+            <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8 4-4 4 4" /><path d="M7 4v16" /><path d="M11 12h4" /><path d="M11 16h7" /><path d="M11 20h10" /></svg>
+          </button>
           <button class="dbh-iconbtn rounded-md p-2" :title="t('btn_options')" @click="optionsOpen = true">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" /></svg>
           </button>
@@ -116,7 +124,7 @@ function onKeydown(e: KeyboardEvent): void {
         <div class="px-6 py-6">
           <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
           <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
-          <HistoryDay v-for="g in history.days.value" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-consecutive="options.groupConsecutive && !history.searching.value" :expanded="expanded" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
+          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-consecutive="options.groupConsecutive && !history.searching.value" :expanded="expanded" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
           <p v-if="!history.days.value.length" class="dbh-muted text-sm">{{ t(history.searching.value ? 'search_empty' : 'history_date_empty') }}</p>
         </div>
       </main>

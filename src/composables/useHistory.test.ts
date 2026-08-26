@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { groupByDay, entryKey, groupRuns, useHistory } from '@/composables/useHistory'
+import { groupByDay, entryKey, groupRuns, orderDays, useHistory } from '@/composables/useHistory'
 
 function item(url: string, time: number, title = ''): chrome.history.HistoryItem {
   return { id: url, url, title, lastVisitTime: time } as chrome.history.HistoryItem
@@ -39,6 +39,28 @@ describe('groupRuns', () => {
     const items = groupRuns([entry('https://a', 'A', 1), entry('https://b/1', 'B', 2), entry('https://b/2', 'B', 3)])
     expect(items[0].type).toBe('single')
     expect(items[1].type).toBe('run')
+  })
+})
+
+describe('orderDays', () => {
+  const days = [
+    { dayKey: 2, date: new Date(2024, 0, 2), entries: [entry('https://b2', 'B2', 4), entry('https://b1', 'B1', 3)] },
+    { dayKey: 1, date: new Date(2024, 0, 1), entries: [entry('https://a2', 'A2', 2), entry('https://a1', 'A1', 1)] }
+  ]
+
+  it('returns the input untouched when newest first', () => {
+    expect(orderDays(days, false)).toBe(days)
+  })
+
+  it('reverses both the days and their entries when oldest first', () => {
+    const out = orderDays(days, true)
+    expect(out.map((g) => g.dayKey)).toEqual([1, 2])
+    expect(out.flatMap((g) => g.entries.map((e) => e.lastVisitTime))).toEqual([1, 2, 3, 4])
+  })
+
+  it('does not mutate the input', () => {
+    orderDays(days, true)
+    expect(days[0].entries[0].lastVisitTime).toBe(4)
   })
 })
 

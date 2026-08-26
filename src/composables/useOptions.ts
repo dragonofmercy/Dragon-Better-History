@@ -6,6 +6,7 @@ export interface Options {
   use24HoursFormat: boolean
   timeBeforeTitle: boolean
   groupConsecutive: boolean
+  sortOldestFirst: boolean
   popupNbItems: number
   theme: Theme
 }
@@ -14,6 +15,7 @@ export const DEFAULT_OPTIONS: Options = {
   use24HoursFormat: true,
   timeBeforeTitle: false,
   groupConsecutive: false,
+  sortOldestFirst: false,
   popupNbItems: 10,
   theme: 'system'
 }

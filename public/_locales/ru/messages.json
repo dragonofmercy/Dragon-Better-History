@@ -107,5 +107,11 @@
     },
     "options_theme_dark": {
         "message": "Темная"
+    },
+    "btn_sort_newest_first": {
+        "message": "Сначала новые"
+    },
+    "btn_sort_oldest_first": {
+        "message": "Сначала старые"
     }
 }
