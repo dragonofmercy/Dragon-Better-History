@@ -117,12 +117,6 @@
     "options_theme_dark": {
         "message": "Dunkel"
     },
-    "btn_sort_newest_first": {
-        "message": "Neueste zuerst"
-    },
-    "btn_sort_oldest_first": {
-        "message": "Älteste zuerst"
-    },
     "history_sites_today": {
         "message": "Seiten heute"
     },

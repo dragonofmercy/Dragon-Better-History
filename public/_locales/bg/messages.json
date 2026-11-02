@@ -117,12 +117,6 @@
     "options_theme_dark": {
         "message": "Тъмна"
     },
-    "btn_sort_newest_first": {
-        "message": "Първо най-новите"
-    },
-    "btn_sort_oldest_first": {
-        "message": "Първо най-старите"
-    },
     "history_sites_today": {
         "message": "Сайтове днес"
     },

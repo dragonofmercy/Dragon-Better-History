@@ -21,10 +21,11 @@ defineExpose({ clear })
 </script>
 
 <template>
-  <div class="relative">
-    <input ref="input" v-model="value" :placeholder="t('search_placeholder')" type="text" spellcheck="false" autocapitalize="off" class="dbh-input w-full rounded-md px-3 py-1.5 text-sm" />
-    <button v-if="value" class="dbh-rm absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center" aria-label="clear" @click="clear">
+  <label class="dbh-input dbh-muted flex h-11 min-w-0 max-w-[720px] flex-1 basis-80 items-center gap-2.5 rounded-[10px] px-3.5">
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+    <input ref="input" v-model="value" :placeholder="t('search_placeholder')" :aria-label="t('search_placeholder')" type="text" spellcheck="false" autocapitalize="off" class="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none" style="color: var(--text)" />
+    <button v-if="value" type="button" class="dbh-rm !opacity-100" aria-label="clear" @click.prevent="clear">
       <svg viewBox="0 0 15 15" width="11" height="11" fill="currentColor"><path d="M14.1 1.6L8.2 7.5l5.9 5.9-.7.7L7.5 8.2l-5.9 5.9-.7-.7L6.8 7.5.9 1.6l.7-.7L7.5 6.8 13.4.9z" /></svg>
     </button>
-  </div>
+  </label>
 </template>

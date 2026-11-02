@@ -117,12 +117,6 @@
     "options_theme_dark": {
         "message": "Темная"
     },
-    "btn_sort_newest_first": {
-        "message": "Сначала новые"
-    },
-    "btn_sort_oldest_first": {
-        "message": "Сначала старые"
-    },
     "history_sites_today": {
         "message": "Сайты за сегодня"
     },

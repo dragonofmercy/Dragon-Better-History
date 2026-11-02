@@ -1,20 +1,32 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
-import { useOptions, type Options } from '@/composables/useOptions'
+import { onMounted, ref, computed, watch } from 'vue'
+import { useOptions, type Options, type GroupMode } from '@/composables/useOptions'
 import { useTheme } from '@/composables/useTheme'
-import { useHistory, orderDays, type HistoryEntry } from '@/composables/useHistory'
+import { useHistory, orderDays, domainOf, type HistoryEntry } from '@/composables/useHistory'
 import { useSelection } from '@/composables/useSelection'
-import { startOfDay } from '@/lib/dates'
+import { useMonthDensity } from '@/composables/useMonthDensity'
+import { startOfDay, formatDayHeading } from '@/lib/dates'
+import { siteCounts, hourHistogram } from '@/lib/dayStats'
 import { t, locale } from '@/lib/i18n'
 import Calendar from '@/components/Calendar.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import HistoryDay from '@/components/HistoryDay.vue'
+import SiteList from '@/components/SiteList.vue'
+import ActivityChart from '@/components/ActivityChart.vue'
 import OptionsModal from '@/components/OptionsModal.vue'
+
+const logo = '/icons/dom_logo.png'
+const groupModes: { mode: GroupMode; label: string }[] = [
+  { mode: 'none', label: 'group_list' },
+  { mode: 'title', label: 'options_group_title' },
+  { mode: 'domain', label: 'options_group_domain' }
+]
 
 const { options, load, save } = useOptions()
 const { isDark } = useTheme(() => options.theme)
 const history = useHistory()
 const selection = useSelection()
+const density = useMonthDensity()
 
 const now = new Date()
 const today = startOfDay(now)
@@ -22,13 +34,28 @@ const minYear = now.getFullYear() - 3
 const optionsOpen = ref(false)
 const query = ref('')
 const searchBar = ref<InstanceType<typeof SearchBar> | null>(null)
-
-const displayDays = computed(() => orderDays(history.days.value, options.sortOldestFirst))
-const orderedKeys = computed(() => displayDays.value.flatMap((g) => g.entries.map((e) => e.key)))
-const totalCount = computed(() => orderedKeys.value.length)
 const calendarKey = ref(0)
 const selectedDay = ref<Date | null>(today)
 const expanded = ref<Set<string>>(new Set())
+const siteFilter = ref<string | null>(null)
+
+const dayEntries = computed(() => history.days.value.flatMap((g) => g.entries))
+const sites = computed(() => siteCounts(dayEntries.value))
+const histogram = computed(() => hourHistogram(dayEntries.value))
+const filteredDays = computed(() => {
+  const f = siteFilter.value
+  if (!f) return history.days.value
+  return history.days.value.map((g) => ({ ...g, entries: g.entries.filter((e) => domainOf(e.url) === f) })).filter((g) => g.entries.length > 0)
+})
+const displayDays = computed(() => orderDays(filteredDays.value, options.sortOldestFirst))
+const orderedKeys = computed(() => displayDays.value.flatMap((g) => g.entries.map((e) => e.key)))
+const totalCount = computed(() => orderedKeys.value.length)
+const summary = computed(() => t('history_summary', [String(totalCount.value), String(new Set(displayDays.value.flatMap((g) => g.entries.map((e) => domainOf(e.url)))).size)]))
+const heading = computed(() => (history.searching.value ? `${t('search_display')} "${query.value}"` : siteFilter.value ?? (selectedDay.value ? formatDayHeading(selectedDay.value, locale) : '')))
+const emptyMessage = computed(() => (siteFilter.value ? 'history_filter_empty' : history.searching.value ? 'search_empty' : 'history_date_empty'))
+
+// A removal can empty the filtered domain: drop the filter so the list never shows a dead state.
+watch(dayEntries, (all) => { if (siteFilter.value && !all.some((e) => domainOf(e.url) === siteFilter.value)) siteFilter.value = null })
 
 function toggleExpand(key: string): void {
   const next = new Set(expanded.value)
@@ -44,18 +71,22 @@ function scrollMainTop(): void { mainEl.value?.scrollTo({ top: 0 }) }
 const themeTitle = computed(() => t(isDark.value ? 'options_theme_light' : 'options_theme_dark'))
 function toggleTheme(): void { save({ theme: isDark.value ? 'light' : 'dark' }) }
 
-const sortTitle = computed(() => t(options.sortOldestFirst ? 'btn_sort_newest_first' : 'btn_sort_oldest_first'))
+const sortLabel = computed(() => t(options.sortOldestFirst ? 'sort_oldest_label' : 'sort_newest_label'))
 function toggleSort(): void { save({ sortOldestFirst: !options.sortOldestFirst }) }
+
+function onSite(domain: string): void { siteFilter.value = siteFilter.value === domain ? null : domain; selection.clear() }
+function onMonth(year: number, month: number): void { density.load(year, month).catch(() => {}) }
 
 onMounted(async () => {
   await load()
   await history.getDay(today)
 })
 
-function onSelectDay(d: Date): void { expanded.value = new Set(); query.value = ''; searchBar.value?.clear(); selection.clear(); selectedDay.value = startOfDay(d); history.getDay(d); scrollMainTop() }
+function resetView(): void { siteFilter.value = null; expanded.value = new Set(); selection.clear(); scrollMainTop() }
+function onSelectDay(d: Date): void { resetView(); query.value = ''; searchBar.value?.clear(); selectedDay.value = startOfDay(d); history.getDay(d) }
 function onToday(): void { onSelectDay(today); calendarKey.value++ }
-function onSearch(q: string): void { expanded.value = new Set(); query.value = q; selection.clear(); selectedDay.value = null; history.search(q, today); scrollMainTop() }
-function onClear(): void { expanded.value = new Set(); query.value = ''; selection.clear(); selectedDay.value = today; history.getDay(today); scrollMainTop() }
+function onSearch(q: string): void { resetView(); query.value = q; selectedDay.value = null; history.search(q, today) }
+function onClear(): void { resetView(); query.value = ''; selectedDay.value = today; history.getDay(today) }
 
 function onToggle(entry: HistoryEntry, ev: MouseEvent | KeyboardEvent): void {
   if (ev.shiftKey) selection.range(entry.key, orderedKeys.value)
@@ -83,49 +114,60 @@ function onKeydown(e: KeyboardEvent): void {
 
 <template>
   <div class="compact dbh-root flex h-screen flex-col" tabindex="0" @keydown="onKeydown" @click.self="selection.clear()">
-    <header class="dbh-headerbar flex items-center gap-3 px-4 py-2.5">
-      <h1 class="text-base font-bold tracking-tight">{{ t('application_title') }}</h1>
-      <div class="ml-auto flex items-center gap-3">
-        <div v-if="selection.count.value > 0" class="flex items-center gap-2 text-sm">
-          <span class="font-semibold tabular-nums">{{ selection.count.value }}</span>
-          <span>{{ t('history_remove_confirm_count') }}</span>
-          <button class="dbh-btn-primary ml-auto rounded-md px-3 py-1" @click="removeSelected">{{ t('btn_delete') }}</button>
-          <button class="dbh-btn-ghost rounded-md px-3 py-1" @click="selection.clear()">{{ t('btn_cancel') }}</button>
-        </div>
-        <div class="flex items-center gap-1">
-          <button class="dbh-iconbtn rounded-md p-2" :title="sortTitle" @click="toggleSort">
-            <svg v-if="options.sortOldestFirst" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 16 4 4 4-4" /><path d="M7 20V4" /><path d="M11 4h4" /><path d="M11 8h7" /><path d="M11 12h10" /></svg>
-            <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8 4-4 4 4" /><path d="M7 4v16" /><path d="M11 12h4" /><path d="M11 16h7" /><path d="M11 20h10" /></svg>
-          </button>
-          <button class="dbh-iconbtn rounded-md p-2" :title="t('btn_options')" @click="optionsOpen = true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" /></svg>
-          </button>
-          <button class="dbh-iconbtn rounded-md p-2" :title="themeTitle" @click="toggleTheme">
-            <svg v-if="isDark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" /></svg>
-            <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
-          </button>
-        </div>
+    <header class="dbh-headerbar flex flex-wrap items-center gap-4 px-6 py-3.5">
+      <h1 class="w-64 flex-none text-[15px] font-semibold">{{ t('application_title') }}</h1>
+      <SearchBar ref="searchBar" @search="onSearch" @clear="onClear" />
+      <div class="ml-auto flex items-center gap-1">
+        <button class="dbh-iconbtn flex h-10 w-10 items-center justify-center rounded-lg" :title="themeTitle" :aria-label="themeTitle" @click="toggleTheme">
+          <svg v-if="isDark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" /></svg>
+          <svg v-else width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
+        </button>
+        <button class="dbh-iconbtn flex h-10 w-10 items-center justify-center rounded-lg" :title="t('btn_options')" :aria-label="t('btn_options')" @click="optionsOpen = true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10" /><circle cx="16" cy="7" r="2" /><circle cx="8" cy="17" r="2" /></svg>
+        </button>
       </div>
     </header>
     <div class="flex min-h-0 flex-1">
-      <aside class="dbh-panel flex w-72 shrink-0 flex-col gap-4 overflow-y-auto p-4">
-        <SearchBar ref="searchBar" @search="onSearch" @clear="onClear" />
-        <div class="dbh-raised rounded-lg p-3">
-          <Calendar :key="calendarKey" :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" @select="onSelectDay" />
+      <aside class="dbh-panel flex w-[304px] shrink-0 flex-col gap-7 overflow-y-auto p-6">
+        <div>
+          <Calendar :key="calendarKey" :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" :density="density.levels.value" @select="onSelectDay" @month-change="onMonth" />
           <a class="dbh-link mt-3 block border-t border-[color:var(--border)] pt-2 text-center text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
         </div>
-        <footer class="dbh-faint mt-auto flex flex-col items-start gap-1 text-xs">
-          <img src="/icons/dom_logo.png" alt="" class="h-8 w-auto" />
+        <SiteList v-if="!history.searching.value" :sites="sites" :active="siteFilter" @pick="onSite" />
+        <footer class="dbh-muted mt-auto flex flex-col gap-2 text-xs">
+          <img :src="logo" alt="DragonOfMercy" class="h-12 w-12" />
           <div>Created by DragonOfMercy</div>
           <a href="https://github.com/dragonofmercy" target="_blank" class="dbh-link">https://github.com/dragonofmercy</a>
         </footer>
       </aside>
-      <main ref="mainEl" class="flex-1 overflow-y-auto">
-        <div class="px-6 py-6">
-          <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
-          <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
-          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded" :is-selected="selection.isSelected" :show-heading="true" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
-          <p v-if="!history.days.value.length" class="dbh-muted text-sm">{{ t(history.searching.value ? 'search_empty' : 'history_date_empty') }}</p>
+      <main ref="mainEl" class="min-w-0 flex-1 overflow-y-auto">
+        <div class="px-8 pb-8 pt-6">
+          <div class="mb-6 flex flex-wrap items-end gap-x-8 gap-y-4">
+            <div class="min-w-[280px] flex-1">
+              <h2 class="text-[30px] font-semibold leading-tight tracking-tight">{{ heading }}</h2>
+              <p v-if="history.searching.value" class="dbh-muted mt-1.5">{{ t('search_found', String(totalCount)) }}</p>
+              <p v-else class="dbh-muted mt-1.5">{{ summary }}</p>
+            </div>
+            <ActivityChart v-if="!history.searching.value" :counts="histogram" />
+          </div>
+          <div class="mb-4 flex flex-wrap items-center gap-2">
+            <div v-if="!history.searching.value" role="group" class="flex gap-0.5 rounded-lg p-[3px]" style="background: var(--raised)">
+              <button v-for="g in groupModes" :key="g.mode" class="dbh-seg" :class="{ 'is-on': options.groupMode === g.mode }" :aria-pressed="options.groupMode === g.mode" @click="save({ groupMode: g.mode })">{{ t(g.label) }}</button>
+            </div>
+            <button class="dbh-seg dbh-sort ml-auto flex items-center gap-1.5" @click="toggleSort">
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 16 4 4 4-4M7 20V4M13 6h8M13 12h5M13 18h2" /></svg>
+              {{ sortLabel }}
+            </button>
+          </div>
+          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded" :is-selected="selection.isSelected" :show-heading="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
+          <p v-if="!displayDays.length" class="dbh-muted border-t border-[color:var(--border)] py-12 text-center">{{ t(emptyMessage) }}</p>
+          <div v-if="selection.count.value > 0" class="sticky bottom-5 mt-4 flex justify-center">
+            <div role="status" class="flex items-center gap-3 rounded-xl py-2 pl-[18px] pr-2 shadow-lg" style="background: var(--raised); border: 1px solid var(--border)">
+              <span><strong class="mono font-medium">{{ selection.count.value }}</strong> {{ t('history_remove_confirm_count') }}</span>
+              <button class="dbh-iconbtn h-9 rounded-lg px-3" @click="selection.clear()">{{ t('btn_cancel') }}</button>
+              <button class="dbh-danger h-9 rounded-lg px-3.5" @click="removeSelected">{{ t('btn_delete') }}</button>
+            </div>
+          </div>
         </div>
       </main>
     </div>

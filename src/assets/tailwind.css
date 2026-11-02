@@ -175,6 +175,12 @@
   .dbh-segmented label:has(input:checked) { background: var(--accent); color: var(--on-accent); }
   .dbh-segmented label:has(input:focus-visible) { box-shadow: 0 0 0 3px var(--ring); }
 
+  .dbh-site { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 36px; padding: 0 8px; border-radius: 8px; font-size: 13px; text-align: left; }
+  .dbh-site:hover { background: var(--hover); }
+  .dbh-site.is-on { background: var(--soft); font-weight: 500; }
+  .dbh-danger { background: #da373c; color: #ffffff; font-weight: 500; }
+  .dbh-danger:hover { background: #c22f34; }
+
   .dbh-cal-day { color: var(--text); }
   .dbh-cal-day:not(:disabled):hover { background: var(--accent-soft); }
   .dbh-cal-day.is-h1 { background: var(--h1); }
