@@ -21,7 +21,7 @@ defineExpose({ clear })
 </script>
 
 <template>
-  <label class="dbh-input dbh-muted flex h-11 min-w-0 max-w-[720px] flex-1 basis-80 items-center gap-2.5 rounded-[10px] px-3.5">
+  <label class="dbh-input dbh-muted flex h-11 min-w-0 max-w-[720px] items-center gap-2.5 rounded-[10px] px-3.5">
     <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
     <input ref="input" v-model="value" :placeholder="t('search_placeholder')" :aria-label="t('search_placeholder')" type="text" spellcheck="false" autocapitalize="off" class="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none" style="color: var(--text)" />
     <button v-if="value" type="button" class="dbh-rm !opacity-100" aria-label="clear" @click.prevent="clear">

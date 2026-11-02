@@ -32,4 +32,8 @@ describe('dayStats', () => {
     expect([...m.values()]).toEqual([1, 2, 3])
     expect(m.size).toBe(3)
   })
+
+  it('siteCounts ignores file:// URLs', () => {
+    expect(siteCounts([at(2024, 4, 9, 1, 'file:///x/y.html')])).toEqual([])
+  })
 })

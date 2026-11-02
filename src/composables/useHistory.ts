@@ -19,6 +19,7 @@ export type DisplayItem =
   | { type: 'run'; key: string; title: string; entries: HistoryEntry[] }
 
 export function domainOf(url: string): string {
+  if (!/^https?:/.test(url)) return ''
   try { return new URL(url).hostname.replace(/^www\./, '') } catch { return '' }
 }
 

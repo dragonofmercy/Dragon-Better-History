@@ -30,7 +30,6 @@
     --ghost: var(--raised);
     --ghost-hover: #d7d9dc;
     --border: #d7d9dc;
-    --row-border: var(--border);
     --text: #060607;
     --muted: #4e5058;
     --faint: #666871;
@@ -78,8 +77,6 @@
 
   .dbh-root { background: var(--bg); color: var(--text); }
   .dbh-panel { background: var(--panel); border-right: 1px solid var(--border); }
-  .dbh-card { background: var(--panel); border: 1px solid var(--border); color: var(--text); }
-  .dbh-raised { background: var(--raised); border: 1px solid var(--border); color: var(--text); }
   .dbh-headerbar { background: var(--panel); border-bottom: 1px solid var(--border); }
   .dbh-iconbtn { color: var(--muted); }
   .dbh-iconbtn:hover { color: var(--text); background: var(--hover); }
@@ -123,16 +120,7 @@
 
   .dbh-input { background: var(--input); border: 1px solid var(--border); color: var(--text); transition: border-color 0.15s ease, box-shadow 0.15s ease; }
   .dbh-input::placeholder { color: var(--faint); }
-  .dbh-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--ring); }
-
-  .dbh-btn-primary,
-  .dbh-btn-ghost { font-weight: 500; transition: background-color 0.15s ease; }
-  .dbh-btn-primary:focus-visible,
-  .dbh-btn-ghost:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
-  .dbh-btn-primary { background: var(--accent); color: var(--on-accent); }
-  .dbh-btn-primary:hover { background: var(--accent-strong); }
-  .dbh-btn-ghost { background: var(--ghost); color: var(--text); }
-  .dbh-btn-ghost:hover { background: var(--ghost-hover); }
+  .dbh-input:focus, .dbh-input:focus-within { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
   /* Native checkbox rendered as a toggle switch. */
   .dbh-switch {
@@ -166,14 +154,6 @@
   .dbh-seg { padding: 6px 12px; border-radius: 6px; font-size: 13px; color: var(--muted); }
   .dbh-seg:hover { color: var(--text); }
   .dbh-seg.is-on, .dbh-seg.is-on:hover { background: var(--accent); color: var(--on-accent); font-weight: 500; }
-
-  /* Native radios rendered as a segmented button. */
-  .dbh-segmented { display: inline-flex; gap: 2px; padding: 2px; border-radius: 0.375rem; background: var(--ghost); font-size: 0.875rem; }
-  .dbh-segmented label { padding: 0.25rem 0.75rem; border-radius: 0.25rem; cursor: pointer; transition: background-color 0.15s ease; }
-  .dbh-segmented label:hover { background: var(--ghost-hover); }
-  .dbh-segmented input { position: absolute; width: 0; height: 0; opacity: 0; }
-  .dbh-segmented label:has(input:checked) { background: var(--accent); color: var(--on-accent); }
-  .dbh-segmented label:has(input:focus-visible) { box-shadow: 0 0 0 3px var(--ring); }
 
   .dbh-site { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 36px; padding: 0 8px; border-radius: 8px; font-size: 13px; text-align: left; }
   .dbh-site:hover { background: var(--hover); }

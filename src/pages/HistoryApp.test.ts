@@ -98,4 +98,52 @@ describe('HistoryApp', () => {
     expect(w.find('.dbh-chart').exists()).toBe(false)
     expect(w.find('.dbh-site').exists()).toBe(false)
   })
+
+  async function searchFor(w: Awaited<ReturnType<typeof mountApp>>, q: string) {
+    vi.useFakeTimers()
+    await w.find('input').setValue(q)
+    vi.advanceTimersByTime(600)
+    vi.useRealTimers()
+    await flushPromises()
+  }
+
+  it('Delete and Ctrl+A are ignored while the options drawer is open', async () => {
+    const w = await mountApp()
+    await rows(w)[0].trigger('click')
+    await w.find('[aria-label="btn_options"]').trigger('click')
+    await w.find('.dbh-root').trigger('keydown', { key: 'Delete' })
+    await w.find('.dbh-root').trigger('keydown', { key: 'a', ctrlKey: true })
+    await flushPromises()
+    expect(c.history.deleteUrl).not.toHaveBeenCalled()
+    expect(w.find('[role="status"]').text()).toContain('1')
+  })
+
+  it('picking a day during a search stays on that day', async () => {
+    const w = await mountApp()
+    await searchFor(w, 'a')
+    const picked = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 2)
+    w.findComponent({ name: 'Calendar' }).vm.$emit('select', picked)
+    await flushPromises()
+    const calls = (c.history.search as ReturnType<typeof vi.fn>).mock.calls
+    expect(calls[calls.length - 1]![0]).toMatchObject({ text: '', startTime: picked.getTime() })
+    expect(w.find('.dbh-cal-day.is-selected').text()).toBe(String(picked.getDate()))
+  })
+
+  it('clearing a non-empty search returns to today', async () => {
+    const w = await mountApp()
+    await searchFor(w, 'a')
+    await w.find('input').setValue('')
+    await flushPromises()
+    const calls = (c.history.search as ReturnType<typeof vi.fn>).mock.calls
+    expect(calls[calls.length - 1]![0]).toMatchObject({ text: '' })
+    expect(w.find('.dbh-chart').exists()).toBe(true)
+  })
+
+  it('a search with no results shows only the empty message', async () => {
+    const w = await mountApp()
+    items = []
+    await searchFor(w, 'zzz')
+    expect(w.text()).toContain('search_empty')
+    expect(w.text()).not.toContain('search_found')
+  })
 })

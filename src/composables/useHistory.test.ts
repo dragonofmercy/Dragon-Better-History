@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { groupByDay, entryKey, groupRuns, orderDays, useHistory } from '@/composables/useHistory'
+import { groupByDay, entryKey, groupRuns, orderDays, domainOf, useHistory } from '@/composables/useHistory'
 
 function item(url: string, time: number, title = ''): chrome.history.HistoryItem {
   return { id: url, url, title, lastVisitTime: time } as chrome.history.HistoryItem
@@ -152,5 +152,17 @@ describe('useHistory', () => {
     const h = useHistory()
     await h.search('bar', new Date(2024, 0, 2))
     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ text: 'bar', maxResults: 0 }))
+  })
+
+  it('domainOf returns empty for non-http and malformed URLs', () => {
+    expect(domainOf('https://www.a.com/x')).toBe('a.com')
+    expect(domainOf('chrome://settings')).toBe('')
+    expect(domainOf('file:///x')).toBe('')
+    expect(domainOf('not a url')).toBe('')
+  })
+
+  it('groupRuns domain mode does not group chrome:// URLs', () => {
+    const items = groupRuns([entry('chrome://settings', 'S', 2), entry('chrome://settings/a', 'F', 1)], 'domain')
+    expect(items.map((i) => i.type)).toEqual(['single', 'single'])
   })
 })

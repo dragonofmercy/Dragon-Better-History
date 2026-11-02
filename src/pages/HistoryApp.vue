@@ -50,7 +50,7 @@ const filteredDays = computed(() => {
 const displayDays = computed(() => orderDays(filteredDays.value, options.sortOldestFirst))
 const orderedKeys = computed(() => displayDays.value.flatMap((g) => g.entries.map((e) => e.key)))
 const totalCount = computed(() => orderedKeys.value.length)
-const summary = computed(() => t('history_summary', [String(totalCount.value), String(new Set(displayDays.value.flatMap((g) => g.entries.map((e) => domainOf(e.url)))).size)]))
+const summary = computed(() => t('history_summary', [String(totalCount.value), String(new Set(displayDays.value.flatMap((g) => g.entries.map((e) => domainOf(e.url))).filter(Boolean)).size)]))
 const heading = computed(() => (history.searching.value ? `${t('search_display')} "${query.value}"` : siteFilter.value ?? (selectedDay.value ? formatDayHeading(selectedDay.value, locale) : '')))
 const emptyMessage = computed(() => (siteFilter.value ? 'history_filter_empty' : history.searching.value ? 'search_empty' : 'history_date_empty'))
 
@@ -86,7 +86,7 @@ function resetView(): void { siteFilter.value = null; expanded.value = new Set()
 function onSelectDay(d: Date): void { resetView(); query.value = ''; searchBar.value?.clear(); selectedDay.value = startOfDay(d); history.getDay(d) }
 function onToday(): void { onSelectDay(today); calendarKey.value++ }
 function onSearch(q: string): void { resetView(); query.value = q; selectedDay.value = null; history.search(q, today) }
-function onClear(): void { resetView(); query.value = ''; selectedDay.value = today; history.getDay(today) }
+function onClear(): void { if (!query.value) return; resetView(); query.value = ''; selectedDay.value = today; history.getDay(today) }
 
 function onToggle(entry: HistoryEntry, ev: MouseEvent | KeyboardEvent): void {
   if (ev.shiftKey) selection.range(entry.key, orderedKeys.value)
@@ -103,6 +103,7 @@ async function removeSelected(): Promise<void> {
 }
 
 function onKeydown(e: KeyboardEvent): void {
+  if (optionsOpen.value) return
   const target = e.target as HTMLElement
   if (target.tagName === 'INPUT') return
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') { e.preventDefault(); selection.selectAll(orderedKeys.value) }
@@ -114,7 +115,7 @@ function onKeydown(e: KeyboardEvent): void {
   <div class="compact dbh-root flex h-screen flex-col" tabindex="0" @keydown="onKeydown" @click.self="selection.clear()">
     <header class="dbh-headerbar flex flex-wrap items-center gap-4 px-6 py-3.5">
       <h1 class="w-64 flex-none text-[15px] font-semibold">{{ t('application_title') }}</h1>
-      <SearchBar ref="searchBar" @search="onSearch" @clear="onClear" />
+      <SearchBar ref="searchBar" class="flex-1 basis-80" @search="onSearch" @clear="onClear" />
       <div class="ml-auto flex items-center gap-1">
         <button class="dbh-iconbtn flex h-10 w-10 items-center justify-center rounded-lg" :title="themeTitle" :aria-label="themeTitle" @click="toggleTheme">
           <svg v-if="isDark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" /></svg>
@@ -143,8 +144,8 @@ function onKeydown(e: KeyboardEvent): void {
           <div class="mb-6 flex flex-wrap items-end gap-x-8 gap-y-4">
             <div class="min-w-[280px] flex-1">
               <h2 class="text-[30px] font-semibold leading-tight tracking-tight">{{ heading }}</h2>
-              <p v-if="history.searching.value" class="dbh-muted mt-1.5">{{ t('search_found', String(totalCount)) }}</p>
-              <p v-else class="dbh-muted mt-1.5">{{ summary }}</p>
+              <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mt-1.5">{{ t('search_found', String(totalCount)) }}</p>
+              <p v-else-if="!history.searching.value" class="dbh-muted mt-1.5">{{ summary }}</p>
             </div>
             <ActivityChart v-if="!history.searching.value" :counts="histogram" />
           </div>

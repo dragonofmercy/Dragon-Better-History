@@ -7,8 +7,10 @@ export function useMonthDensity() {
 
   async function load(year: number, month: number): Promise<void> {
     const id = ++request
-    const items = await chrome.history.search({ text: '', startTime: new Date(year, month, 1).getTime(), endTime: new Date(year, month + 1, 1).getTime(), maxResults: 0 })
-    if (id === request) levels.value = densityLevels(items)
+    const start = new Date(year, month, 1).getTime()
+    const end = new Date(year, month + 1, 1).getTime()
+    const items = await chrome.history.search({ text: '', startTime: start, endTime: end, maxResults: 0 })
+    if (id === request) levels.value = densityLevels(items.filter((i) => i.lastVisitTime !== undefined && i.lastVisitTime >= start && i.lastVisitTime < end))
   }
 
   return { levels, load }

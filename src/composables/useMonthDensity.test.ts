@@ -18,4 +18,13 @@ describe('useMonthDensity', () => {
     expect([...levels.value.keys()]).toEqual([new Date(2024, 4, 7).getTime()])
     expect(search.mock.calls[0]![0]).toMatchObject({ text: '', maxResults: 0 })
   })
+
+  it('ignores items outside the requested month', async () => {
+    const inside = new Date(2024, 4, 7).getTime()
+    const outside = new Date(2024, 5, 2).getTime()
+    ;(chrome.history as unknown as { search: unknown }).search = vi.fn(async () => [{ lastVisitTime: inside }, { lastVisitTime: outside }])
+    const { levels, load } = useMonthDensity()
+    await load(2024, 4)
+    expect([...levels.value.keys()]).toEqual([inside])
+  })
 })
