@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, watch } from 'vue'
-import { useOptions, type Options, type GroupMode } from '@/composables/useOptions'
+import { useOptions, type GroupMode } from '@/composables/useOptions'
 import { useTheme } from '@/composables/useTheme'
 import { useHistory, orderDays, domainOf, type HistoryEntry } from '@/composables/useHistory'
 import { useSelection } from '@/composables/useSelection'
@@ -102,8 +102,6 @@ async function removeSelected(): Promise<void> {
   selection.clear()
 }
 
-async function onSave(value: Options): Promise<void> { await save(value); optionsOpen.value = false; location.reload() }
-
 function onKeydown(e: KeyboardEvent): void {
   const target = e.target as HTMLElement
   if (target.tagName === 'INPUT') return
@@ -171,6 +169,6 @@ function onKeydown(e: KeyboardEvent): void {
         </div>
       </main>
     </div>
-    <OptionsModal :open="optionsOpen" :options="options" @close="optionsOpen = false" @save="onSave" />
+    <OptionsModal :open="optionsOpen" :options="options" @close="optionsOpen = false" @change="save" />
   </div>
 </template>
