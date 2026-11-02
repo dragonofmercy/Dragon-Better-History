@@ -27,4 +27,25 @@ describe('Calendar', () => {
     expect(emitted.getHours()).toBe(0)
     expect(emitted.getDate()).toBe(10)
   })
+
+  it('emits month-change on mount and on next/prev', async () => {
+    const wrapper = mount(Calendar, { props: { locale: 'en', today, minYear: 2021 } })
+    expect(wrapper.emitted('month-change')?.[0]).toEqual([2024, 4])
+    await wrapper.find('[data-prev]').trigger('click')
+    expect(wrapper.emitted('month-change')?.[1]).toEqual([2024, 3])
+    await wrapper.find('[data-next]').trigger('click')
+    expect(wrapper.emitted('month-change')?.[2]).toEqual([2024, 4])
+  })
+
+  it('a day with density 2 has class is-h2', () => {
+    const ts = new Date(2024, 4, 10).getTime()
+    const wrapper = mount(Calendar, { props: { locale: 'en', today, minYear: 2021, density: new Map([[ts, 2 as const]]) } })
+    expect(wrapper.find(`[data-ts="${ts}"]`).classes()).toContain('is-h2')
+  })
+
+  it('the selected day keeps is-selected', () => {
+    const ts = new Date(2024, 4, 10).getTime()
+    const wrapper = mount(Calendar, { props: { locale: 'en', today, minYear: 2021, selected: new Date(ts), density: new Map([[ts, 3 as const]]) } })
+    expect(wrapper.find(`[data-ts="${ts}"]`).classes()).toContain('is-selected')
+  })
 })

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { startOfDay, normalizeLocale } from '@/lib/dates'
+import { t } from '@/lib/i18n'
 
-const props = defineProps<{ locale: string; today: Date; minYear: number; selected?: Date | null }>()
-const emit = defineEmits<{ (e: 'select', d: Date): void }>()
+const props = defineProps<{ locale: string; today: Date; minYear: number; selected?: Date | null; density?: Map<number, 1 | 2 | 3> }>()
+const emit = defineEmits<{ (e: 'select', d: Date): void; (e: 'month-change', year: number, month: number): void }>()
 
 const view = ref({ year: props.today.getFullYear(), month: props.today.getMonth() })
 
@@ -47,18 +48,25 @@ const cells = computed<Cell[]>(() => {
 const canPrev = computed(() => view.value.year > props.minYear || view.value.month > 0)
 const canNext = computed(() => new Date(view.value.year, view.value.month + 1, 1) <= props.today)
 
+// ponytail: density reloads only on month change, so deletions show after the next navigation
+function emitMonth(): void { emit('month-change', view.value.year, view.value.month) }
+onMounted(emitMonth)
+
 function prev(): void {
   const m = view.value.month - 1
   view.value = m < 0 ? { year: view.value.year - 1, month: 11 } : { year: view.value.year, month: m }
+  emitMonth()
 }
 function next(): void {
   const m = view.value.month + 1
   view.value = m > 11 ? { year: view.value.year + 1, month: 0 } : { year: view.value.year, month: m }
+  emitMonth()
 }
 function pick(c: Cell): void {
   if (c.disabled) return
   emit('select', startOfDay(c.date))
 }
+function level(ts: number): string { const l = props.density?.get(ts); return l ? `is-h${l}` : '' }
 function isToday(ts: number): boolean { return ts === startOfDay(props.today).getTime() }
 function isSelected(ts: number): boolean { return props.selected != null && startOfDay(props.selected).getTime() === ts }
 </script>
@@ -66,15 +74,21 @@ function isSelected(ts: number): boolean { return props.selected != null && star
 <template>
   <div class="text-sm">
     <div class="mb-2 flex items-center justify-between">
-      <button :disabled="!canPrev" class="dbh-nav px-2 disabled:opacity-30" @click="prev">&lsaquo;</button>
-      <span class="font-medium capitalize">{{ monthLabel }}</span>
-      <button :disabled="!canNext" class="dbh-nav px-2 disabled:opacity-30" @click="next">&rsaquo;</button>
+      <span class="font-bold capitalize">{{ monthLabel }}</span>
+      <span class="flex gap-1">
+        <button data-prev :disabled="!canPrev" :aria-label="t('calendar_prev_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="prev">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <button data-next :disabled="!canNext" :aria-label="t('calendar_next_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="next">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      </span>
     </div>
     <div class="dbh-faint grid grid-cols-7 gap-0.5 text-center text-xs">
       <span v-for="w in weekdayLabels" :key="w" data-weekday>{{ w }}</span>
     </div>
     <div class="grid grid-cols-7 gap-0.5 text-center">
-      <button v-for="c in cells" :key="c.ts" data-day :data-ts="c.ts" :disabled="c.disabled" class="dbh-cal-day aspect-square rounded-md text-xs disabled:opacity-25" :class="[c.inMonth ? '' : 'is-out', isToday(c.ts) ? 'is-today' : '', isSelected(c.ts) ? 'is-selected' : '']" @click="pick(c)">{{ c.date.getDate() }}</button>
+      <button v-for="c in cells" :key="c.ts" data-day :data-ts="c.ts" :disabled="c.disabled" class="dbh-cal-day aspect-square rounded-md text-xs disabled:opacity-25" :class="[c.inMonth ? '' : 'is-out', level(c.ts), isToday(c.ts) ? 'is-today' : '', isSelected(c.ts) ? 'is-selected' : '']" @click="pick(c)">{{ c.date.getDate() }}</button>
     </div>
   </div>
 </template>

@@ -173,6 +173,9 @@
 
   .dbh-cal-day { color: var(--text); }
   .dbh-cal-day:not(:disabled):hover { background: var(--accent-soft); }
+  .dbh-cal-day.is-h1 { background: var(--h1); }
+  .dbh-cal-day.is-h2 { background: var(--h2); }
+  .dbh-cal-day.is-h3 { background: var(--h3); }
   .dbh-cal-day.is-out { color: var(--faint); }
   /* Today is marked by a small corner triangle; the selected (viewed) day is the filled one. */
   .dbh-cal-day.is-today { position: relative; }
