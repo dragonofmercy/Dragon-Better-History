@@ -29,6 +29,13 @@ describe('HistoryDay', () => {
     expect(w.findAll('.dbh-hour')).toHaveLength(2)
   })
 
+  it('flat renders every entry in one block without hour labels', () => {
+    const w = mountDay([e(1, 10, 5, 'A'), e(2, 9, 30, 'B')], { flat: true })
+    expect(w.findAll('.dbh-hour')).toHaveLength(1)
+    expect(w.find('.dbh-hour-label').exists()).toBe(false)
+    expect(w.findAll('.dbh-entry')).toHaveLength(2)
+  })
+
   it('showHeading false hides the day heading', () => {
     expect(mountDay([e(1, 10, 0)], { showHeading: false }).find('h2').exists()).toBe(false)
     expect(mountDay([e(1, 10, 0)]).find('h2').exists()).toBe(true)

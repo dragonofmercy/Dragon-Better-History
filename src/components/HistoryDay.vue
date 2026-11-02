@@ -17,6 +17,7 @@ const props = defineProps<{
   expanded: Set<string>
   isSelected: (key: string) => boolean
   showHeading: boolean
+  flat?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -27,7 +28,7 @@ const emit = defineEmits<{
 }>()
 
 const blocks = computed(() =>
-  groupByHour(props.group.entries).map((b) => ({
+  (props.flat ? [{ hour: -1, entries: props.group.entries }] : groupByHour(props.group.entries)).map((b) => ({
     hour: b.hour,
     items: props.groupMode === 'none' ? b.entries.map((entry): DisplayItem => ({ type: 'single', entry })) : groupRuns(b.entries, props.groupMode)
   }))
@@ -43,7 +44,7 @@ const blocks = computed(() =>
     </h2>
     <template v-if="group.entries.length">
       <section v-for="b in blocks" :key="b.hour" class="dbh-hour">
-        <h3 class="dbh-hour-label mono">{{ formatHour(b.hour, locale, use24) }}</h3>
+        <h3 v-if="!flat" class="dbh-hour-label mono">{{ formatHour(b.hour, locale, use24) }}</h3>
         <div class="min-w-0 flex-1">
           <template v-for="it in b.items" :key="it.type === 'run' ? it.key : it.entry.key">
             <HistoryRun v-if="it.type === 'run'" :run="it" :locale="locale" :use24="use24" :time-before-title="timeBeforeTitle" :expanded="expanded.has(it.key)" :is-selected="isSelected" @toggle-expand="emit('toggle-expand', it.key)" @remove-group="emit('remove-group', it.entries.map((e) => e.key))" @toggle="(entry, ev) => emit('toggle', entry, ev)" @remove="(entry) => emit('remove', entry)" />
