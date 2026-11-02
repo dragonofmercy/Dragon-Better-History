@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { X } from '@lucide/vue'
 import { computed } from 'vue'
 import { domainOf, type HistoryEntry } from '@/composables/useHistory'
 import { faviconUrl } from '@/lib/chrome'
@@ -38,7 +39,7 @@ function onKey(ev: KeyboardEvent): void {
     </div>
     <span v-if="!timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
     <button v-if="removable" class="dbh-rm" :title="t('history_remove_single')" :aria-label="t('history_remove_single')" @click.stop="emit('remove')">
-      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+      <X :size="14" />
     </button>
   </div>
 </template>

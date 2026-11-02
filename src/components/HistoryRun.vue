@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ChevronRight, X } from '@lucide/vue'
 import { domainOf, type HistoryEntry as Entry, type DisplayItem } from '@/composables/useHistory'
 import HistoryEntry from '@/components/HistoryEntry.vue'
 import { faviconUrl } from '@/lib/chrome'
@@ -31,7 +32,7 @@ function onKey(ev: KeyboardEvent): void {
   <div>
     <div class="dbh-entry relative" tabindex="0" @click="emit('toggle-expand')" @keydown.enter="onKey" @keydown.space="onKey">
       <button class="dbh-chevron" :class="expanded ? 'is-open' : ''" :aria-expanded="expanded" :aria-label="expanded ? t('history_collapse_group') : t('history_expand_group')">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg>
+        <ChevronRight :size="14" :stroke-width="2.5" />
       </button>
       <img class="h-5 w-5 shrink-0 rounded-sm" :src="faviconUrl(run.entries[0].url)" alt="" />
       <div class="flex min-w-0 flex-1 items-baseline gap-2.5">
@@ -40,7 +41,7 @@ function onKey(ev: KeyboardEvent): void {
         <span class="dbh-count-badge mono shrink-0">{{ run.entries.length }}</span>
       </div>
       <button class="dbh-rm" :title="t('history_remove_group')" :aria-label="t('history_remove_group')" @click.stop="emit('remove-group')">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        <X :size="14" />
       </button>
     </div>
     <template v-if="expanded">

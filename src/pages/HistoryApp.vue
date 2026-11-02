@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Sun, Moon, SlidersHorizontal, ArrowDownNarrowWide, ArrowUpNarrowWide } from '@lucide/vue'
 import { onMounted, ref, computed, watch } from 'vue'
 import { useOptions, type GroupMode } from '@/composables/useOptions'
 import { useTheme } from '@/composables/useTheme'
@@ -118,11 +119,11 @@ function onKeydown(e: KeyboardEvent): void {
       <SearchBar ref="searchBar" class="flex-1 basis-80" @search="onSearch" @clear="onClear" />
       <div class="ml-auto flex items-center gap-1">
         <button class="dbh-iconbtn flex h-10 w-10 items-center justify-center rounded-lg" :title="themeTitle" :aria-label="themeTitle" @click="toggleTheme">
-          <svg v-if="isDark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" /></svg>
-          <svg v-else width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
+          <Sun v-if="isDark" :size="18" />
+          <Moon v-else :size="18" />
         </button>
         <button class="dbh-iconbtn flex h-10 w-10 items-center justify-center rounded-lg" :title="t('btn_options')" :aria-label="t('btn_options')" @click="optionsOpen = true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10" /><circle cx="16" cy="7" r="2" /><circle cx="8" cy="17" r="2" /></svg>
+          <SlidersHorizontal :size="18" />
         </button>
       </div>
     </header>
@@ -156,7 +157,8 @@ function onKeydown(e: KeyboardEvent): void {
               <button v-for="g in groupModes" :key="g.mode" class="dbh-seg" :class="{ 'is-on': options.groupMode === g.mode }" :aria-pressed="options.groupMode === g.mode" @click="save({ groupMode: g.mode })">{{ t(g.label) }}</button>
             </div>
             <button class="dbh-seg dbh-sort ml-auto flex items-center gap-1.5" @click="toggleSort">
-              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="options.sortOldestFirst ? 'm3 16 4 4 4-4M7 20V4M11 4h4M11 8h7M11 12h10' : 'm3 8 4-4 4 4M7 4v16M11 12h4M11 16h7M11 20h10'" /></svg>
+              <ArrowDownNarrowWide v-if="options.sortOldestFirst" :size="14" />
+              <ArrowUpNarrowWide v-else :size="14" />
               {{ sortLabel }}
             </button>
           </div>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { X } from '@lucide/vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import type { GroupMode, Options, Theme } from '@/composables/useOptions'
 import { t, locale } from '@/lib/i18n'
@@ -40,7 +41,7 @@ function onPopupCount(ev: Event): void {
       <header class="flex items-center justify-between border-b border-[color:var(--border)] py-3.5 pl-6 pr-4">
         <h1 class="text-lg font-semibold">{{ t('btn_options') }}</h1>
         <button class="dbh-iconbtn flex h-10 w-10 items-center justify-center rounded-lg" :title="t('options_close')" :aria-label="t('options_close')" @click="emit('close')">
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18" /></svg>
+          <X :size="16" />
         </button>
       </header>
 

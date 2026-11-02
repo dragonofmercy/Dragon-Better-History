@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ChevronLeft, ChevronRight } from '@lucide/vue'
 import { computed, onMounted, ref } from 'vue'
 import { startOfDay, normalizeLocale } from '@/lib/dates'
 import { t } from '@/lib/i18n'
@@ -77,10 +78,10 @@ function isSelected(ts: number): boolean { return props.selected != null && star
       <span class="font-bold capitalize">{{ monthLabel }}</span>
       <span class="flex gap-1">
         <button data-prev :disabled="!canPrev" :aria-label="t('calendar_prev_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="prev">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+          <ChevronLeft :size="16" />
         </button>
         <button data-next :disabled="!canNext" :aria-label="t('calendar_next_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="next">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+          <ChevronRight :size="16" />
         </button>
       </span>
     </div>

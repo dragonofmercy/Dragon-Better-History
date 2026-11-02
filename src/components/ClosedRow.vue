@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PanelTop } from '@lucide/vue'
 import { computed } from 'vue'
 import type { ClosedSession } from '@/composables/useRecentlyClosed'
 import { faviconUrl } from '@/lib/chrome'
@@ -28,7 +29,7 @@ function onKey(ev: KeyboardEvent): void {
   <div class="dbh-entry group" tabindex="0" @click="emit('restore')" @keydown.enter="onKey" @keydown.space="onKey">
     <img v-if="session.type === 'tab'" class="h-4 w-4 shrink-0 rounded-sm" :src="faviconUrl(session.url)" alt="" />
     <span v-else class="dbh-faint flex h-4 w-4 shrink-0 items-center justify-center">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></svg>
+      <PanelTop :size="14" />
     </span>
     <div class="min-w-0 flex-1 truncate">
       <span class="dbh-title" :title="tooltip">{{ label }}</span>

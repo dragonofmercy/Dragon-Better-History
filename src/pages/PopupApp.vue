@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ArrowRight } from '@lucide/vue'
 import { onMounted, computed, ref } from 'vue'
 import { useOptions } from '@/composables/useOptions'
 import { useTheme } from '@/composables/useTheme'
@@ -89,7 +90,7 @@ function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('
     </div>
     <a class="dbh-more flex h-11 shrink-0 cursor-pointer items-center justify-center gap-2 border-t border-[var(--border)] text-[13px] font-medium text-[var(--link)] hover:bg-[var(--hover)]" href="#" @click.prevent="openHistory">
       {{ t('history_view_more') }}
-      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      <ArrowRight :size="14" />
     </a>
   </div>
 </template>
