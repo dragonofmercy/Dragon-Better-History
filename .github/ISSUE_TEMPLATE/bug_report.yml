@@ -7,7 +7,10 @@ body:
   attributes:
     value: |
       Please make sure to [search for existing issues](https://github.com/dragonofmercy/Dragon-Better-History/issues) before filing a new one!
+
       Please write your issue in **English**.
+
+      This form is for bug reports only.
 - type: textarea
   attributes:
     label: Steps to reproduce
@@ -29,3 +32,17 @@ body:
     placeholder: What happened instead?
   validations:
     required: false
+
+- type: input
+  attributes:
+    label: Extension version
+    placeholder: e.g. 2.2.0
+  validations:
+    required: true
+
+- type: input
+  attributes:
+    label: Browser and version
+    placeholder: e.g. Chrome 130, Edge 130
+  validations:
+    required: true
