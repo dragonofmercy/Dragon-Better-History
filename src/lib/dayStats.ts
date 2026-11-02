@@ -18,7 +18,7 @@ export function groupByHour(entries: HistoryEntry[]): HourBlock[] {
 export function siteCounts(entries: HistoryEntry[], limit = 6): SiteCount[] {
   const map = new Map<string, SiteCount>()
   for (const e of entries) {
-    const domain = domainOf(e.url)
+    const domain = /^https?:/.test(e.url) ? domainOf(e.url) : ''
     if (!domain) continue
     const s = map.get(domain)
     if (s) s.count++
