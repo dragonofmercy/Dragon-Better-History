@@ -29,7 +29,6 @@
     --muted: #4e5058;
     --faint: #666871;
     --accent: #5865f2;
-    --accent-strong: #4752c4;
     --link: #4752c4;
     --on-accent: #ffffff;
     --soft: rgba(88, 101, 242, 0.16);
@@ -158,7 +157,7 @@
   .dbh-danger:hover { background: #c22f34; }
 
   .dbh-cal-day { color: var(--text); }
-  .dbh-cal-day:not(:disabled):hover { background: var(--accent-soft); }
+  .dbh-cal-day:not(:disabled):hover { outline: 1px solid var(--link); }
   .dbh-cal-day.is-h1 { background: var(--h1); }
   .dbh-cal-day.is-h2 { background: var(--h2); }
   .dbh-cal-day.is-h3 { background: var(--h3); }
@@ -175,5 +174,4 @@
     border-bottom-color: var(--accent);
   }
   .dbh-cal-day.is-selected { background: var(--accent); color: var(--on-accent); font-weight: 600; }
-  .dbh-cal-day.is-selected:not(:disabled):hover { background: var(--accent-strong); }
 }
