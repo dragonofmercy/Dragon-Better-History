@@ -9,7 +9,6 @@ body:
       Please make sure to [search for existing issues](https://github.com/dragonofmercy/Dragon-Better-History/issues) before filing a new one!
       Please write your issue in **English**.
       I accepte only issue from the Edge version of the extension, I am not responsible for the development of the Chrome version.  
-      Note: Please stop asking me for **Chrome Better History**, The project has been discontinued.
 - type: textarea
   attributes:
     label: Steps to reproduce
@@ -31,10 +30,3 @@ body:
     placeholder: What happened instead?
   validations:
     required: false
-
-- type: input
-  attributes:
-    label: Microsoft Edge Version
-    description: Please fill your Edge version. Can be found by typing this "edge://settings/help" in your address bar.
-  validations:
-    required: true
