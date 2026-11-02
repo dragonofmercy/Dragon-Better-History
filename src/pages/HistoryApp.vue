@@ -135,8 +135,10 @@ function onKeydown(e: KeyboardEvent): void {
         <SiteList v-if="!history.searching.value" :sites="sites" :active="siteFilter" @pick="onSite" />
         <footer class="dbh-muted mt-auto flex flex-col gap-2 text-xs">
           <img :src="logo" alt="DragonOfMercy" class="h-12 w-12" />
-          <div>Created by DragonOfMercy</div>
-          <a href="https://github.com/dragonofmercy" target="_blank" class="dbh-link">https://github.com/dragonofmercy</a>
+          <div>
+            <div>Created by DragonOfMercy</div>
+            <a href="https://github.com/dragonofmercy" target="_blank" class="dbh-link">https://github.com/dragonofmercy</a>
+          </div>
         </footer>
       </aside>
       <main ref="mainEl" class="min-w-0 flex-1 overflow-y-auto">
