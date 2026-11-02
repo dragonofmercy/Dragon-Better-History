@@ -156,7 +156,7 @@ function onKeydown(e: KeyboardEvent): void {
               <button v-for="g in groupModes" :key="g.mode" class="dbh-seg" :class="{ 'is-on': options.groupMode === g.mode }" :aria-pressed="options.groupMode === g.mode" @click="save({ groupMode: g.mode })">{{ t(g.label) }}</button>
             </div>
             <button class="dbh-seg dbh-sort ml-auto flex items-center gap-1.5" @click="toggleSort">
-              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 16 4 4 4-4M7 20V4M13 6h8M13 12h5M13 18h2" /></svg>
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="options.sortOldestFirst ? 'm3 8 4-4 4 4M7 4v16M13 6h8M13 12h5M13 18h2' : 'm3 16 4 4 4-4M7 20V4M13 6h8M13 12h5M13 18h2'" /></svg>
               {{ sortLabel }}
             </button>
           </div>

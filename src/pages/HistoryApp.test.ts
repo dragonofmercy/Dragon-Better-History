@@ -86,6 +86,14 @@ describe('HistoryApp', () => {
     expect(c.storage.sync.set).toHaveBeenCalledWith(expect.objectContaining({ sortOldestFirst: true }))
   })
 
+  it('sort icon follows the sort order', async () => {
+    const w = await mountApp()
+    const icon = () => w.find('.dbh-sort path').attributes('d')
+    const before = icon()
+    await w.find('.dbh-sort').trigger('click')
+    expect(icon()).not.toBe(before)
+  })
+
   it('search hides the histogram and the site list', async () => {
     const w = await mountApp()
     expect(w.find('.dbh-chart').exists()).toBe(true)
