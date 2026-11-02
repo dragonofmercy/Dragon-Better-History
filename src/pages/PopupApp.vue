@@ -49,7 +49,7 @@ function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('
           v-for="id in (['recent', 'closed'] as const)"
           :key="id"
           class="h-9 flex-1 rounded-md text-[13px]"
-          :class="tab === id ? 'bg-[var(--accent)] font-medium text-[var(--on-accent)]' : 'text-[var(--muted)] hover:text-[var(--text)]'"
+          :class="tab === id ? 'bg-[var(--accent)] text-[var(--on-accent)]' : 'text-[var(--muted)] hover:text-[var(--text)]'"
           :aria-pressed="tab === id"
           @click="selectTab(id)"
         >{{ id === 'recent' ? t('history_recent') : t('tab_recently_closed') }}</button>
