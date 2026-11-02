@@ -11,6 +11,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@lucide/vue": "^1.66.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {
