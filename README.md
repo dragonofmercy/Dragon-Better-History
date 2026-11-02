@@ -27,8 +27,8 @@ and adds a toolbar popup that shows your most recent visits at a glance.
 - **Toolbar popup** - your latest entries one click away, with a built-in search bar and a
   configurable item count.
 - **Recently closed tabs** - a popup tab to reopen recently closed tabs and windows.
-- **Group consecutive visits** - optionally fold runs of consecutive entries from the same
-  site under a collapsible header with a count (history page; off by default).
+- **Group consecutive visits** - optionally fold runs of consecutive entries with the same
+  title or domain under a collapsible header with a count (history page; off by default).
 - **Instant search** - debounced full-text filtering across titles and URLs, in the history
   page and the popup.
 - **Date picker** - a locale-aware calendar to jump to any day (week start and formatting

@@ -90,8 +90,17 @@
     "options_display_time_before_title": {
         "message": "Afficher le temps en début de ligne"
     },
-    "options_group_consecutive": {
-        "message": "Regrouper les entrées consécutives du même site"
+    "options_group_mode": {
+        "message": "Regrouper"
+    },
+    "options_group_none": {
+        "message": "Aucun"
+    },
+    "options_group_title": {
+        "message": "Titre"
+    },
+    "options_group_domain": {
+        "message": "Domaine"
     },
     "options_popup_nb_items": {
         "message": "Nombre d'éléments dans le popup"

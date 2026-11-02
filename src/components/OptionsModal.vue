@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
-import type { Options } from '@/composables/useOptions'
+import type { GroupMode, Options } from '@/composables/useOptions'
 import { t } from '@/lib/i18n'
 
 const props = defineProps<{ open: boolean; options: Options }>()
 const emit = defineEmits<{ (e: 'close'): void; (e: 'save', value: Options): void }>()
 
 const form = reactive<Options>({ ...props.options })
+const groupModes: { value: GroupMode; label: string }[] = [
+  { value: 'none', label: t('options_group_none') },
+  { value: 'title', label: t('options_group_title') },
+  { value: 'domain', label: t('options_group_domain') }
+]
 
 watch(() => props.open, (o) => { if (o) Object.assign(form, props.options) })
 </script>
@@ -23,10 +28,15 @@ watch(() => props.open, (o) => { if (o) Object.assign(form, props.options) })
         <span>{{ t('options_display_time_before_title') }}</span>
         <input v-model="form.timeBeforeTitle" type="checkbox" class="dbh-switch" />
       </label>
-      <label class="mb-3 flex h-9 items-center justify-between">
-        <span>{{ t('options_group_consecutive') }}</span>
-        <input v-model="form.groupConsecutive" type="checkbox" class="dbh-switch" />
-      </label>
+      <div class="mb-3 flex h-9 items-center justify-between" role="radiogroup" :aria-label="t('options_group_mode')">
+        <span>{{ t('options_group_mode') }}</span>
+        <div class="dbh-segmented">
+          <label v-for="m in groupModes" :key="m.value">
+            <input v-model="form.groupMode" type="radio" name="groupMode" :value="m.value" />
+            <span>{{ m.label }}</span>
+          </label>
+        </div>
+      </div>
       <label class="mb-5 flex h-9 items-center justify-between">
         <span>{{ t('options_popup_nb_items') }}</span>
         <input v-model.number="form.popupNbItems" type="number" min="1" class="dbh-input h-9 w-20 rounded-md px-3 text-sm" />

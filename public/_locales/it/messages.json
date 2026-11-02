@@ -90,8 +90,17 @@
     "options_display_time_before_title": {
         "message": "Mostra l'ora prima del titolo"
     },
-    "options_group_consecutive": {
-        "message": "Raggruppa le voci consecutive dello stesso sito"
+    "options_group_mode": {
+        "message": "Raggruppa"
+    },
+    "options_group_none": {
+        "message": "Nessuno"
+    },
+    "options_group_title": {
+        "message": "Titolo"
+    },
+    "options_group_domain": {
+        "message": "Dominio"
     },
     "options_popup_nb_items": {
         "message": "Numero di elementi nel popup"

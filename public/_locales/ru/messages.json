@@ -90,8 +90,17 @@
     "options_display_time_before_title": {
         "message": "Показывать время перед заголовком"
     },
-    "options_group_consecutive": {
-        "message": "Группировать последовательные записи одного сайта"
+    "options_group_mode": {
+        "message": "Группировка"
+    },
+    "options_group_none": {
+        "message": "Нет"
+    },
+    "options_group_title": {
+        "message": "Заголовок"
+    },
+    "options_group_domain": {
+        "message": "Домен"
     },
     "options_popup_nb_items": {
         "message": "Количество записей в всплывающем окне"

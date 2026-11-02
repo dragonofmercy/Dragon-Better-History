@@ -154,6 +154,14 @@
   .dbh-switch:checked::after { transform: translateX(0.875rem); }
   .dbh-switch:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
+  /* Native radios rendered as a segmented button. */
+  .dbh-segmented { display: inline-flex; gap: 2px; padding: 2px; border-radius: 0.375rem; background: var(--ghost); font-size: 0.875rem; }
+  .dbh-segmented label { padding: 0.25rem 0.75rem; border-radius: 0.25rem; cursor: pointer; transition: background-color 0.15s ease; }
+  .dbh-segmented label:hover { background: var(--ghost-hover); }
+  .dbh-segmented input { position: absolute; width: 0; height: 0; opacity: 0; }
+  .dbh-segmented label:has(input:checked) { background: var(--accent); color: var(--on-accent); }
+  .dbh-segmented label:has(input:focus-visible) { box-shadow: 0 0 0 3px var(--ring); }
+
   .dbh-cal-day { color: var(--text); }
   .dbh-cal-day:not(:disabled):hover { background: var(--accent-soft); }
   .dbh-cal-day.is-out { color: var(--faint); }

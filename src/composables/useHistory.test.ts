@@ -40,6 +40,19 @@ describe('groupRuns', () => {
     expect(items[0].type).toBe('single')
     expect(items[1].type).toBe('run')
   })
+
+  it('groups consecutive entries by domain, ignoring www and differing titles', () => {
+    const items = groupRuns([entry('https://www.github.com/a', 'A', 1), entry('https://github.com/b', 'B', 2)], 'domain')
+    expect(items.length).toBe(1)
+    if (items[0].type === 'run') expect(items[0].title).toBe('github.com')
+  })
+
+  it('keeps subdomains apart and never groups urls without a domain', () => {
+    const subdomains = groupRuns([entry('https://mail.google.com/', 'M', 1), entry('https://docs.google.com/', 'D', 2)], 'domain')
+    expect(subdomains.map((i) => i.type)).toEqual(['single', 'single'])
+    const files = groupRuns([entry('file:///a.txt', 'A', 1), entry('file:///b.txt', 'B', 2)], 'domain')
+    expect(files.map((i) => i.type)).toEqual(['single', 'single'])
+  })
 })
 
 describe('orderDays', () => {

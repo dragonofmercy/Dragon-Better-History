@@ -90,8 +90,17 @@
     "options_display_time_before_title": {
         "message": "Показване на времето преди заглавието"
     },
-    "options_group_consecutive": {
-        "message": "Групиране на последователни записи от същия сайт"
+    "options_group_mode": {
+        "message": "Групиране"
+    },
+    "options_group_none": {
+        "message": "Без"
+    },
+    "options_group_title": {
+        "message": "Заглавие"
+    },
+    "options_group_domain": {
+        "message": "Домейн"
     },
     "options_popup_nb_items": {
         "message": "Брой елементи в изскачащия прозорец"

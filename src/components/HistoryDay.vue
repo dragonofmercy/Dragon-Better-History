@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { groupRuns, type DayGroup, type DisplayItem, type HistoryEntry as Entry } from '@/composables/useHistory'
+import type { GroupMode } from '@/composables/useOptions'
 import HistoryEntry from '@/components/HistoryEntry.vue'
 import HistoryRun from '@/components/HistoryRun.vue'
 import { formatDayHeading } from '@/lib/dates'
@@ -11,7 +12,7 @@ const props = defineProps<{
   locale: string
   use24: boolean
   timeBeforeTitle: boolean
-  groupConsecutive: boolean
+  groupMode: GroupMode
   expanded: Set<string>
   isSelected: (key: string) => boolean
 }>()
@@ -24,7 +25,7 @@ const emit = defineEmits<{
 }>()
 
 const items = computed<DisplayItem[]>(() =>
-  props.groupConsecutive ? groupRuns(props.group.entries) : props.group.entries.map((entry) => ({ type: 'single', entry }))
+  props.groupMode === 'none' ? props.group.entries.map((entry) => ({ type: 'single', entry })) : groupRuns(props.group.entries, props.groupMode)
 )
 </script>
 

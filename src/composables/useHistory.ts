@@ -18,14 +18,20 @@ export type DisplayItem =
   | { type: 'single'; entry: HistoryEntry }
   | { type: 'run'; key: string; title: string; entries: HistoryEntry[] }
 
-export function groupRuns(entries: HistoryEntry[]): DisplayItem[] {
+function domainOf(url: string): string {
+  try { return new URL(url).hostname.replace(/^www\./, '') } catch { return '' }
+}
+
+export function groupRuns(entries: HistoryEntry[], mode: 'title' | 'domain' = 'title'): DisplayItem[] {
+  const groupKey = (e: HistoryEntry): string => (mode === 'domain' ? domainOf(e.url) : e.title)
   const items: DisplayItem[] = []
   let i = 0
   while (i < entries.length) {
+    const key = groupKey(entries[i])
     let j = i + 1
-    while (j < entries.length && entries[j].title === entries[i].title) j++
+    while (key && j < entries.length && groupKey(entries[j]) === key) j++
     const run = entries.slice(i, j)
-    if (run.length >= 2) items.push({ type: 'run', key: run[0].key, title: run[0].title, entries: run })
+    if (run.length >= 2) items.push({ type: 'run', key: run[0].key, title: key, entries: run })
     else items.push({ type: 'single', entry: run[0] })
     i = j
   }

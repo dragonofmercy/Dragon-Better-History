@@ -14,14 +14,29 @@ describe('useOptions', () => {
     expect(options.theme).toBe('system')
   })
 
-  it('defaults groupConsecutive to false and loads stored value', async () => {
+  it('defaults groupMode to none and loads the stored value', async () => {
     const { options, load } = useOptions()
     await load()
-    expect(options.groupConsecutive).toBe(false)
-    vi.spyOn(chrome.storage.sync, 'get').mockResolvedValue({ groupConsecutive: true } as never)
+    expect(options.groupMode).toBe('none')
+    vi.spyOn(chrome.storage.sync, 'get').mockResolvedValue({ groupMode: 'domain' } as never)
     const second = useOptions()
     await second.load()
-    expect(second.options.groupConsecutive).toBe(true)
+    expect(second.options.groupMode).toBe('domain')
+  })
+
+  it('migrates the legacy groupConsecutive option without keeping it', async () => {
+    vi.spyOn(chrome.storage.sync, 'get').mockResolvedValue({ groupConsecutive: true } as never)
+    const { options, load } = useOptions()
+    await load()
+    expect(options.groupMode).toBe('title')
+    expect(options).not.toHaveProperty('groupConsecutive')
+  })
+
+  it('prefers a stored groupMode over the legacy option', async () => {
+    vi.spyOn(chrome.storage.sync, 'get').mockResolvedValue({ groupMode: 'none', groupConsecutive: true } as never)
+    const { options, load } = useOptions()
+    await load()
+    expect(options.groupMode).toBe('none')
   })
 
   it('loads stored values and coerces popupNbItems to a number', async () => {
