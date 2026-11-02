@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { HistoryEntry } from '@/composables/useHistory'
+import { computed } from 'vue'
+import { domainOf, type HistoryEntry } from '@/composables/useHistory'
 import { faviconUrl } from '@/lib/chrome'
 import { formatTime } from '@/lib/dates'
 import { t } from '@/lib/i18n'
@@ -11,23 +12,32 @@ const props = withDefaults(defineProps<{
   timeBeforeTitle: boolean
   selected?: boolean
   removable?: boolean
-}>(), { selected: false, removable: true })
+  child?: boolean
+}>(), { selected: false, removable: true, child: false })
 
-const emit = defineEmits<{ (e: 'toggle', ev: MouseEvent): void; (e: 'remove'): void }>()
+const emit = defineEmits<{ (e: 'toggle', ev: MouseEvent | KeyboardEvent): void; (e: 'remove'): void }>()
 
-function time(): string { return formatTime(new Date(props.entry.lastVisitTime), props.locale, props.use24) }
+const time = computed(() => formatTime(new Date(props.entry.lastVisitTime), props.locale, props.use24))
+const domain = computed(() => domainOf(props.entry.url))
+
+function onKey(ev: KeyboardEvent): void {
+  if (ev.target !== ev.currentTarget) return
+  ev.preventDefault()
+  emit('toggle', ev)
+}
 </script>
 
 <template>
-  <div class="dbh-entry flex cursor-pointer select-none items-center gap-3 px-3 py-2 text-[13px]" :class="selected ? 'is-selected' : ''" @click="emit('toggle', $event)">
-    <span v-if="timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time() }}</span>
-    <img class="h-4 w-4 shrink-0 rounded-sm" :src="faviconUrl(entry.url)" alt="" />
-    <div class="min-w-0 flex-1 truncate">
-      <a class="dbh-title hover:underline" :href="entry.url" :title="entry.url" target="_blank" @click.stop>{{ entry.title }}</a>
+  <div class="dbh-entry" :class="[selected ? 'is-selected' : '', child ? 'is-child' : '']" tabindex="0" @click="emit('toggle', $event)" @keydown.enter="onKey" @keydown.space="onKey">
+    <span v-if="timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
+    <img class="h-5 w-5 shrink-0 rounded-sm" :src="faviconUrl(entry.url)" alt="" />
+    <div class="flex min-w-0 flex-1 items-baseline gap-2.5">
+      <a class="dbh-title truncate hover:underline" :href="entry.url" :title="entry.url" target="_blank" @click.stop>{{ entry.title }}</a>
+      <span v-if="domain" class="dbh-muted shrink-0 text-xs">{{ domain }}</span>
     </div>
-    <span v-if="!timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time() }}</span>
-    <button v-if="removable" class="dbh-rm shrink-0" :title="t('history_remove_single')" @click.stop="emit('remove')">
-      <svg viewBox="0 0 15 15" width="12" height="12" fill="currentColor"><path d="M14.1 1.6L8.2 7.5l5.9 5.9-.7.7L7.5 8.2l-5.9 5.9-.7-.7L6.8 7.5.9 1.6l.7-.7L7.5 6.8 13.4.9z" /></svg>
+    <span v-if="!timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
+    <button v-if="removable" class="dbh-rm" :title="t('history_remove_single')" :aria-label="t('history_remove_single')" @click.stop="emit('remove')">
+      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
     </button>
   </div>
 </template>

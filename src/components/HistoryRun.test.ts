@@ -17,14 +17,13 @@ function mountRun(props: Record<string, unknown> = {}) {
 describe('HistoryRun', () => {
   it('shows the count badge and hides children when collapsed', () => {
     const w = mountRun()
-    expect(w.text()).toContain('x2')
-    expect(w.findAll('.dbh-run-children').length).toBe(0)
+    expect(w.find('.dbh-count-badge').text()).toBe('2')
+    expect(w.findAll('.is-child').length).toBe(0)
   })
 
   it('renders children entries when expanded', () => {
     const w = mountRun({ expanded: true })
-    expect(w.find('.dbh-run-children').exists()).toBe(true)
-    expect(w.findAll('.dbh-run-children .dbh-entry').length).toBe(2)
+        expect(w.findAll('.dbh-entry.is-child').length).toBe(2)
   })
 
   it('emits toggle-expand when the chevron is clicked', async () => {
@@ -39,9 +38,22 @@ describe('HistoryRun', () => {
     expect(w.emitted('toggle-expand')).toBeTruthy()
   })
 
+  it('run row click emits toggle-expand and the chevron sits after the count', async () => {
+    const w = mountRun()
+    await w.find('.dbh-entry').trigger('click')
+    expect(w.emitted('toggle-expand')).toHaveLength(1)
+    const html = w.html()
+    expect(html.indexOf('dbh-chevron')).toBeGreaterThan(html.indexOf('dbh-count-badge'))
+  })
+
+  it('run shows entries[0].title', () => {
+    const w = mountRun({ run: { ...run, title: 'x.com', entries: [{ ...entries[0], title: 'First' }, entries[1]] } })
+    expect(w.find('.dbh-title').text()).toBe('First')
+  })
+
   it('emits remove-group (not toggle-expand) when the header cross is clicked', async () => {
     const w = mountRun()
-    await w.find('.dbh-entry > button.dbh-rm').trigger('click')
+    await w.find('button.dbh-rm').trigger('click')
     expect(w.emitted('remove-group')).toBeTruthy()
     expect(w.emitted('toggle-expand')).toBeFalsy()
   })

@@ -57,7 +57,7 @@ function onToday(): void { onSelectDay(today); calendarKey.value++ }
 function onSearch(q: string): void { expanded.value = new Set(); query.value = q; selection.clear(); selectedDay.value = null; history.search(q, today); scrollMainTop() }
 function onClear(): void { expanded.value = new Set(); query.value = ''; selection.clear(); selectedDay.value = today; history.getDay(today); scrollMainTop() }
 
-function onToggle(entry: HistoryEntry, ev: MouseEvent): void {
+function onToggle(entry: HistoryEntry, ev: MouseEvent | KeyboardEvent): void {
   if (ev.shiftKey) selection.range(entry.key, orderedKeys.value)
   else selection.toggle(entry.key)
 }
@@ -124,7 +124,7 @@ function onKeydown(e: KeyboardEvent): void {
         <div class="px-6 py-6">
           <h1 v-if="history.searching.value" class="mb-3 text-xl font-semibold">{{ t('search_display') }} "{{ query }}"</h1>
           <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mb-3 text-sm">{{ t('search_found', String(totalCount)) }}</p>
-          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded" :is-selected="selection.isSelected" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
+          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded" :is-selected="selection.isSelected" :show-heading="true" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
           <p v-if="!history.days.value.length" class="dbh-muted text-sm">{{ t(history.searching.value ? 'search_empty' : 'history_date_empty') }}</p>
         </div>
       </main>

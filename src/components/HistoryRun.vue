@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { HistoryEntry as Entry, DisplayItem } from '@/composables/useHistory'
+import { domainOf, type HistoryEntry as Entry, type DisplayItem } from '@/composables/useHistory'
 import HistoryEntry from '@/components/HistoryEntry.vue'
 import { faviconUrl } from '@/lib/chrome'
 import { t } from '@/lib/i18n'
@@ -16,28 +16,35 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'toggle-expand'): void
   (e: 'remove-group'): void
-  (e: 'toggle', entry: Entry, ev: MouseEvent): void
+  (e: 'toggle', entry: Entry, ev: MouseEvent | KeyboardEvent): void
   (e: 'remove', entry: Entry): void
 }>()
+
+function onKey(ev: KeyboardEvent): void {
+  if (ev.target !== ev.currentTarget) return
+  ev.preventDefault()
+  emit('toggle-expand')
+}
 </script>
 
 <template>
   <div>
-    <div class="dbh-entry flex cursor-pointer select-none items-center gap-3 px-3 py-2 text-[13px]" @click="emit('toggle-expand')">
-      <button class="dbh-chevron flex w-4 shrink-0 items-center justify-center" :class="expanded ? 'is-open' : ''" :aria-expanded="expanded" @click.stop="emit('toggle-expand')">
-        <svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor"><path d="M5 3l6 5-6 5z" /></svg>
-      </button>
-      <img class="h-4 w-4 shrink-0 rounded-sm" :src="faviconUrl(run.entries[0].url)" alt="" />
-      <div class="mr-auto flex min-w-0 items-baseline gap-2">
-        <span class="dbh-title min-w-0 truncate">{{ run.title }}</span>
-        <span class="dbh-count-badge mono shrink-0 text-xs">x{{ run.entries.length }}</span>
+    <div class="dbh-entry" tabindex="0" @click="emit('toggle-expand')" @keydown.enter="onKey" @keydown.space="onKey">
+      <img class="h-5 w-5 shrink-0 rounded-sm" :src="faviconUrl(run.entries[0].url)" alt="" />
+      <div class="flex min-w-0 flex-1 items-baseline gap-2.5">
+        <span class="dbh-title truncate">{{ run.entries[0].title }}</span>
+        <span v-if="domainOf(run.entries[0].url)" class="dbh-muted shrink-0 text-xs">{{ domainOf(run.entries[0].url) }}</span>
+        <span class="dbh-count-badge mono shrink-0">{{ run.entries.length }}</span>
+        <button class="dbh-chevron" :class="expanded ? 'is-open' : ''" :aria-expanded="expanded" :aria-label="expanded ? t('history_collapse_group') : t('history_expand_group')">
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg>
+        </button>
       </div>
-      <button class="dbh-rm shrink-0" :title="t('history_remove_group')" @click.stop="emit('remove-group')">
-        <svg viewBox="0 0 15 15" width="12" height="12" fill="currentColor"><path d="M14.1 1.6L8.2 7.5l5.9 5.9-.7.7L7.5 8.2l-5.9 5.9-.7-.7L6.8 7.5.9 1.6l.7-.7L7.5 6.8 13.4.9z" /></svg>
+      <button class="dbh-rm" :title="t('history_remove_group')" :aria-label="t('history_remove_group')" @click.stop="emit('remove-group')">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
       </button>
     </div>
-    <div v-if="expanded" class="dbh-run-children">
-      <HistoryEntry v-for="entry in run.entries" :key="entry.key" :entry="entry" :locale="locale" :use24="use24" :time-before-title="timeBeforeTitle" :selected="isSelected(entry.key)" @toggle="(ev) => emit('toggle', entry, ev)" @remove="emit('remove', entry)" />
-    </div>
+    <template v-if="expanded">
+      <HistoryEntry v-for="entry in run.entries" :key="entry.key" child :entry="entry" :locale="locale" :use24="use24" :time-before-title="timeBeforeTitle" :selected="isSelected(entry.key)" @toggle="(ev) => emit('toggle', entry, ev)" @remove="emit('remove', entry)" />
+    </template>
   </div>
 </template>

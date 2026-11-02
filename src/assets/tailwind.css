@@ -101,21 +101,25 @@
   .dbh-rule { flex: 1; height: 1px; background: var(--border); }
   .dbh-count { font-size: 11px; font-weight: 600; color: var(--faint); letter-spacing: normal; }
 
-  /* Dense rows separated by hairlines, accent bar on hover/selection. */
-  .dbh-entry { box-shadow: inset 2px 0 0 transparent; transition: background-color 0.12s ease, box-shadow 0.12s ease; }
-  .dbh-entry:hover { background: var(--hover); box-shadow: inset 2px 0 0 var(--accent); }
-  .dbh-entry.is-selected { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent); }
+  /* Timeline rows: 44px, whole row clickable, remove button on hover or focus. */
+  .dbh-entry { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 8px 0 10px; border-radius: 8px; font-size: 14px; cursor: pointer; user-select: none; }
+  .dbh-entry:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
+  .dbh-entry:hover { background: var(--hover); }
+  .dbh-entry.is-selected { background: var(--accent-soft); }
+  .dbh-entry.is-child { margin-left: 30px; }
   .dbh-title { color: var(--text); }
   .dbh-time { color: var(--muted); font-variant-numeric: tabular-nums; }
-  .dbh-rm { color: var(--faint); }
-  .dbh-rm:hover { color: #ef4444; }
+  .dbh-rm { flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: var(--muted); opacity: 0; padding: 0; }
+  .dbh-entry:hover .dbh-rm, .dbh-rm:focus-visible { opacity: 1; }
+  .dbh-rm:hover { color: #ff6b74; background: var(--hover); }
 
-  .dbh-chevron { color: var(--faint); transition: transform 0.12s ease, color 0.12s ease; }
-  .dbh-chevron:hover { color: var(--text); }
-  .dbh-chevron.is-open { transform: rotate(90deg); }
-  .dbh-count-badge { color: var(--faint); font-variant-numeric: tabular-nums; }
-  .dbh-run-children { padding-left: 1.75rem; }
-  .dbh-run-children > * { border-top: 1px solid var(--row-border); }
+  .dbh-hour { display: flex; gap: 8px; padding: 10px 0; border-top: 1px solid var(--border); }
+  .dbh-hour-label { flex: none; width: 56px; margin: 12px 0 0; font-size: 13px; font-weight: 500; color: var(--muted); }
+
+  .dbh-chevron { flex: none; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; padding: 0; color: var(--muted); }
+  .dbh-chevron svg { transition: transform 0.12s ease; }
+  .dbh-chevron.is-open svg { transform: rotate(90deg); }
+  .dbh-count-badge { font-size: 11px; font-weight: 500; padding: 1px 6px; border-radius: 99px; background: var(--raised); color: var(--text); }
 
   .dbh-input { background: var(--input); border: 1px solid var(--border); color: var(--text); transition: border-color 0.15s ease, box-shadow 0.15s ease; }
   .dbh-input::placeholder { color: var(--faint); }
