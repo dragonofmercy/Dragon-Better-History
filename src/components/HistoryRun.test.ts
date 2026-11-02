@@ -38,12 +38,12 @@ describe('HistoryRun', () => {
     expect(w.emitted('toggle-expand')).toBeTruthy()
   })
 
-  it('run row click emits toggle-expand and the chevron sits after the count', async () => {
+  it('run row click emits toggle-expand and the chevron sits before the favicon', async () => {
     const w = mountRun()
     await w.find('.dbh-entry').trigger('click')
     expect(w.emitted('toggle-expand')).toHaveLength(1)
     const html = w.html()
-    expect(html.indexOf('dbh-chevron')).toBeGreaterThan(html.indexOf('dbh-count-badge'))
+    expect(html.indexOf('dbh-chevron')).toBeLessThan(html.indexOf('<img'))
   })
 
   it('run shows entries[0].title', () => {
