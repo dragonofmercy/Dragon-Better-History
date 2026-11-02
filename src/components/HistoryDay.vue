@@ -27,6 +27,7 @@ const emit = defineEmits<{
 const items = computed<DisplayItem[]>(() =>
   props.groupMode === 'none' ? props.group.entries.map((entry) => ({ type: 'single', entry })) : groupRuns(props.group.entries, props.groupMode)
 )
+const hasRuns = computed(() => items.value.some((it) => it.type === 'run'))
 </script>
 
 <template>
@@ -39,7 +40,7 @@ const items = computed<DisplayItem[]>(() =>
     <div v-if="group.entries.length" class="dbh-entries">
       <template v-for="it in items" :key="it.type === 'run' ? it.key : it.entry.key">
         <HistoryRun v-if="it.type === 'run'" :run="it" :locale="locale" :use24="use24" :time-before-title="timeBeforeTitle" :expanded="expanded.has(it.key)" :is-selected="isSelected" @toggle-expand="emit('toggle-expand', it.key)" @remove-group="emit('remove-group', it.entries.map((e) => e.key))" @toggle="(entry, ev) => emit('toggle', entry, ev)" @remove="(entry) => emit('remove', entry)" />
-        <HistoryEntry v-else :entry="it.entry" :locale="locale" :use24="use24" :time-before-title="timeBeforeTitle" :selected="isSelected(it.entry.key)" @toggle="(ev) => emit('toggle', it.entry, ev)" @remove="emit('remove', it.entry)" />
+        <HistoryEntry v-else :class="hasRuns ? 'pl-10' : ''" :entry="it.entry" :locale="locale" :use24="use24" :time-before-title="timeBeforeTitle" :selected="isSelected(it.entry.key)" @toggle="(ev) => emit('toggle', it.entry, ev)" @remove="emit('remove', it.entry)" />
       </template>
     </div>
     <div v-else class="dbh-muted px-3 py-2 text-sm">{{ t('history_date_empty') }}</div>
