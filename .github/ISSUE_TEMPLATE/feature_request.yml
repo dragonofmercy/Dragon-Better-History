@@ -1,0 +1,27 @@
+name: "✨ Enhancement"
+description: Suggest an improvement or a new feature
+labels:
+- enhancement
+body:
+- type: markdown
+  attributes:
+    value: |
+      Please make sure to [search for existing issues](https://github.com/dragonofmercy/Dragon-Better-History/issues) before filing a new one!
+
+      Please write your request in **English**.
+
+      One request per issue, please.
+- type: textarea
+  attributes:
+    label: Problem
+    description: What are you trying to do, and what makes it difficult today?
+    placeholder: I often need to... but currently...
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Proposed solution
+    description: How would you like it to work? Screenshots or mockups are welcome.
+  validations:
+    required: true
