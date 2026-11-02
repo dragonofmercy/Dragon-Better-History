@@ -33,7 +33,7 @@
     --row-border: var(--border);
     --text: #060607;
     --muted: #4e5058;
-    --faint: #6d6f78;
+    --faint: #666871;
     --accent: #5865f2;
     --accent-strong: #4752c4;
     --link: #4752c4;
@@ -57,7 +57,7 @@
     --border: #3f4147;
     --text: #f2f3f5;
     --muted: #b5bac1;
-    --faint: #80848e;
+    --faint: #989ca6;
     --link: #949cf7;
     --soft: rgba(88, 101, 242, 0.28);
     --hover: rgba(255, 255, 255, 0.06);
@@ -86,7 +86,7 @@
   .dbh-muted { color: var(--muted); }
   .dbh-faint { color: var(--faint); }
 
-  .dbh-link { color: var(--accent); cursor: pointer; }
+  .dbh-link { color: var(--link); cursor: pointer; }
   .dbh-link:hover { text-decoration: underline; }
 
   .dbh-nav { color: var(--muted); }
