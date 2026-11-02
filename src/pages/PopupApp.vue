@@ -54,7 +54,7 @@ function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('
           @click="selectTab(id)"
         >{{ id === 'recent' ? t('history_recent') : t('tab_recently_closed') }}</button>
       </div>
-      <SearchBar v-if="tab === 'recent'" @search="(q) => history.search(q, today, options.popupNbItems)" @clear="() => history.getDay(today, options.popupNbItems)" />
+      <SearchBar v-show="tab === 'recent'" @search="(q) => history.search(q, today, options.popupNbItems)" @clear="() => history.getDay(today, options.popupNbItems)" />
     </div>
     <div class="min-h-0 flex-1 overflow-y-auto px-3 pb-2">
       <div v-show="tab === 'recent'">

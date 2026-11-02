@@ -67,8 +67,19 @@ describe('PopupApp layout', () => {
     await tabs[1].trigger('click')
     await flushPromises()
     expect(tabs[1].attributes('aria-pressed')).toBe('true')
-    expect(wrapper.findComponent(SearchBar).exists()).toBe(false)
+    expect(wrapper.findComponent(SearchBar).isVisible()).toBe(false)
     expect(wrapper.findComponent(ClosedRow).exists()).toBe(true)
+  })
+
+  it('keeps the search input value across tabs', async () => {
+    const wrapper = mount(PopupApp, { attachTo: document.body })
+    await flushPromises()
+    await wrapper.find('input').setValue('foo')
+    const tabs = wrapper.findAll('[role="group"] button')
+    await tabs[1].trigger('click')
+    await tabs[0].trigger('click')
+    expect((wrapper.find('input').element as HTMLInputElement).value).toBe('foo')
+    wrapper.unmount()
   })
 
   it('row click opens the entry in a new tab via chrome.tabs.create', async () => {
