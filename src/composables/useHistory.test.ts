@@ -17,7 +17,7 @@ describe('groupRuns', () => {
     if (items[0].type === 'run') {
       expect(items[0].entries.length).toBe(3)
       expect(items[0].key).toBe('https://fb/1::1')
-      expect(items[0].title).toBe('Facebook')
+      expect(items[0].entries[0].title).toBe('Facebook')
     }
   })
 
@@ -44,7 +44,6 @@ describe('groupRuns', () => {
   it('groups consecutive entries by domain, ignoring www and differing titles', () => {
     const items = groupRuns([entry('https://www.github.com/a', 'A', 1), entry('https://github.com/b', 'B', 2)], 'domain')
     expect(items.length).toBe(1)
-    if (items[0].type === 'run') expect(items[0].title).toBe('github.com')
   })
 
   it('keeps subdomains apart and never groups urls without a domain', () => {

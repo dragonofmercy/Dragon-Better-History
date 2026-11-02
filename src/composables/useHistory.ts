@@ -16,7 +16,7 @@ export interface DayGroup {
 
 export type DisplayItem =
   | { type: 'single'; entry: HistoryEntry }
-  | { type: 'run'; key: string; title: string; entries: HistoryEntry[] }
+  | { type: 'run'; key: string; entries: HistoryEntry[] }
 
 export function domainOf(url: string): string {
   if (!/^https?:/.test(url)) return ''
@@ -32,7 +32,7 @@ export function groupRuns(entries: HistoryEntry[], mode: 'title' | 'domain' = 't
     let j = i + 1
     while (key && j < entries.length && groupKey(entries[j]) === key) j++
     const run = entries.slice(i, j)
-    if (run.length >= 2) items.push({ type: 'run', key: run[0].key, title: key, entries: run })
+    if (run.length >= 2) items.push({ type: 'run', key: run[0].key, entries: run })
     else items.push({ type: 'single', entry: run[0] })
     i = j
   }

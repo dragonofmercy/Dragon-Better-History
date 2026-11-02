@@ -17,16 +17,10 @@ const emit = defineEmits<{ (e: 'restore'): void }>()
 const time = computed(() => formatTime(new Date(props.session.lastModified), props.locale, props.use24))
 const label = computed(() => (props.session.type === 'tab' ? props.session.title : t('closed_window_tabs', String(props.session.tabCount))))
 const tooltip = computed(() => (props.session.type === 'tab' ? props.session.url : label.value))
-
-function onKey(ev: KeyboardEvent): void {
-  if (ev.target !== ev.currentTarget) return
-  ev.preventDefault()
-  emit('restore')
-}
 </script>
 
 <template>
-  <div class="dbh-entry group" tabindex="0" @click="emit('restore')" @keydown.enter="onKey" @keydown.space="onKey">
+  <div class="dbh-entry group" tabindex="0" @click="emit('restore')" @keydown.enter.self.prevent="emit('restore')" @keydown.space.self.prevent="emit('restore')">
     <img v-if="session.type === 'tab'" class="h-4 w-4 shrink-0 rounded-sm" :src="faviconUrl(session.url)" alt="" />
     <span v-else class="dbh-faint flex h-4 w-4 shrink-0 items-center justify-center">
       <PanelTop :size="14" />

@@ -11,7 +11,7 @@ function mountDay(entries: ReturnType<typeof e>[], props: Record<string, unknown
   return mount(HistoryDay, {
     props: {
       group: { dayKey: 1, date: new Date(2024, 0, 2), entries },
-      locale: 'en', use24: true, timeBeforeTitle: false, groupMode: 'title', expanded: new Set<string>(), isSelected: () => false, showHeading: true, ...props
+      locale: 'en', use24: true, timeBeforeTitle: false, groupMode: 'title', expanded: new Set<string>(), isSelected: () => false, ...props
     }
   })
 }
@@ -36,8 +36,8 @@ describe('HistoryDay', () => {
     expect(w.findAll('.dbh-entry')).toHaveLength(2)
   })
 
-  it('showHeading false hides the day heading', () => {
-    expect(mountDay([e(1, 10, 0)], { showHeading: false }).find('h2').exists()).toBe(false)
-    expect(mountDay([e(1, 10, 0)]).find('h2').exists()).toBe(true)
+  it('shows the day heading only when flat', () => {
+    expect(mountDay([e(1, 10, 0)]).find('h2').exists()).toBe(false)
+    expect(mountDay([e(1, 10, 0)], { flat: true }).find('h2').exists()).toBe(true)
   })
 })

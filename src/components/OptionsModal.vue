@@ -60,7 +60,7 @@ function onPopupCount(ev: Event): void {
           <h2 class="dbh-muted mb-1 text-xs font-semibold">{{ t('options_section_display') }}</h2>
           <div class="flex min-h-[44px] items-center justify-between gap-4">
             <span>{{ t('options_theme') }}</span>
-            <div role="group" :aria-label="t('options_theme')" class="flex gap-0.5 rounded-lg p-[3px]" style="background: var(--raised)">
+            <div role="group" :aria-label="t('options_theme')" class="dbh-segs">
               <button v-for="o in themes" :key="o.value" :data-opt="`theme-${o.value}`" class="dbh-seg" :class="{ 'is-on': options.theme === o.value }" :aria-pressed="options.theme === o.value" @click="emit('change', { theme: o.value })">{{ o.label }}</button>
             </div>
           </div>
@@ -78,7 +78,7 @@ function onPopupCount(ev: Event): void {
           <h2 class="dbh-muted mb-1 text-xs font-semibold">{{ t('options_section_list') }}</h2>
           <div class="flex min-h-[44px] items-center justify-between gap-4">
             <span>{{ t('options_group_mode') }}</span>
-            <div role="group" :aria-label="t('options_group_mode')" class="flex gap-0.5 rounded-lg p-[3px]" style="background: var(--raised)">
+            <div role="group" :aria-label="t('options_group_mode')" class="dbh-segs">
               <button v-for="o in groupModes" :key="o.value" :data-opt="`group-${o.value}`" class="dbh-seg" :class="{ 'is-on': options.groupMode === o.value }" :aria-pressed="options.groupMode === o.value" @click="emit('change', { groupMode: o.value })">{{ o.label }}</button>
             </div>
           </div>
@@ -92,7 +92,7 @@ function onPopupCount(ev: Event): void {
           <h2 class="dbh-muted mb-1 text-xs font-semibold">{{ t('options_section_popup') }}</h2>
           <label class="flex min-h-[44px] items-center justify-between gap-4">
             <span>{{ t('options_popup_nb_items') }}</span>
-            <input data-opt="popup" type="number" min="1" step="1" class="dbh-input mono h-9 w-[72px] rounded-lg px-2.5 text-[13px]" :value="options.popupNbItems" @input="onPopupCount" />
+            <input data-opt="popup" type="number" min="1" step="1" class="dbh-input mono h-9 w-[72px] rounded-lg px-2.5 text-[13px]" :value="options.popupNbItems" @change="onPopupCount" />
           </label>
         </section>
       </div>

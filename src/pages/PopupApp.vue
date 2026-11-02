@@ -45,12 +45,12 @@ function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('
 <template>
   <div class="compact dbh-root flex max-h-[600px] w-[496px] flex-col">
     <div class="flex shrink-0 flex-col gap-2 px-3 pb-2 pt-3">
-      <div class="flex gap-0.5 rounded-lg bg-[var(--raised)] p-[3px]" role="group">
+      <div class="dbh-segs" role="group">
         <button
           v-for="id in (['recent', 'closed'] as const)"
           :key="id"
-          class="h-9 flex-1 rounded-md text-[13px]"
-          :class="tab === id ? 'bg-[var(--accent)] text-[var(--on-accent)]' : 'text-[var(--muted)] hover:text-[var(--text)]'"
+          class="dbh-seg h-9 flex-1"
+          :class="{ 'is-on': tab === id }"
           :aria-pressed="tab === id"
           @click="selectTab(id)"
         >{{ id === 'recent' ? t('history_recent') : t('tab_recently_closed') }}</button>

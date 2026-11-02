@@ -18,12 +18,9 @@
   .compact {
     --bg: #ffffff;
     --side: #f2f3f5;
-    --panel: var(--side);
     --surface: #ffffff;
-    --input: var(--surface);
     --raised: #e3e5e8;
-    --ghost: var(--raised);
-    --ghost-hover: #d7d9dc;
+    --switch-off: #d7d9dc;
     --border: #d7d9dc;
     --text: #060607;
     --muted: #4e5058;
@@ -32,7 +29,6 @@
     --link: #4752c4;
     --on-accent: #ffffff;
     --soft: rgba(88, 101, 242, 0.16);
-    --accent-soft: var(--soft);
     --hover: rgba(6, 6, 7, 0.05);
     --ring: rgba(88, 101, 242, 0.40);
     --h1: rgba(88, 101, 242, 0.14);
@@ -46,7 +42,7 @@
     --side: #2b2d31;
     --surface: #1e1f22;
     --raised: #383a40;
-    --ghost-hover: #4e5058;
+    --switch-off: #4e5058;
     --border: #3f4147;
     --text: #f2f3f5;
     --muted: #b5bac1;
@@ -70,8 +66,8 @@
   .mono { font-family: ui-monospace, "Cascadia Code", Consolas, Menlo, monospace; font-variant-numeric: tabular-nums; }
 
   .dbh-root { background: var(--bg); color: var(--text); }
-  .dbh-panel { background: var(--panel); border-right: 1px solid var(--border); }
-  .dbh-headerbar { background: var(--panel); border-bottom: 1px solid var(--border); }
+  .dbh-panel { background: var(--side); border-right: 1px solid var(--border); }
+  .dbh-headerbar { background: var(--side); border-bottom: 1px solid var(--border); }
   .dbh-iconbtn { color: var(--muted); }
   .dbh-iconbtn:hover { color: var(--text); background: var(--hover); }
   .dbh-muted { color: var(--muted); }
@@ -96,12 +92,13 @@
   .dbh-entry { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 8px 0 10px; border-radius: 8px; font-size: 14px; cursor: pointer; user-select: none; }
   .dbh-entry:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
   .dbh-entry:hover { background: var(--hover); }
-  .dbh-entry.is-selected { background: var(--accent-soft); }
+  .dbh-entry.is-selected { background: var(--soft); }
   .dbh-entry.is-child { margin-left: 30px; }
   .dbh-title { color: var(--text); }
   .dbh-time { color: var(--muted); font-variant-numeric: tabular-nums; }
-  .dbh-rm { flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: var(--muted); opacity: 0; padding: 0; }
-  .dbh-entry:hover .dbh-rm, .dbh-rm:focus-visible { opacity: 1; }
+  .dbh-rm { flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: var(--muted); padding: 0; }
+  .dbh-entry .dbh-rm { opacity: 0; }
+  .dbh-entry:hover .dbh-rm, .dbh-entry .dbh-rm:focus-visible { opacity: 1; }
   .dbh-rm:hover { color: #ff6b74; background: var(--hover); }
 
   .dbh-hour { display: flex; gap: 8px; padding: 10px 0; border-top: 1px solid var(--border); }
@@ -114,7 +111,7 @@
   .dbh-chevron.is-open svg { transform: rotate(90deg); }
   .dbh-count-badge { font-size: 11px; font-weight: 500; padding: 1px 6px; border-radius: 99px; background: var(--raised); color: var(--text); }
 
-  .dbh-input { background: var(--input); border: 1px solid var(--border); color: var(--text); transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+  .dbh-input { background: var(--surface); border: 1px solid var(--border); color: var(--text); transition: border-color 0.15s ease, box-shadow 0.15s ease; }
   .dbh-input::placeholder { color: var(--faint); }
   .dbh-input:focus, .dbh-input:focus-within { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
@@ -127,7 +124,7 @@
     width: 2rem;
     height: 1.125rem;
     border-radius: 9999px;
-    background: var(--ghost-hover);
+    background: var(--switch-off);
     cursor: pointer;
     transition: background-color 0.15s ease;
   }
@@ -147,6 +144,7 @@
   .dbh-switch:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
   /* Segmented-control button; .is-on marks the active one. */
+  .dbh-segs { display: flex; gap: 2px; padding: 3px; border-radius: 8px; background: var(--raised); }
   .dbh-seg { padding: 6px 12px; border-radius: 6px; font-size: 13px; color: var(--muted); }
   .dbh-seg:hover { color: var(--text); }
   .dbh-seg.is-on, .dbh-seg.is-on:hover { background: var(--accent); color: var(--on-accent); }

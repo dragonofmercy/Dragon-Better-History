@@ -16,7 +16,6 @@ const props = defineProps<{
   groupMode: GroupMode
   expanded: Set<string>
   isSelected: (key: string) => boolean
-  showHeading: boolean
   flat?: boolean
 }>()
 
@@ -37,7 +36,7 @@ const blocks = computed(() =>
 
 <template>
   <section class="mb-6">
-    <h2 v-if="showHeading" class="dbh-day mb-2">
+    <h2 v-if="flat" class="dbh-day mb-2">
       <span>{{ formatDayHeading(group.date, locale) }}</span>
       <span class="dbh-rule"></span>
       <span v-if="group.entries.length" class="dbh-count">{{ group.entries.length }}</span>

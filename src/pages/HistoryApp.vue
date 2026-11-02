@@ -153,7 +153,7 @@ function onKeydown(e: KeyboardEvent): void {
             <ActivityChart v-if="!history.searching.value" :counts="histogram" />
           </div>
           <div class="mb-4 flex flex-wrap items-center gap-2">
-            <div v-if="!history.searching.value" role="group" class="flex gap-0.5 rounded-lg p-[3px]" style="background: var(--raised)">
+            <div v-if="!history.searching.value" role="group" class="dbh-segs">
               <button v-for="g in groupModes" :key="g.mode" class="dbh-seg" :class="{ 'is-on': options.groupMode === g.mode }" :aria-pressed="options.groupMode === g.mode" @click="save({ groupMode: g.mode })">{{ t(g.label) }}</button>
             </div>
             <button class="dbh-seg dbh-sort ml-auto flex items-center gap-1.5" @click="toggleSort">
@@ -162,7 +162,7 @@ function onKeydown(e: KeyboardEvent): void {
               {{ sortLabel }}
             </button>
           </div>
-          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded" :is-selected="selection.isSelected" :show-heading="history.searching.value" :flat="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
+          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded" :is-selected="selection.isSelected" :flat="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
           <p v-if="!displayDays.length" class="dbh-muted border-t border-[color:var(--border)] py-12 text-center">{{ t(emptyMessage) }}</p>
           <div v-if="selection.count.value > 0" class="sticky bottom-5 mt-4 flex justify-center">
             <div role="status" class="flex items-center gap-3 rounded-xl py-2 pl-[18px] pr-2 shadow-lg" style="background: var(--raised); border: 1px solid var(--border)">

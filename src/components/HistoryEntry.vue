@@ -21,16 +21,10 @@ const emit = defineEmits<{ (e: 'toggle', ev: MouseEvent | KeyboardEvent): void; 
 
 const time = computed(() => formatTime(new Date(props.entry.lastVisitTime), props.locale, props.use24))
 const domain = computed(() => domainOf(props.entry.url))
-
-function onKey(ev: KeyboardEvent): void {
-  if (ev.target !== ev.currentTarget) return
-  ev.preventDefault()
-  emit('toggle', ev)
-}
 </script>
 
 <template>
-  <div class="dbh-entry" :class="[selected ? 'is-selected' : '', child ? 'is-child' : '']" tabindex="0" @click="emit('toggle', $event)" @keydown.enter="onKey" @keydown.space="onKey">
+  <div class="dbh-entry" :class="[selected ? 'is-selected' : '', child ? 'is-child' : '']" tabindex="0" @click="emit('toggle', $event)" @keydown.enter.self.prevent="emit('toggle', $event)" @keydown.space.self.prevent="emit('toggle', $event)">
     <span v-if="timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
     <img class="h-5 w-5 shrink-0 rounded-sm" :src="faviconUrl(entry.url)" alt="" />
     <div class="flex min-w-0 flex-1 items-baseline gap-2.5">
