@@ -1,9 +1,4 @@
 @import "tailwindcss";
-@import "@fontsource/ibm-plex-sans/400.css";
-@import "@fontsource/ibm-plex-sans/500.css";
-@import "@fontsource/ibm-plex-sans/600.css";
-@import "@fontsource/ibm-plex-mono/400.css";
-@import "@fontsource/ibm-plex-mono/500.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -44,7 +39,7 @@
     --h1: rgba(88, 101, 242, 0.14);
     --h2: rgba(88, 101, 242, 0.28);
     --h3: rgba(88, 101, 242, 0.44);
-    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-family: system-ui, sans-serif;
   }
 
   .dark .compact {
@@ -73,7 +68,7 @@
   html { color-scheme: light; }
   html.dark { color-scheme: dark; }
 
-  .mono { font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; font-variant-numeric: tabular-nums; }
+  .mono { font-family: ui-monospace, "Cascadia Code", Consolas, Menlo, monospace; font-variant-numeric: tabular-nums; }
 
   .dbh-root { background: var(--bg); color: var(--text); }
   .dbh-panel { background: var(--panel); border-right: 1px solid var(--border); }
