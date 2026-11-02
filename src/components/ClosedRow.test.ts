@@ -18,4 +18,17 @@ describe('ClosedRow', () => {
     await wrapper.find('.dbh-entry').trigger('click')
     expect(wrapper.emitted('restore')).toBeTruthy()
   })
+
+  it('shows closed_restore', () => {
+    expect(mountRow().text()).toContain('closed_restore')
+  })
+
+  it('restores on Enter and Space, only when the row itself is focused', async () => {
+    const wrapper = mountRow()
+    const row = wrapper.find('.dbh-entry')
+    expect(row.attributes('tabindex')).toBe('0')
+    await row.trigger('keydown', { key: 'Enter' })
+    await row.trigger('keydown', { key: ' ' })
+    expect(wrapper.emitted('restore')).toHaveLength(2)
+  })
 })

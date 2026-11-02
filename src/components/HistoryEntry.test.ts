@@ -55,6 +55,11 @@ describe('HistoryEntry', () => {
     expect(mountRow().text()).toContain('a.com')
   })
 
+  it('hides the domain when showDomain is false', () => {
+    const w = mount(HistoryEntryRow, { props: { entry, locale: 'en', use24: true, timeBeforeTitle: false, showDomain: false } })
+    expect(w.text()).not.toContain('a.com')
+  })
+
   it('renders no checkbox', () => {
     expect(mountRow().find('input[type="checkbox"]').exists()).toBe(false)
   })

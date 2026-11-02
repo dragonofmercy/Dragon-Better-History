@@ -13,7 +13,8 @@ const props = withDefaults(defineProps<{
   selected?: boolean
   removable?: boolean
   child?: boolean
-}>(), { selected: false, removable: true, child: false })
+  showDomain?: boolean
+}>(), { selected: false, removable: true, child: false, showDomain: true })
 
 const emit = defineEmits<{ (e: 'toggle', ev: MouseEvent | KeyboardEvent): void; (e: 'remove'): void }>()
 
@@ -33,7 +34,7 @@ function onKey(ev: KeyboardEvent): void {
     <img class="h-5 w-5 shrink-0 rounded-sm" :src="faviconUrl(entry.url)" alt="" />
     <div class="flex min-w-0 flex-1 items-baseline gap-2.5">
       <a class="dbh-title truncate hover:underline" :href="entry.url" :title="entry.url" target="_blank" @click.stop>{{ entry.title }}</a>
-      <span v-if="domain" class="dbh-muted shrink-0 text-xs">{{ domain }}</span>
+      <span v-if="showDomain && domain" class="dbh-muted shrink-0 text-xs">{{ domain }}</span>
     </div>
     <span v-if="!timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
     <button v-if="removable" class="dbh-rm" :title="t('history_remove_single')" :aria-label="t('history_remove_single')" @click.stop="emit('remove')">

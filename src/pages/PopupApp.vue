@@ -36,49 +36,60 @@ function selectTab(next: 'recent' | 'closed'): void {
   if (next === 'closed') void ensureClosed()
 }
 
+function openEntry(url: string): void { chrome.tabs.create({ url }) }
+
 function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('history.html') }) }
 </script>
 
 <template>
-  <div class="compact dbh-root flex max-h-[600px] w-124 flex-col">
-    <header class="dbh-headerbar flex shrink-0 items-center gap-1 px-3 py-2" role="tablist">
-      <button class="dbh-tab rounded-md px-2 py-1 text-sm font-semibold" :class="tab === 'recent' ? 'is-active' : ''" role="tab" :aria-selected="tab === 'recent'" @click="selectTab('recent')">{{ t('history_recent') }}</button>
-      <button class="dbh-tab rounded-md px-2 py-1 text-sm font-semibold" :class="tab === 'closed' ? 'is-active' : ''" role="tab" :aria-selected="tab === 'closed'" @click="selectTab('closed')">{{ t('tab_recently_closed') }}</button>
-      <button class="dbh-iconbtn ml-auto flex h-7 w-7 items-center justify-center rounded-md" :title="t('history_view_more')" :aria-label="t('history_view_more')" @click="openHistory">
-        <svg viewBox="0 0 15 15" width="15" height="15" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13H3V4h4V3H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V9h-1v4zM9 2v1h2.293L6.146 8.146l.708.708L12 3.707V6h1V2H9z" /></svg>
-      </button>
-    </header>
-    <div class="min-h-0 flex-1 overflow-y-auto p-3" role="tabpanel">
+  <div class="compact dbh-root flex max-h-[600px] w-[496px] flex-col">
+    <div class="flex shrink-0 flex-col gap-2 px-3 pb-2 pt-3">
+      <div class="flex gap-0.5 rounded-lg bg-[var(--raised)] p-[3px]" role="group">
+        <button
+          v-for="id in (['recent', 'closed'] as const)"
+          :key="id"
+          class="h-9 flex-1 rounded-md text-[13px]"
+          :class="tab === id ? 'bg-[var(--accent)] font-medium text-[var(--on-accent)]' : 'text-[var(--muted)] hover:text-[var(--text)]'"
+          :aria-pressed="tab === id"
+          @click="selectTab(id)"
+        >{{ id === 'recent' ? t('history_recent') : t('tab_recently_closed') }}</button>
+      </div>
+      <SearchBar v-if="tab === 'recent'" @search="(q) => history.search(q, today, options.popupNbItems)" @clear="() => history.getDay(today, options.popupNbItems)" />
+    </div>
+    <div class="min-h-0 flex-1 overflow-y-auto px-3 pb-2">
       <div v-show="tab === 'recent'">
-        <SearchBar class="mb-2" @search="(q) => history.search(q, today, options.popupNbItems)" @clear="() => history.getDay(today, options.popupNbItems)" />
-        <div class="dbh-entries">
-          <HistoryEntryRow v-for="e in entries" :key="e.key" :entry="e" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :removable="false" />
-        </div>
-        <p v-if="!entries.length" class="dbh-muted text-xs">{{ history.searching.value ? t('search_empty') : t('history_date_empty') }}</p>
+        <HistoryEntryRow
+          v-for="e in entries"
+          :key="e.key"
+          :entry="e"
+          :locale="locale"
+          :use24="options.use24HoursFormat"
+          :time-before-title="options.timeBeforeTitle"
+          :removable="false"
+          :show-domain="false"
+          @toggle="openEntry(e.url)"
+        />
+        <p v-if="!entries.length" class="dbh-muted my-8 text-center">{{ history.searching.value ? t('search_empty') : t('history_date_empty') }}</p>
       </div>
       <div v-show="tab === 'closed'">
-        <p v-if="closed.loading.value" class="dbh-muted text-xs">{{ t('closed_loading') }}</p>
-        <p v-else-if="closed.error.value" class="dbh-muted text-xs">{{ t('closed_error') }}</p>
+        <p v-if="closed.loading.value" class="dbh-muted my-8 text-center">{{ t('closed_loading') }}</p>
+        <p v-else-if="closed.error.value" class="dbh-muted my-8 text-center">{{ t('closed_error') }}</p>
         <template v-else>
-          <div class="dbh-entries">
-            <ClosedRow
-              v-for="s in closed.sessions.value"
-              :key="s.type + '-' + s.sessionId"
-              :session="s"
-              :locale="locale"
-              :use24="options.use24HoursFormat"
-              @restore="closed.restore(s.sessionId)"
-            />
-          </div>
-          <p v-if="!closed.sessions.value.length" class="dbh-muted text-xs">{{ t('closed_empty') }}</p>
+          <ClosedRow
+            v-for="s in closed.sessions.value"
+            :key="s.type + '-' + s.sessionId"
+            :session="s"
+            :locale="locale"
+            :use24="options.use24HoursFormat"
+            @restore="closed.restore(s.sessionId)"
+          />
+          <p v-if="!closed.sessions.value.length" class="dbh-muted my-8 text-center">{{ t('closed_empty') }}</p>
         </template>
       </div>
     </div>
+    <a class="dbh-more flex h-11 shrink-0 cursor-pointer items-center justify-center gap-2 border-t border-[var(--border)] text-[13px] font-medium text-[var(--link)] hover:bg-[var(--hover)]" href="#" @click.prevent="openHistory">
+      {{ t('history_view_more') }}
+      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+    </a>
   </div>
 </template>
-
-<style scoped>
-.dbh-tab { opacity: 0.55; }
-.dbh-tab.is-active { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
-.dbh-tab:hover { opacity: 0.85; }
-</style>
