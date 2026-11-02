@@ -35,7 +35,7 @@ const domain = computed(() => domainOf(props.run.entries[0].url))
       <div class="flex min-w-0 flex-1 items-baseline gap-2.5">
         <span class="dbh-title truncate">{{ run.entries[0].title }}</span>
         <span v-if="domain" class="dbh-muted shrink-0 text-xs">{{ domain }}</span>
-        <span class="dbh-count-badge mono shrink-0">{{ run.entries.length }}</span>
+        <span class="dbh-count-badge mono shrink-0 self-center">{{ run.entries.length }}</span>
       </div>
       <button class="dbh-rm" :title="t('history_remove_group')" :aria-label="t('history_remove_group')" @click.stop="emit('remove-group')">
         <X :size="14" />
