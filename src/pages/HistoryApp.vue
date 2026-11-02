@@ -115,7 +115,7 @@ function onKeydown(e: KeyboardEvent): void {
 <template>
   <div class="compact dbh-root flex h-screen flex-col" tabindex="0" @keydown="onKeydown" @click.self="selection.clear()">
     <header class="dbh-headerbar flex flex-wrap items-center gap-4 px-6 py-3.5">
-      <h1 class="w-64 flex-none text-[15px] font-semibold">{{ t('application_title') }}</h1>
+      <h1 class="w-[296px] flex-none text-[15px] font-semibold">{{ t('application_title') }}</h1>
       <SearchBar ref="searchBar" class="flex-1 basis-80" @search="onSearch" @clear="onClear" />
       <div class="ml-auto flex items-center gap-1">
         <button class="dbh-iconbtn flex h-10 w-10 items-center justify-center rounded-lg" :title="themeTitle" :aria-label="themeTitle" @click="toggleTheme">
