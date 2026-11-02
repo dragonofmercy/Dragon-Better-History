@@ -91,16 +91,16 @@
         "message": "Uhrzeit vor dem Titel anzeigen"
     },
     "options_group_mode": {
-        "message": "Gruppieren"
+        "message": "Gruppierung"
     },
     "options_group_none": {
         "message": "Keine"
     },
     "options_group_title": {
-        "message": "Titel"
+        "message": "Nach Titel"
     },
     "options_group_domain": {
-        "message": "Domain"
+        "message": "Nach Seite"
     },
     "options_popup_nb_items": {
         "message": "Anzahl der Einträge im Popup"
@@ -122,5 +122,64 @@
     },
     "btn_sort_oldest_first": {
         "message": "Älteste zuerst"
+    },
+    "history_sites_today": {
+        "message": "Seiten heute"
+    },
+    "history_summary": {
+        "message": "$visits$ Besuch(e), $sites$ Seite(n)",
+        "placeholders": {
+            "visits": {
+                "content": "$1"
+            },
+            "sites": {
+                "content": "$2"
+            }
+        }
+    },
+    "history_filter_empty": {
+        "message": "Keine Ergebnisse. Versuchen Sie ein anderes Wort oder entfernen Sie den Seitenfilter."
+    },
+    "history_activity_chart": {
+        "message": "Besuche nach Uhrzeit"
+    },
+    "history_expand_group": {
+        "message": "Gruppe aufklappen"
+    },
+    "history_collapse_group": {
+        "message": "Gruppe zuklappen"
+    },
+    "calendar_prev_month": {
+        "message": "Vorheriger Monat"
+    },
+    "calendar_next_month": {
+        "message": "Nächster Monat"
+    },
+    "group_list": {
+        "message": "Liste"
+    },
+    "sort_newest_label": {
+        "message": "Neueste zuerst"
+    },
+    "sort_oldest_label": {
+        "message": "Älteste zuerst"
+    },
+    "options_close": {
+        "message": "Schließen"
+    },
+    "options_preview": {
+        "message": "Vorschau"
+    },
+    "options_section_display": {
+        "message": "Anzeige"
+    },
+    "options_section_list": {
+        "message": "Liste"
+    },
+    "options_section_popup": {
+        "message": "Popup"
+    },
+    "options_live_hint": {
+        "message": "Änderungen werden sofort übernommen."
     }
 }

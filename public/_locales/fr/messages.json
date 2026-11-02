@@ -91,25 +91,25 @@
         "message": "Afficher le temps en début de ligne"
     },
     "options_group_mode": {
-        "message": "Regrouper"
+        "message": "Regroupement"
     },
     "options_group_none": {
         "message": "Aucun"
     },
     "options_group_title": {
-        "message": "Titre"
+        "message": "Par titre"
     },
     "options_group_domain": {
-        "message": "Domaine"
+        "message": "Par site"
     },
     "options_popup_nb_items": {
         "message": "Nombre d'éléments dans le popup"
     },
     "options_theme": {
-        "message": "Theme"
+        "message": "Thème"
     },
     "options_theme_system": {
-        "message": "Systeme"
+        "message": "Système"
     },
     "options_theme_light": {
         "message": "Clair"
@@ -122,5 +122,64 @@
     },
     "btn_sort_oldest_first": {
         "message": "Trier du plus ancien au plus récent"
+    },
+    "history_sites_today": {
+        "message": "Sites du jour"
+    },
+    "history_summary": {
+        "message": "$visits$ visite(s), $sites$ site(s)",
+        "placeholders": {
+            "visits": {
+                "content": "$1"
+            },
+            "sites": {
+                "content": "$2"
+            }
+        }
+    },
+    "history_filter_empty": {
+        "message": "Aucun résultat. Essayez un autre mot ou retirez le filtre de site."
+    },
+    "history_activity_chart": {
+        "message": "Répartition des visites par heure"
+    },
+    "history_expand_group": {
+        "message": "Déplier le groupe"
+    },
+    "history_collapse_group": {
+        "message": "Replier le groupe"
+    },
+    "calendar_prev_month": {
+        "message": "Mois précédent"
+    },
+    "calendar_next_month": {
+        "message": "Mois suivant"
+    },
+    "group_list": {
+        "message": "Liste"
+    },
+    "sort_newest_label": {
+        "message": "Plus récents en premier"
+    },
+    "sort_oldest_label": {
+        "message": "Plus anciens en premier"
+    },
+    "options_close": {
+        "message": "Fermer"
+    },
+    "options_preview": {
+        "message": "Aperçu"
+    },
+    "options_section_display": {
+        "message": "Affichage"
+    },
+    "options_section_list": {
+        "message": "Liste"
+    },
+    "options_section_popup": {
+        "message": "Popup"
+    },
+    "options_live_hint": {
+        "message": "Les changements s'appliquent immédiatement."
     }
 }

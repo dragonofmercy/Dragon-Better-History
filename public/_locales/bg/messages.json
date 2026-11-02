@@ -97,10 +97,10 @@
         "message": "Без"
     },
     "options_group_title": {
-        "message": "Заглавие"
+        "message": "По заглавие"
     },
     "options_group_domain": {
-        "message": "Домейн"
+        "message": "По сайт"
     },
     "options_popup_nb_items": {
         "message": "Брой елементи в изскачащия прозорец"
@@ -122,5 +122,64 @@
     },
     "btn_sort_oldest_first": {
         "message": "Първо най-старите"
+    },
+    "history_sites_today": {
+        "message": "Сайтове днес"
+    },
+    "history_summary": {
+        "message": "$visits$ посещение(я), $sites$ сайт(а)",
+        "placeholders": {
+            "visits": {
+                "content": "$1"
+            },
+            "sites": {
+                "content": "$2"
+            }
+        }
+    },
+    "history_filter_empty": {
+        "message": "Няма резултати. Опитайте друга дума или премахнете филтъра за сайт."
+    },
+    "history_activity_chart": {
+        "message": "Посещения по часове"
+    },
+    "history_expand_group": {
+        "message": "Разгъни групата"
+    },
+    "history_collapse_group": {
+        "message": "Свий групата"
+    },
+    "calendar_prev_month": {
+        "message": "Предишен месец"
+    },
+    "calendar_next_month": {
+        "message": "Следващ месец"
+    },
+    "group_list": {
+        "message": "Списък"
+    },
+    "sort_newest_label": {
+        "message": "Първо най-новите"
+    },
+    "sort_oldest_label": {
+        "message": "Първо най-старите"
+    },
+    "options_close": {
+        "message": "Затвори"
+    },
+    "options_preview": {
+        "message": "Преглед"
+    },
+    "options_section_display": {
+        "message": "Изглед"
+    },
+    "options_section_list": {
+        "message": "Списък"
+    },
+    "options_section_popup": {
+        "message": "Изскачащ прозорец"
+    },
+    "options_live_hint": {
+        "message": "Промените се прилагат веднага."
     }
 }

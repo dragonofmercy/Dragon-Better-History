@@ -97,10 +97,10 @@
         "message": "Нет"
     },
     "options_group_title": {
-        "message": "Заголовок"
+        "message": "По заголовку"
     },
     "options_group_domain": {
-        "message": "Домен"
+        "message": "По сайту"
     },
     "options_popup_nb_items": {
         "message": "Количество записей в всплывающем окне"
@@ -122,5 +122,64 @@
     },
     "btn_sort_oldest_first": {
         "message": "Сначала старые"
+    },
+    "history_sites_today": {
+        "message": "Сайты за сегодня"
+    },
+    "history_summary": {
+        "message": "$visits$ посещ., $sites$ сайт(ов)",
+        "placeholders": {
+            "visits": {
+                "content": "$1"
+            },
+            "sites": {
+                "content": "$2"
+            }
+        }
+    },
+    "history_filter_empty": {
+        "message": "Нет результатов. Попробуйте другое слово или уберите фильтр по сайту."
+    },
+    "history_activity_chart": {
+        "message": "Посещения по часам"
+    },
+    "history_expand_group": {
+        "message": "Развернуть группу"
+    },
+    "history_collapse_group": {
+        "message": "Свернуть группу"
+    },
+    "calendar_prev_month": {
+        "message": "Предыдущий месяц"
+    },
+    "calendar_next_month": {
+        "message": "Следующий месяц"
+    },
+    "group_list": {
+        "message": "Список"
+    },
+    "sort_newest_label": {
+        "message": "Сначала новые"
+    },
+    "sort_oldest_label": {
+        "message": "Сначала старые"
+    },
+    "options_close": {
+        "message": "Закрыть"
+    },
+    "options_preview": {
+        "message": "Предпросмотр"
+    },
+    "options_section_display": {
+        "message": "Отображение"
+    },
+    "options_section_list": {
+        "message": "Список"
+    },
+    "options_section_popup": {
+        "message": "Всплывающее окно"
+    },
+    "options_live_hint": {
+        "message": "Изменения применяются сразу."
     }
 }

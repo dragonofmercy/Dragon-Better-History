@@ -91,16 +91,16 @@
         "message": "Mostra l'ora prima del titolo"
     },
     "options_group_mode": {
-        "message": "Raggruppa"
+        "message": "Raggruppamento"
     },
     "options_group_none": {
         "message": "Nessuno"
     },
     "options_group_title": {
-        "message": "Titolo"
+        "message": "Per titolo"
     },
     "options_group_domain": {
-        "message": "Dominio"
+        "message": "Per sito"
     },
     "options_popup_nb_items": {
         "message": "Numero di elementi nel popup"
@@ -122,5 +122,64 @@
     },
     "btn_sort_oldest_first": {
         "message": "Dal più vecchio al più recente"
+    },
+    "history_sites_today": {
+        "message": "Siti di oggi"
+    },
+    "history_summary": {
+        "message": "$visits$ visita/e, $sites$ sito/i",
+        "placeholders": {
+            "visits": {
+                "content": "$1"
+            },
+            "sites": {
+                "content": "$2"
+            }
+        }
+    },
+    "history_filter_empty": {
+        "message": "Nessun risultato. Prova un'altra parola o rimuovi il filtro del sito."
+    },
+    "history_activity_chart": {
+        "message": "Visite per ora"
+    },
+    "history_expand_group": {
+        "message": "Espandi il gruppo"
+    },
+    "history_collapse_group": {
+        "message": "Comprimi il gruppo"
+    },
+    "calendar_prev_month": {
+        "message": "Mese precedente"
+    },
+    "calendar_next_month": {
+        "message": "Mese successivo"
+    },
+    "group_list": {
+        "message": "Elenco"
+    },
+    "sort_newest_label": {
+        "message": "Più recenti per primi"
+    },
+    "sort_oldest_label": {
+        "message": "Meno recenti per primi"
+    },
+    "options_close": {
+        "message": "Chiudi"
+    },
+    "options_preview": {
+        "message": "Anteprima"
+    },
+    "options_section_display": {
+        "message": "Visualizzazione"
+    },
+    "options_section_list": {
+        "message": "Elenco"
+    },
+    "options_section_popup": {
+        "message": "Popup"
+    },
+    "options_live_hint": {
+        "message": "Le modifiche vengono applicate immediatamente."
     }
 }

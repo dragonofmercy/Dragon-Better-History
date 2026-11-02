@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -17,42 +22,48 @@
      stays consistent; .dark overrides them. */
   .compact {
     --bg: #ffffff;
-    --panel: #ffffff;
-    --border: #e2e8f0;
-    --row-border: #f1f5f9;
-    --text: #1e293b;
-    --muted: #64748b;
-    --faint: #94a3b8;
-    --accent: #0284c7;
-    --accent-strong: #0369a1;
-    --accent-soft: rgba(2, 132, 199, 0.10);
-    --ring: rgba(2, 132, 199, 0.30);
-    --hover: rgba(15, 23, 42, 0.04);
-    --input: #f8fafc;
-    --raised: #f8fafc;
+    --side: #f2f3f5;
+    --panel: var(--side);
+    --surface: #ffffff;
+    --input: var(--surface);
+    --raised: #e3e5e8;
+    --ghost: var(--raised);
+    --ghost-hover: #d7d9dc;
+    --border: #d7d9dc;
+    --row-border: var(--border);
+    --text: #060607;
+    --muted: #4e5058;
+    --faint: #6d6f78;
+    --accent: #5865f2;
+    --accent-strong: #4752c4;
+    --link: #4752c4;
     --on-accent: #ffffff;
-    --ghost: #e2e8f0;
-    --ghost-hover: #cbd5e1;
+    --soft: rgba(88, 101, 242, 0.16);
+    --accent-soft: var(--soft);
+    --hover: rgba(6, 6, 7, 0.05);
+    --ring: rgba(88, 101, 242, 0.40);
+    --h1: rgba(88, 101, 242, 0.14);
+    --h2: rgba(88, 101, 242, 0.28);
+    --h3: rgba(88, 101, 242, 0.44);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
   }
 
   .dark .compact {
-    --bg: #0f172a;
-    --panel: #0f172a;
-    --border: #1e293b;
-    --row-border: #1b2435;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --faint: #64748b;
-    --accent: #38bdf8;
-    --accent-strong: #7dd3fc;
-    --accent-soft: rgba(56, 189, 248, 0.14);
-    --ring: rgba(56, 189, 248, 0.30);
-    --hover: rgba(255, 255, 255, 0.04);
-    --input: #1e293b;
-    --raised: #1e293b;
-    --on-accent: #0f172a;
-    --ghost: #334155;
-    --ghost-hover: #475569;
+    --bg: #313338;
+    --side: #2b2d31;
+    --surface: #1e1f22;
+    --raised: #383a40;
+    --ghost-hover: #4e5058;
+    --border: #3f4147;
+    --text: #f2f3f5;
+    --muted: #b5bac1;
+    --faint: #80848e;
+    --link: #949cf7;
+    --soft: rgba(88, 101, 242, 0.28);
+    --hover: rgba(255, 255, 255, 0.06);
+    --h1: rgba(88, 101, 242, 0.20);
+    --h2: rgba(88, 101, 242, 0.38);
+    --h3: rgba(88, 101, 242, 0.60);
   }
 
   /* color-scheme drives the native scrollbars AND the browser's fallback favicons:
@@ -63,19 +74,13 @@
   html { color-scheme: light; }
   html.dark { color-scheme: dark; }
 
-  .mono { font-family: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, Consolas, monospace; }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; font-variant-numeric: tabular-nums; }
 
   .dbh-root { background: var(--bg); color: var(--text); }
   .dbh-panel { background: var(--panel); border-right: 1px solid var(--border); }
   .dbh-card { background: var(--panel); border: 1px solid var(--border); color: var(--text); }
   .dbh-raised { background: var(--raised); border: 1px solid var(--border); color: var(--text); }
-  .dbh-headerbar {
-    background:
-      radial-gradient(60% 140% at 12% -40%, rgba(56, 189, 248, 0.12), transparent 70%),
-      radial-gradient(55% 140% at 32% -40%, rgba(99, 102, 241, 0.10), transparent 70%),
-      var(--panel);
-    border-bottom: 1px solid var(--border);
-  }
+  .dbh-headerbar { background: var(--panel); border-bottom: 1px solid var(--border); }
   .dbh-iconbtn { color: var(--muted); }
   .dbh-iconbtn:hover { color: var(--text); background: var(--hover); }
   .dbh-muted { color: var(--muted); }
@@ -97,7 +102,6 @@
   .dbh-count { font-size: 11px; font-weight: 600; color: var(--faint); letter-spacing: normal; }
 
   /* Dense rows separated by hairlines, accent bar on hover/selection. */
-  .dbh-entries > * + * { border-top: 1px solid var(--row-border); }
   .dbh-entry { box-shadow: inset 2px 0 0 transparent; transition: background-color 0.12s ease, box-shadow 0.12s ease; }
   .dbh-entry:hover { background: var(--hover); box-shadow: inset 2px 0 0 var(--accent); }
   .dbh-entry.is-selected { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent); }
@@ -153,6 +157,11 @@
   .dbh-switch:checked { background: var(--accent); }
   .dbh-switch:checked::after { transform: translateX(0.875rem); }
   .dbh-switch:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+
+  /* Segmented-control button; .is-on marks the active one. */
+  .dbh-seg { padding: 6px 12px; border-radius: 6px; font-size: 13px; color: var(--muted); }
+  .dbh-seg:hover { color: var(--text); }
+  .dbh-seg.is-on, .dbh-seg.is-on:hover { background: var(--accent); color: var(--on-accent); font-weight: 500; }
 
   /* Native radios rendered as a segmented button. */
   .dbh-segmented { display: inline-flex; gap: 2px; padding: 2px; border-radius: 0.375rem; background: var(--ghost); font-size: 0.875rem; }

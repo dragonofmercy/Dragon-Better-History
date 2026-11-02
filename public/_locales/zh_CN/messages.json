@@ -97,10 +97,10 @@
         "message": "无"
     },
     "options_group_title": {
-        "message": "标题"
+        "message": "按标题"
     },
     "options_group_domain": {
-        "message": "域名"
+        "message": "按网站"
     },
     "options_popup_nb_items": {
         "message": "弹出窗口中的项目数"
@@ -122,5 +122,64 @@
     },
     "btn_sort_oldest_first": {
         "message": "最早的在前"
+    },
+    "history_sites_today": {
+        "message": "今日网站"
+    },
+    "history_summary": {
+        "message": "$visits$ 次访问，$sites$ 个网站",
+        "placeholders": {
+            "visits": {
+                "content": "$1"
+            },
+            "sites": {
+                "content": "$2"
+            }
+        }
+    },
+    "history_filter_empty": {
+        "message": "没有结果。请尝试其他关键词或移除网站筛选。"
+    },
+    "history_activity_chart": {
+        "message": "按小时统计的访问量"
+    },
+    "history_expand_group": {
+        "message": "展开分组"
+    },
+    "history_collapse_group": {
+        "message": "折叠分组"
+    },
+    "calendar_prev_month": {
+        "message": "上个月"
+    },
+    "calendar_next_month": {
+        "message": "下个月"
+    },
+    "group_list": {
+        "message": "列表"
+    },
+    "sort_newest_label": {
+        "message": "最新优先"
+    },
+    "sort_oldest_label": {
+        "message": "最早优先"
+    },
+    "options_close": {
+        "message": "关闭"
+    },
+    "options_preview": {
+        "message": "预览"
+    },
+    "options_section_display": {
+        "message": "显示"
+    },
+    "options_section_list": {
+        "message": "列表"
+    },
+    "options_section_popup": {
+        "message": "弹出窗口"
+    },
+    "options_live_hint": {
+        "message": "更改会立即生效。"
     }
 }

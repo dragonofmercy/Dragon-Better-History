@@ -97,10 +97,10 @@
         "message": "None"
     },
     "options_group_title": {
-        "message": "Title"
+        "message": "By title"
     },
     "options_group_domain": {
-        "message": "Domain"
+        "message": "By site"
     },
     "options_popup_nb_items": {
         "message": "Number of items in popup"
@@ -122,5 +122,64 @@
     },
     "btn_sort_oldest_first": {
         "message": "Sort oldest first"
+    },
+    "history_sites_today": {
+        "message": "Sites today"
+    },
+    "history_summary": {
+        "message": "$visits$ visit(s), $sites$ site(s)",
+        "placeholders": {
+            "visits": {
+                "content": "$1"
+            },
+            "sites": {
+                "content": "$2"
+            }
+        }
+    },
+    "history_filter_empty": {
+        "message": "No results. Try another word or remove the site filter."
+    },
+    "history_activity_chart": {
+        "message": "Visits by hour"
+    },
+    "history_expand_group": {
+        "message": "Expand group"
+    },
+    "history_collapse_group": {
+        "message": "Collapse group"
+    },
+    "calendar_prev_month": {
+        "message": "Previous month"
+    },
+    "calendar_next_month": {
+        "message": "Next month"
+    },
+    "group_list": {
+        "message": "List"
+    },
+    "sort_newest_label": {
+        "message": "Newest first"
+    },
+    "sort_oldest_label": {
+        "message": "Oldest first"
+    },
+    "options_close": {
+        "message": "Close"
+    },
+    "options_preview": {
+        "message": "Preview"
+    },
+    "options_section_display": {
+        "message": "Display"
+    },
+    "options_section_list": {
+        "message": "List"
+    },
+    "options_section_popup": {
+        "message": "Popup"
+    },
+    "options_live_hint": {
+        "message": "Changes apply immediately."
     }
 }
