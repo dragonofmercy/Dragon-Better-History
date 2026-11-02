@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { startOfDay, endOfDay, normalizeLocale, formatTime, formatDayHeading } from '@/lib/dates'
+import { startOfDay, endOfDay, normalizeLocale, formatTime, formatDayHeading, formatHour } from '@/lib/dates'
 
 describe('dates', () => {
   it('startOfDay zeroes the time', () => {
@@ -36,5 +36,10 @@ describe('dates', () => {
   it('formatDayHeading returns a non-empty localized string', () => {
     const d = new Date(2024, 0, 1)
     expect(formatDayHeading(d, 'en').length).toBeGreaterThan(0)
+  })
+
+  it('formatHour honors 12/24h', () => {
+    expect(formatHour(16, 'en', true)).toContain('16')
+    expect(formatHour(16, 'en', false)).toContain('4')
   })
 })

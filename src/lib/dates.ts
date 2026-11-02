@@ -21,3 +21,7 @@ export function formatTime(d: Date, locale: string, use24: boolean): string {
 export function formatDayHeading(d: Date, locale: string): string {
   return new Intl.DateTimeFormat(normalizeLocale(locale), { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(d)
 }
+
+export function formatHour(hour: number, locale: string, use24: boolean): string {
+  return new Intl.DateTimeFormat(normalizeLocale(locale), { hour: 'numeric', hour12: !use24 }).format(new Date(2000, 0, 1, hour))
+}

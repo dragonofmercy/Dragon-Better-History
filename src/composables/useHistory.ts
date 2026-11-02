@@ -18,7 +18,7 @@ export type DisplayItem =
   | { type: 'single'; entry: HistoryEntry }
   | { type: 'run'; key: string; title: string; entries: HistoryEntry[] }
 
-function domainOf(url: string): string {
+export function domainOf(url: string): string {
   try { return new URL(url).hostname.replace(/^www\./, '') } catch { return '' }
 }
 
