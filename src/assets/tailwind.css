@@ -78,7 +78,7 @@
   .dbh-faint { color: var(--faint); }
 
   .dbh-link { color: var(--link); cursor: pointer; }
-  .dbh-link:hover { text-decoration: underline; }
+  .dbh-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 
   .dbh-nav { color: var(--muted); }
   .dbh-nav:not(:disabled):hover { color: var(--text); }

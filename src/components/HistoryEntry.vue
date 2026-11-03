@@ -28,7 +28,7 @@ const domain = computed(() => domainOf(props.entry.url))
     <span v-if="timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
     <img class="h-5 w-5 shrink-0 rounded-sm" :src="faviconUrl(entry.url)" alt="" />
     <div class="flex min-w-0 flex-1 items-baseline gap-2.5">
-      <a class="dbh-title truncate hover:underline" :href="entry.url" :title="entry.url" target="_blank" @click.stop>{{ entry.title }}</a>
+      <a class="dbh-title truncate underline-offset-4 hover:underline" :href="entry.url" :title="entry.url" target="_blank" @click.stop>{{ entry.title }}</a>
       <span v-if="showDomain && domain" class="dbh-muted shrink-0 text-xs">{{ domain }}</span>
     </div>
     <span v-if="!timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
