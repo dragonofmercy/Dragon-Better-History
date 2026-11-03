@@ -75,15 +75,13 @@ function isSelected(ts: number): boolean { return props.selected != null && star
 <template>
   <div class="text-sm">
     <div class="mb-2 flex items-center justify-between">
+      <button data-prev :disabled="!canPrev" :aria-label="t('calendar_prev_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="prev">
+        <ChevronLeft :size="16" />
+      </button>
       <span class="font-bold capitalize">{{ monthLabel }}</span>
-      <span class="flex gap-1">
-        <button data-prev :disabled="!canPrev" :aria-label="t('calendar_prev_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="prev">
-          <ChevronLeft :size="16" />
-        </button>
-        <button data-next :disabled="!canNext" :aria-label="t('calendar_next_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="next">
-          <ChevronRight :size="16" />
-        </button>
-      </span>
+      <button data-next :disabled="!canNext" :aria-label="t('calendar_next_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="next">
+        <ChevronRight :size="16" />
+      </button>
     </div>
     <div class="dbh-faint mb-1 grid grid-cols-7 gap-0.5 border-b border-[color:var(--border)] pb-1 text-center text-xs">
       <span v-for="w in weekdayLabels" :key="w" data-weekday>{{ w }}</span>
