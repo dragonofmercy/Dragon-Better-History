@@ -8,7 +8,7 @@ const emit = defineEmits<{ (e: 'pick', domain: string): void }>()
 </script>
 
 <template>
-  <section v-if="sites.length">
+  <section v-if="sites.length" class="dbh-card">
     <h2 class="mb-1.5 text-[13px] font-semibold">{{ t('history_sites_today') }}</h2>
     <button v-for="s in sites" :key="s.domain" class="dbh-site" :class="{ 'is-on': s.domain === active }" :aria-pressed="s.domain === active" @click="emit('pick', s.domain)">
       <img class="h-5 w-5 flex-none rounded-sm" :src="faviconUrl(s.url)" alt="" />

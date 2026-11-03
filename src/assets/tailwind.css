@@ -157,6 +157,7 @@
   .dbh-seg:hover { color: var(--text); }
   .dbh-seg.is-on, .dbh-seg.is-on:hover { background: var(--accent); color: var(--on-accent); }
 
+  .dbh-card { padding: 12px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); }
   .dbh-site { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 36px; padding: 0 8px; border-radius: 8px; font-size: 13px; text-align: left; }
   .dbh-site:hover { background: var(--hover); }
   .dbh-site.is-on { background: var(--soft); font-weight: 500; }
