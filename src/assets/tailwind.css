@@ -20,6 +20,7 @@
     --side: var(--color-sky-50);
     --surface: #ffffff;
     --raised: #e3e5e8;
+    --segs: var(--color-slate-50);
     --switch-off: #d7d9dc;
     --border: #d7d9dc;
     --text: #060607;
@@ -42,6 +43,7 @@
     --side: #2b2d31;
     --surface: #1e1f22;
     --raised: #383a40;
+    --segs: #383a40;
     --switch-off: #4e5058;
     --border: #3f4147;
     --text: #f2f3f5;
@@ -150,7 +152,7 @@
   .dbh-switch:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
   /* Segmented-control button; .is-on marks the active one. */
-  .dbh-segs { display: flex; gap: 2px; padding: 3px; border-radius: 8px; background: var(--raised); }
+  .dbh-segs { display: flex; gap: 2px; padding: 3px; border-radius: 8px; background: var(--segs); }
   .dbh-seg { padding: 6px 12px; border-radius: 6px; font-size: 13px; color: var(--muted); }
   .dbh-seg:hover { color: var(--text); }
   .dbh-seg.is-on, .dbh-seg.is-on:hover { background: var(--accent); color: var(--on-accent); }
