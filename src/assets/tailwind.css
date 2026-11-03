@@ -17,7 +17,7 @@
      stays consistent; .dark overrides them. */
   .compact {
     --bg: #ffffff;
-    --side: #f2f3f5;
+    --side: var(--color-indigo-50);
     --surface: #ffffff;
     --raised: #e3e5e8;
     --switch-off: #d7d9dc;
