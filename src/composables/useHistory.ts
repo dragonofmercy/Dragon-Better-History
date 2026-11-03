@@ -23,6 +23,19 @@ export function domainOf(url: string): string {
   try { return new URL(url).hostname.replace(/^www\./, '') } catch { return '' }
 }
 
+// Splits a "site:example.com" operator out of a search query; the domain stays in the text so Chrome narrows the results.
+export function parseQuery(query: string): { text: string; site: string } {
+  const m = /(?:^|\s)site:(\S+)/i.exec(query)
+  if (!m) return { text: query, site: '' }
+  const site = m[1].toLowerCase().replace(/^www\./, '')
+  return { text: `${query.replace(m[0], ' ')} ${site}`.replace(/\s+/g, ' ').trim(), site }
+}
+
+export function matchesSite(url: string, site: string): boolean {
+  const d = domainOf(url)
+  return d === site || d.endsWith(`.${site}`)
+}
+
 export function groupRuns(entries: HistoryEntry[], mode: 'title' | 'domain' = 'title'): DisplayItem[] {
   const groupKey = (e: HistoryEntry): string => (mode === 'domain' ? domainOf(e.url) : e.title)
   const items: DisplayItem[] = []
@@ -80,8 +93,9 @@ export function useHistory() {
     const start = new Date(1970, 0, 1)
     const end = endOfDay(today)
     searching.value = true
-    const results = await chrome.history.search({ text: query, startTime: start.getTime(), endTime: end.getTime(), maxResults: max })
-    days.value = groupByDay(results, start, end)
+    const { text, site } = parseQuery(query)
+    const results = await chrome.history.search({ text, startTime: start.getTime(), endTime: end.getTime(), maxResults: max })
+    days.value = groupByDay(site ? results.filter((r) => matchesSite(r.url ?? '', site)) : results, start, end)
   }
 
   async function remove(url: string): Promise<void> {

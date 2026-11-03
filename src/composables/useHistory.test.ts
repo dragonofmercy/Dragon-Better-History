@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { groupByDay, entryKey, groupRuns, orderDays, domainOf, useHistory } from '@/composables/useHistory'
+import { groupByDay, entryKey, groupRuns, orderDays, domainOf, parseQuery, matchesSite, useHistory } from '@/composables/useHistory'
 
 function item(url: string, time: number, title = ''): chrome.history.HistoryItem {
   return { id: url, url, title, lastVisitTime: time } as chrome.history.HistoryItem
@@ -151,6 +151,22 @@ describe('useHistory', () => {
     const h = useHistory()
     await h.search('bar', new Date(2024, 0, 2))
     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ text: 'bar', maxResults: 0 }))
+  })
+
+  it('search with site: filters results to that domain and its subdomains', async () => {
+    const t = new Date(2024, 0, 2, 12, 0).getTime()
+    const spy = vi.spyOn(chrome.history, 'search').mockResolvedValue([item('https://www.github.com/a', t), item('https://gist.github.com/b', t + 1), item('https://example.com/github.com', t + 2)] as never)
+    const h = useHistory()
+    await h.search('vue site:GitHub.com', new Date(2024, 0, 2))
+    expect(spy).toHaveBeenLastCalledWith(expect.objectContaining({ text: 'vue github.com' }))
+    expect(h.days.value.flatMap((g) => g.entries.map((e) => e.url))).toEqual(['https://www.github.com/a', 'https://gist.github.com/b'])
+  })
+
+  it('parseQuery and matchesSite', () => {
+    expect(parseQuery('foo')).toEqual({ text: 'foo', site: '' })
+    expect(parseQuery('site:www.a.com')).toEqual({ text: 'a.com', site: 'a.com' })
+    expect(matchesSite('https://a.com', 'a.com')).toBe(true)
+    expect(matchesSite('https://nota.com', 'a.com')).toBe(false)
   })
 
   it('domainOf returns empty for non-http and malformed URLs', () => {
