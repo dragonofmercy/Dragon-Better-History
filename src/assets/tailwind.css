@@ -17,10 +17,10 @@
      stays consistent; .dark overrides them. */
   .compact {
     --bg: #ffffff;
-    --side: var(--color-sky-50);
+    --side: #f0f9ff;
     --surface: #ffffff;
     --raised: #e3e5e8;
-    --segs: var(--color-slate-100);
+    --segs: #f1f5f9;
     --switch-off: #d7d9dc;
     --border: #d7d9dc;
     --text: #060607;
@@ -30,6 +30,8 @@
     --link: #4752c4;
     --on-accent: #ffffff;
     --soft: rgba(88, 101, 242, 0.16);
+    --row-hover: color-mix(in srgb, var(--soft) 25%, transparent);
+    --row-selected: color-mix(in srgb, var(--soft) 50%, transparent);
     --hover: rgba(6, 6, 7, 0.05);
     --ring: rgba(88, 101, 242, 0.40);
     --h1: rgba(88, 101, 242, 0.14);
@@ -93,8 +95,8 @@
   /* Timeline rows: 44px, whole row clickable, remove button on hover or focus. */
   .dbh-entry { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 8px 0 10px; border-radius: 8px; font-size: 14px; cursor: pointer; user-select: none; }
   .dbh-entry:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
-  .dbh-entry:hover { background: color-mix(in srgb, var(--soft) 25%, transparent); }
-  .dbh-entry.is-selected { background: color-mix(in srgb, var(--soft) 50%, transparent); }
+  .dbh-entry:hover { background: var(--row-hover); }
+  .dbh-entry.is-selected { background: var(--row-selected); }
   .dbh-entry.is-child { margin-left: 30px; }
   .dbh-title { color: var(--text); }
   .dbh-time { color: var(--muted); font-variant-numeric: tabular-nums; }
