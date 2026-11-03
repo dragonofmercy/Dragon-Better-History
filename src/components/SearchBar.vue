@@ -22,7 +22,7 @@ defineExpose({ clear })
 </script>
 
 <template>
-  <label class="dbh-input dbh-muted flex h-9 min-w-0 max-w-[720px] items-center gap-2.5 rounded-[10px] px-3.5">
+  <label class="dbh-input dbh-muted flex h-9 min-w-0 max-w-[720px] items-center gap-2.5 rounded-lg px-3.5">
     <Search :size="16" />
     <input ref="input" v-model="value" :placeholder="t('search_placeholder')" :aria-label="t('search_placeholder')" type="text" spellcheck="false" autocapitalize="off" class="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none" style="color: var(--text)" />
     <button v-if="value" type="button" class="dbh-rm" aria-label="clear" @click.prevent="clear">
