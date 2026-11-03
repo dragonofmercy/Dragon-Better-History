@@ -92,7 +92,7 @@
   .dbh-entry { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 8px 0 10px; border-radius: 8px; font-size: 14px; cursor: pointer; user-select: none; }
   .dbh-entry:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
   .dbh-entry:hover { background: color-mix(in srgb, var(--soft) 25%, transparent); }
-  .dbh-entry.is-selected { background: var(--soft); }
+  .dbh-entry.is-selected { background: color-mix(in srgb, var(--soft) 50%, transparent); }
   .dbh-entry.is-child { margin-left: 30px; }
   .dbh-title { color: var(--text); }
   .dbh-time { color: var(--muted); font-variant-numeric: tabular-nums; }
