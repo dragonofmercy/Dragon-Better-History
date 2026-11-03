@@ -105,6 +105,12 @@
   .dbh-day + .dbh-hour { border-top: 0; }
   .dbh-hour-label { flex: none; width: 56px; margin: 12px 0 0; font-size: 13px; font-weight: 500; color: var(--muted); }
 
+  /* Dense mode: tighter rows and hour blocks to fit more entries on screen. */
+  .is-dense .dbh-entry { min-height: 32px; }
+  .is-dense .dbh-rm { width: 26px; height: 26px; }
+  .is-dense .dbh-hour { padding: 4px 0; }
+  .is-dense .dbh-hour-label { margin-top: 6px; }
+
   /* Sits in the gutter left of the row so favicons stay aligned with single entries. */
   .dbh-chevron { position: absolute; left: -26px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; padding: 0; color: var(--muted); }
   .dbh-chevron svg { transition: transform 0.12s ease; }

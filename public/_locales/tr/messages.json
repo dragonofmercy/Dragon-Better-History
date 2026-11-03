@@ -87,6 +87,9 @@
     "options_display_time_before_title": {
         "message": "Saat başlığın önünde gösterilsin"
     },
+    "options_dense": {
+        "message": "Sıkışık mod"
+    },
     "options_group_mode": {
         "message": "Gruplama"
     },

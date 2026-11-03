@@ -87,6 +87,9 @@
     "options_display_time_before_title": {
         "message": "Показване на времето преди заглавието"
     },
+    "options_dense": {
+        "message": "Сбит режим"
+    },
     "options_group_mode": {
         "message": "Групиране"
     },

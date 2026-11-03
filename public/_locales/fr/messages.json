@@ -87,6 +87,9 @@
     "options_display_time_before_title": {
         "message": "Afficher le temps en début de ligne"
     },
+    "options_dense": {
+        "message": "Mode condensé"
+    },
     "options_group_mode": {
         "message": "Regroupement"
     },

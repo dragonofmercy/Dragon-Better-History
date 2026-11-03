@@ -87,6 +87,9 @@
     "options_display_time_before_title": {
         "message": "时间显示在标题之前"
     },
+    "options_dense": {
+        "message": "紧凑模式"
+    },
     "options_group_mode": {
         "message": "分组"
     },

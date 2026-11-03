@@ -87,6 +87,9 @@
     "options_display_time_before_title": {
         "message": "Mostra l'ora prima del titolo"
     },
+    "options_dense": {
+        "message": "Modalità compatta"
+    },
     "options_group_mode": {
         "message": "Raggruppamento"
     },

@@ -72,6 +72,10 @@ function onPopupCount(ev: Event): void {
             <span>{{ t('options_display_time_before_title') }}</span>
             <input data-opt="before" type="checkbox" class="dbh-switch" :checked="options.timeBeforeTitle" @change="emit('change', { timeBeforeTitle: checked($event) })" />
           </label>
+          <label class="flex min-h-[44px] items-center justify-between gap-4">
+            <span>{{ t('options_dense') }}</span>
+            <input data-opt="dense" type="checkbox" class="dbh-switch" :checked="options.dense" @change="emit('change', { dense: checked($event) })" />
+          </label>
         </section>
 
         <section :aria-label="t('options_section_list')">

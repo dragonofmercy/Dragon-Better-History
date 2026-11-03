@@ -6,6 +6,7 @@ export type GroupMode = 'none' | 'title' | 'domain'
 export interface Options {
   use24HoursFormat: boolean
   timeBeforeTitle: boolean
+  dense: boolean
   groupMode: GroupMode
   sortOldestFirst: boolean
   popupNbItems: number
@@ -15,6 +16,7 @@ export interface Options {
 export const DEFAULT_OPTIONS: Options = {
   use24HoursFormat: true,
   timeBeforeTitle: false,
+  dense: false,
   groupMode: 'none',
   sortOldestFirst: false,
   popupNbItems: 10,

@@ -87,6 +87,9 @@
     "options_display_time_before_title": {
         "message": "Display time before title"
     },
+    "options_dense": {
+        "message": "Condensed mode"
+    },
     "options_group_mode": {
         "message": "Group"
     },

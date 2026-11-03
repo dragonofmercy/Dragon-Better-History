@@ -113,7 +113,7 @@ function onKeydown(e: KeyboardEvent): void {
 </script>
 
 <template>
-  <div class="compact dbh-root flex h-screen flex-col" tabindex="0" @keydown="onKeydown" @click.self="selection.clear()">
+  <div class="compact dbh-root flex h-screen flex-col" :class="{ 'is-dense': options.dense }" tabindex="0" @keydown="onKeydown" @click.self="selection.clear()">
     <header class="dbh-headerbar flex flex-wrap items-center gap-4 px-6 py-3.5">
       <h1 class="w-[296px] flex-none text-[15px] font-semibold">{{ t('application_title') }}</h1>
       <SearchBar ref="searchBar" class="flex-1 basis-80" @search="onSearch" @clear="onClear" />

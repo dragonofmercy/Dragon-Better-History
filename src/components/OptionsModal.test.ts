@@ -54,6 +54,12 @@ describe('OptionsModal', () => {
     expect(w.emitted('close')).toHaveLength(2)
   })
 
+  it('dense switch emits dense', async () => {
+    const w = mountModal()
+    await w.find('[data-opt="dense"]').setValue(true)
+    expect(w.emitted('change')![0]).toEqual([{ dense: true }])
+  })
+
   it('sort switch emits sortOldestFirst', async () => {
     const w = mountModal()
     await w.find('[data-opt="oldest"]').setValue(true)

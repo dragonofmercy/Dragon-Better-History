@@ -87,6 +87,9 @@
     "options_display_time_before_title": {
         "message": "Показывать время перед заголовком"
     },
+    "options_dense": {
+        "message": "Компактный режим"
+    },
     "options_group_mode": {
         "message": "Группировка"
     },

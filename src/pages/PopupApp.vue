@@ -43,7 +43,7 @@ function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('
 </script>
 
 <template>
-  <div class="compact dbh-root flex max-h-[600px] w-[496px] flex-col">
+  <div class="compact dbh-root flex max-h-[600px] w-[496px] flex-col" :class="{ 'is-dense': options.dense }">
     <div class="flex shrink-0 flex-col gap-2 px-3 pb-2 pt-3">
       <div class="dbh-segs" role="group">
         <button
