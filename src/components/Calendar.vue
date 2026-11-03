@@ -85,7 +85,7 @@ function isSelected(ts: number): boolean { return props.selected != null && star
         </button>
       </span>
     </div>
-    <div class="dbh-faint grid grid-cols-7 gap-0.5 text-center text-xs">
+    <div class="dbh-faint mb-1 grid grid-cols-7 gap-0.5 border-b border-[color:var(--border)] pb-1 text-center text-xs">
       <span v-for="w in weekdayLabels" :key="w" data-weekday>{{ w }}</span>
     </div>
     <div class="grid grid-cols-7 gap-0.5 text-center">
