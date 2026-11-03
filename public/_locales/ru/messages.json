@@ -161,9 +161,6 @@
     "options_close": {
         "message": "Закрыть"
     },
-    "options_preview": {
-        "message": "Предпросмотр"
-    },
     "options_section_display": {
         "message": "Отображение"
     },

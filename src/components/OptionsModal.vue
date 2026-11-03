@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { X } from '@lucide/vue'
-import { computed, nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import type { GroupMode, Options, Theme } from '@/composables/useOptions'
-import { t, locale } from '@/lib/i18n'
-import { formatTime } from '@/lib/dates'
-import { faviconUrl } from '@/lib/chrome'
+import { t } from '@/lib/i18n'
 
 const props = defineProps<{ open: boolean; options: Options }>()
 const emit = defineEmits<{ (e: 'close'): void; (e: 'change', value: Partial<Options>): void }>()
@@ -20,8 +18,6 @@ const groupModes: { value: GroupMode; label: string }[] = [
   { value: 'domain', label: t('options_group_domain') }
 ]
 
-const sampleTime = computed(() => formatTime(new Date(2024, 0, 2, 16, 38), locale, props.options.use24HoursFormat))
-const sampleIcon = faviconUrl('https://example.com')
 const dialog = ref<HTMLElement | null>(null)
 
 // Focus the drawer on open so Escape reaches its keydown handler.
@@ -46,16 +42,6 @@ function onPopupCount(ev: Event): void {
       </header>
 
       <div class="flex flex-1 flex-col gap-6 overflow-y-auto px-6 py-5">
-        <section :aria-label="t('options_preview')">
-          <h2 class="dbh-muted mb-2 text-xs font-semibold">{{ t('options_preview') }}</h2>
-          <div data-opt="preview" class="flex min-h-[44px] items-center gap-2.5 rounded-lg px-3" style="background: var(--surface); border: 1px solid var(--border)">
-            <span v-if="options.timeBeforeTitle" data-part="time" class="mono dbh-muted flex-none text-xs">{{ sampleTime }}</span>
-            <img :src="sampleIcon" alt="" class="h-5 w-5 flex-none rounded-[5px]" />
-            <span data-part="title" class="min-w-0 flex-1 truncate">{{ t('application_title') }}</span>
-            <span v-if="!options.timeBeforeTitle" data-part="time" class="mono dbh-muted flex-none text-xs">{{ sampleTime }}</span>
-          </div>
-        </section>
-
         <section :aria-label="t('options_section_display')">
           <h2 class="dbh-muted mb-1 text-xs font-semibold">{{ t('options_section_display') }}</h2>
           <div class="flex min-h-[44px] items-center justify-between gap-4">

@@ -31,12 +31,6 @@ describe('OptionsModal', () => {
     expect(w.emitted('change')![0]).toEqual([{ groupMode: 'domain' }])
   })
 
-  it('preview moves the time before the title when timeBeforeTitle is true', () => {
-    const order = (w: ReturnType<typeof mountModal>) => w.find('[data-opt="preview"]').findAll('span').map((s) => s.attributes('data-part'))
-    expect(order(mountModal({ timeBeforeTitle: false })).filter(Boolean)).toEqual(['title', 'time'])
-    expect(order(mountModal({ timeBeforeTitle: true })).filter(Boolean)).toEqual(['time', 'title'])
-  })
-
   it('an empty or 0 popup count emits no change', async () => {
     const w = mountModal()
     const input = w.find('[data-opt="popup"]')
