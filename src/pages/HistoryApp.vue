@@ -130,7 +130,7 @@ function onKeydown(e: KeyboardEvent): void {
     </header>
     <div class="flex min-h-0 flex-1">
       <aside class="dbh-panel flex w-[304px] shrink-0 flex-col gap-7 overflow-y-auto p-6">
-        <div class="rounded-xl p-3" style="background: var(--surface); border: 1px solid var(--border)">
+        <div class="rounded-md p-3" style="background: var(--surface); border: 1px solid var(--border)">
           <Calendar :key="calendarKey" :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" :density="density.levels.value" @select="onSelectDay" @month-change="onMonth" />
           <a class="dbh-link mt-3 block border-t border-[color:var(--border)] pt-2 text-center text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
         </div>
