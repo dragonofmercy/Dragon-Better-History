@@ -12,7 +12,7 @@ let timer: ReturnType<typeof setTimeout> | null = null
 watch(value, (v) => {
   if (timer) clearTimeout(timer)
   if (v.trim() === '') { emit('clear'); return }
-  timer = setTimeout(() => emit('search', v), 500)
+  timer = setTimeout(() => emit('search', v), 100)
 })
 
 onMounted(() => input.value?.focus())
