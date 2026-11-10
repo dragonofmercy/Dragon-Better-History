@@ -17,7 +17,7 @@ const history = useHistory()
 const closed = useRecentlyClosed()
 const today = startOfDay(new Date())
 const tab = ref<'recent' | 'closed'>('recent')
-const closedLoaded = ref(false)
+let closedLoaded = false
 
 const entries = computed(() => history.days.value.flatMap((g) => g.entries))
 
@@ -26,15 +26,9 @@ onMounted(async () => {
   await history.getDay(today, options.popupNbItems)
 })
 
-async function ensureClosed(): Promise<void> {
-  if (closedLoaded.value) return
-  closedLoaded.value = true
-  await closed.load(options.popupNbItems)
-}
-
 function selectTab(next: 'recent' | 'closed'): void {
   tab.value = next
-  if (next === 'closed') void ensureClosed()
+  if (next === 'closed' && !closedLoaded) { closedLoaded = true; void closed.load(options.popupNbItems) }
 }
 
 function openEntry(url: string): void { chrome.tabs.create({ url }) }

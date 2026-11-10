@@ -27,7 +27,7 @@ const domain = computed(() => domainOf(props.run.entries[0].url))
 
 <template>
   <div>
-    <div class="dbh-entry relative" tabindex="0" @click="emit('toggle-expand')" @keydown.enter.self.prevent="emit('toggle-expand')" @keydown.space.self.prevent="emit('toggle-expand')">
+    <div class="dbh-entry relative" tabindex="0" @click="emit('toggle-expand')" @keydown.enter.space.self.prevent="emit('toggle-expand')">
       <button class="dbh-chevron" :class="expanded ? 'is-open' : ''" :aria-expanded="expanded" :aria-label="expanded ? t('history_collapse_group') : t('history_expand_group')">
         <ChevronRight :size="14" :stroke-width="2.5" />
       </button>

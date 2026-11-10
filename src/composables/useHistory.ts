@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { startOfDay, endOfDay } from '@/lib/dates'
+import type { GroupMode } from '@/composables/useOptions'
 
 export interface HistoryEntry {
   key: string
@@ -36,8 +37,9 @@ export function matchesSite(url: string, site: string): boolean {
   return d === site || d.endsWith(`.${site}`)
 }
 
-export function groupRuns(entries: HistoryEntry[], mode: 'title' | 'domain' = 'title'): DisplayItem[] {
-  const groupKey = (e: HistoryEntry): string => (mode === 'domain' ? domainOf(e.url) : e.title)
+// mode 'none' yields an empty key, so every entry stays single.
+export function groupRuns(entries: HistoryEntry[], mode: GroupMode = 'title'): DisplayItem[] {
+  const groupKey = (e: HistoryEntry): string => (mode === 'none' ? '' : mode === 'domain' ? domainOf(e.url) : e.title)
   const items: DisplayItem[] = []
   let i = 0
   while (i < entries.length) {
@@ -100,10 +102,11 @@ export function useHistory() {
     days.value = groupByDay(site ? results.filter((r) => matchesSite(r.url ?? '', site)) : results, start, end)
   }
 
-  async function remove(url: string): Promise<void> {
-    await chrome.history.deleteUrl({ url })
+  async function remove(...urls: string[]): Promise<void> {
+    const gone = new Set(urls)
+    await Promise.all([...gone].map((url) => chrome.history.deleteUrl({ url })))
     days.value = days.value
-      .map((g) => ({ ...g, entries: g.entries.filter((e) => e.url !== url) }))
+      .map((g) => { const entries = g.entries.filter((e) => !gone.has(e.url)); return entries.length === g.entries.length ? g : { ...g, entries } })
       .filter((g) => g.entries.length > 0)
   }
 

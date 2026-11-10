@@ -20,7 +20,7 @@ const tooltip = computed(() => (props.session.type === 'tab' ? props.session.url
 </script>
 
 <template>
-  <div class="dbh-entry group" tabindex="0" @click="emit('restore')" @keydown.enter.self.prevent="emit('restore')" @keydown.space.self.prevent="emit('restore')">
+  <div class="dbh-entry group" tabindex="0" @click="emit('restore')" @keydown.enter.space.self.prevent="emit('restore')">
     <img v-if="session.type === 'tab'" class="h-4 w-4 shrink-0 rounded-sm" :src="faviconUrl(session.url)" alt="" />
     <span v-else class="dbh-faint flex h-4 w-4 shrink-0 items-center justify-center">
       <PanelTop :size="14" />

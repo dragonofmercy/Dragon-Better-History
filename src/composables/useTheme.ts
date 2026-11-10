@@ -6,8 +6,7 @@ export function useTheme(getTheme: () => Theme): { isDark: ComputedRef<boolean> 
   const systemDark = ref(mq.matches)
   mq.addEventListener('change', () => { systemDark.value = mq.matches })
 
-  const theme = computed(getTheme)
-  const isDark = computed(() => theme.value === 'dark' || (theme.value === 'system' && systemDark.value))
+  const isDark = computed(() => { const theme = getTheme(); return theme === 'dark' || (theme === 'system' && systemDark.value) })
 
   watchEffect(() => document.documentElement.classList.toggle('dark', isDark.value))
 

@@ -12,8 +12,5 @@ export async function reopenDetachedAsTab(): Promise<boolean> {
 }
 
 export function faviconUrl(pageUrl: string): string {
-  const url = new URL(chrome.runtime.getURL('/_favicon/'))
-  url.searchParams.set('pageUrl', pageUrl)
-  url.searchParams.set('size', '32')
-  return url.toString()
+  return `${chrome.runtime.getURL('/_favicon/')}?size=32&pageUrl=${encodeURIComponent(pageUrl)}`
 }

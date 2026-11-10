@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight } from '@lucide/vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { startOfDay, normalizeLocale } from '@/lib/dates'
 import { t } from '@/lib/i18n'
 
@@ -28,7 +28,7 @@ const weekdayLabels = computed<string[]>(() => {
 
 const monthLabel = computed(() => new Intl.DateTimeFormat(normalizeLocale(props.locale), { month: 'long', year: 'numeric' }).format(new Date(view.value.year, view.value.month, 1)))
 
-interface Cell { date: Date; ts: number; inMonth: boolean; disabled: boolean }
+interface Cell { date: Date; ts: number; inMonth: boolean; disabled: boolean; today: boolean; selected: boolean }
 
 const cells = computed<Cell[]>(() => {
   const first = new Date(view.value.year, view.value.month, 1)
@@ -37,11 +37,12 @@ const cells = computed<Cell[]>(() => {
   const start = new Date(view.value.year, view.value.month, 1 - offset)
   const todayMid = startOfDay(props.today).getTime()
   const minTs = new Date(props.minYear, 0, 1).getTime()
+  const selTs = props.selected ? startOfDay(props.selected).getTime() : null
   const out: Cell[] = []
   for (let i = 0; i < 42; i++) {
     const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i)
-    const ts = startOfDay(d).getTime()
-    out.push({ date: d, ts, inMonth: d.getMonth() === view.value.month, disabled: ts > todayMid || ts < minTs })
+    const ts = d.getTime()
+    out.push({ date: d, ts, inMonth: d.getMonth() === view.value.month, disabled: ts > todayMid || ts < minTs, today: ts === todayMid, selected: ts === selTs })
   }
   return out
 })
@@ -50,36 +51,30 @@ const canPrev = computed(() => view.value.year > props.minYear || view.value.mon
 const canNext = computed(() => new Date(view.value.year, view.value.month + 1, 1) <= props.today)
 
 // ponytail: density reloads only on month change, so deletions show after the next navigation
-function emitMonth(): void { emit('month-change', view.value.year, view.value.month) }
-onMounted(emitMonth)
+watch(view, (v) => emit('month-change', v.year, v.month), { immediate: true })
+// Follow the selected day when it changes from outside (e.g. the Today button).
+watch(() => props.selected, (d) => {
+  if (d && (d.getFullYear() !== view.value.year || d.getMonth() !== view.value.month)) view.value = { year: d.getFullYear(), month: d.getMonth() }
+})
 
-function prev(): void {
-  const m = view.value.month - 1
-  view.value = m < 0 ? { year: view.value.year - 1, month: 11 } : { year: view.value.year, month: m }
-  emitMonth()
-}
-function next(): void {
-  const m = view.value.month + 1
-  view.value = m > 11 ? { year: view.value.year + 1, month: 0 } : { year: view.value.year, month: m }
-  emitMonth()
+function shift(delta: number): void {
+  const d = new Date(view.value.year, view.value.month + delta, 1)
+  view.value = { year: d.getFullYear(), month: d.getMonth() }
 }
 function pick(c: Cell): void {
-  if (c.disabled) return
-  emit('select', startOfDay(c.date))
+  if (!c.disabled) emit('select', c.date)
 }
 function level(ts: number): string { const l = props.density?.get(ts); return l ? `is-h${l}` : '' }
-function isToday(ts: number): boolean { return ts === startOfDay(props.today).getTime() }
-function isSelected(ts: number): boolean { return props.selected != null && startOfDay(props.selected).getTime() === ts }
 </script>
 
 <template>
   <div class="text-sm">
     <div class="mb-2 flex items-center justify-between">
-      <button data-prev :disabled="!canPrev" :aria-label="t('calendar_prev_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="prev">
+      <button data-prev :disabled="!canPrev" :aria-label="t('calendar_prev_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="shift(-1)">
         <ChevronLeft :size="16" />
       </button>
       <span class="font-bold capitalize">{{ monthLabel }}</span>
-      <button data-next :disabled="!canNext" :aria-label="t('calendar_next_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="next">
+      <button data-next :disabled="!canNext" :aria-label="t('calendar_next_month')" class="dbh-nav rounded px-1.5 disabled:opacity-30" @click="shift(1)">
         <ChevronRight :size="16" />
       </button>
     </div>
@@ -87,7 +82,7 @@ function isSelected(ts: number): boolean { return props.selected != null && star
       <span v-for="w in weekdayLabels" :key="w" data-weekday>{{ w }}</span>
     </div>
     <div class="grid grid-cols-7 gap-0.5 text-center">
-      <button v-for="c in cells" :key="c.ts" data-day :data-ts="c.ts" :disabled="c.disabled" class="dbh-cal-day aspect-square rounded-md text-xs disabled:opacity-25" :class="[c.inMonth ? '' : 'is-out', level(c.ts), isToday(c.ts) ? 'is-today' : '', isSelected(c.ts) ? 'is-selected' : '']" @click="pick(c)">{{ c.date.getDate() }}</button>
+      <button v-for="c in cells" :key="c.ts" data-day :data-ts="c.ts" :disabled="c.disabled" class="dbh-cal-day aspect-square rounded-md text-xs disabled:opacity-25" :class="[c.inMonth ? '' : 'is-out', level(c.ts), c.today ? 'is-today' : '', c.selected ? 'is-selected' : '']" @click="pick(c)">{{ c.date.getDate() }}</button>
     </div>
   </div>
 </template>

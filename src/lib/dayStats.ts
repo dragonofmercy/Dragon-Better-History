@@ -1,7 +1,7 @@
 import { domainOf, type HistoryEntry } from '@/composables/useHistory'
 import { startOfDay } from '@/lib/dates'
 
-export interface HourBlock { hour: number; entries: HistoryEntry[] }
+interface HourBlock { hour: number; entries: HistoryEntry[] }
 export interface SiteCount { domain: string; count: number; url: string }
 
 export function groupByHour(entries: HistoryEntry[]): HourBlock[] {

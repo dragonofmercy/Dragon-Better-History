@@ -36,9 +36,8 @@ const minYear = now.getFullYear() - 3
 const optionsOpen = ref(false)
 const query = ref('')
 const searchBar = ref<InstanceType<typeof SearchBar> | null>(null)
-const calendarKey = ref(0)
 const selectedDay = ref<Date | null>(today)
-const expanded = ref<Set<string>>(new Set())
+const expanded = useSelection()
 const siteFilter = ref<string | null>(null)
 
 const dayEntries = computed(() => history.days.value.flatMap((g) => g.entries))
@@ -59,16 +58,7 @@ const emptyMessage = computed(() => (siteFilter.value ? 'history_filter_empty' :
 // A removal can empty the filtered domain: drop the filter so the list never shows a dead state.
 watch(dayEntries, (all) => { if (siteFilter.value && !all.some((e) => domainOf(e.url) === siteFilter.value)) siteFilter.value = null })
 
-function toggleExpand(key: string): void {
-  const next = new Set(expanded.value)
-  if (next.has(key)) next.delete(key); else next.add(key)
-  expanded.value = next
-}
-function onRemoveGroup(keys: string[]): void { selection.selectAll(keys) }
-
 const mainEl = ref<HTMLElement | null>(null)
-
-function scrollMainTop(): void { mainEl.value?.scrollTo({ top: 0 }) }
 
 const themeTitle = computed(() => t(isDark.value ? 'options_theme_light' : 'options_theme_dark'))
 function toggleTheme(): void { save({ theme: isDark.value ? 'light' : 'dark' }) }
@@ -79,16 +69,13 @@ function toggleSort(): void { save({ sortOldestFirst: !options.sortOldestFirst }
 function onSite(domain: string): void { siteFilter.value = siteFilter.value === domain ? null : domain; selection.clear() }
 function onMonth(year: number, month: number): void { density.load(year, month).catch(() => {}) }
 
-onMounted(async () => {
-  await load()
-  await history.getDay(today)
-})
+onMounted(() => Promise.all([load(), history.getDay(today)]))
 
-function resetView(): void { siteFilter.value = null; expanded.value = new Set(); selection.clear(); scrollMainTop() }
+function resetView(): void { siteFilter.value = null; expanded.clear(); selection.clear(); mainEl.value?.scrollTo({ top: 0 }) }
 function onSelectDay(d: Date): void { resetView(); query.value = ''; searchBar.value?.clear(); selectedDay.value = startOfDay(d); history.getDay(d) }
-function onToday(): void { onSelectDay(today); calendarKey.value++ }
+function onToday(): void { onSelectDay(today) }
 function onSearch(q: string): void { resetView(); query.value = q; selectedDay.value = null; history.search(q, today) }
-function onClear(): void { if (!query.value) return; resetView(); query.value = ''; selectedDay.value = today; history.getDay(today) }
+function onClear(): void { if (query.value) onSelectDay(today) }
 
 function onToggle(entry: HistoryEntry, ev: MouseEvent | KeyboardEvent): void {
   if (ev.shiftKey) selection.range(entry.key, orderedKeys.value)
@@ -98,9 +85,8 @@ function onToggle(entry: HistoryEntry, ev: MouseEvent | KeyboardEvent): void {
 async function onRemove(entry: HistoryEntry): Promise<void> { await history.remove(entry.url); selection.clear() }
 
 async function removeSelected(): Promise<void> {
-  const keys = new Set(selection.selected.value)
-  const urls = history.days.value.flatMap((g) => g.entries).filter((e) => keys.has(e.key)).map((e) => e.url)
-  for (const url of new Set(urls)) await history.remove(url)
+  const keys = selection.selected.value
+  await history.remove(...dayEntries.value.filter((e) => keys.has(e.key)).map((e) => e.url))
   selection.clear()
 }
 
@@ -131,7 +117,7 @@ function onKeydown(e: KeyboardEvent): void {
     <div class="flex min-h-0 flex-1">
       <aside class="dbh-panel flex w-[304px] shrink-0 flex-col gap-7 overflow-y-auto p-6">
         <div class="dbh-card">
-          <Calendar :key="calendarKey" :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" :density="density.levels.value" @select="onSelectDay" @month-change="onMonth" />
+          <Calendar :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" :density="density.levels.value" @select="onSelectDay" @month-change="onMonth" />
           <a class="dbh-link mt-3 block border-t border-[color:var(--border)] pt-2 text-center text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
         </div>
         <SiteList v-if="!history.searching.value" :sites="sites" :active="siteFilter" @pick="onSite" />
@@ -163,7 +149,7 @@ function onKeydown(e: KeyboardEvent): void {
               {{ sortLabel }}
             </button>
           </div>
-          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded" :is-selected="selection.isSelected" :flat="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="toggleExpand" @remove-group="onRemoveGroup" />
+          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded.selected.value" :is-selected="selection.isSelected" :flat="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="expanded.toggle" @remove-group="selection.selectAll" />
           <p v-if="!displayDays.length" class="dbh-muted border-t border-[color:var(--border)] py-12 text-center">{{ t(emptyMessage) }}</p>
           <div v-if="selection.count.value > 0" class="sticky bottom-5 mt-4 flex justify-center">
             <div role="status" class="flex items-center gap-3 rounded-xl py-2 pl-[18px] pr-2 shadow-lg" style="background: var(--raised); border: 1px solid var(--border)">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { groupRuns, type DayGroup, type DisplayItem, type HistoryEntry as Entry } from '@/composables/useHistory'
+import { groupRuns, type DayGroup, type HistoryEntry as Entry } from '@/composables/useHistory'
 import type { GroupMode } from '@/composables/useOptions'
 import HistoryEntry from '@/components/HistoryEntry.vue'
 import HistoryRun from '@/components/HistoryRun.vue'
@@ -29,7 +29,7 @@ const emit = defineEmits<{
 const blocks = computed(() =>
   (props.flat ? [{ hour: -1, entries: props.group.entries }] : groupByHour(props.group.entries)).map((b) => ({
     hour: b.hour,
-    items: props.groupMode === 'none' ? b.entries.map((entry): DisplayItem => ({ type: 'single', entry })) : groupRuns(b.entries, props.groupMode)
+    items: groupRuns(b.entries, props.groupMode)
   }))
 )
 </script>
