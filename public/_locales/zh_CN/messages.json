@@ -131,11 +131,19 @@
             }
         }
     },
-    "history_filter_empty": {
-        "message": "没有结果。请尝试其他关键词或移除网站筛选。"
-    },
     "history_remove_error": {
         "message": "部分记录无法删除。您的浏览器可能不允许删除历史记录。"
+    },
+    "search_clear": {
+        "message": "清除搜索"
+    },
+    "footer_created_by": {
+        "message": "作者：$author$",
+        "placeholders": {
+            "author": {
+                "content": "$1"
+            }
+        }
     },
     "history_activity_chart": {
         "message": "按小时统计的访问量"

@@ -6,7 +6,7 @@ const entry = { key: 'https://a.com/x::1', url: 'https://www.a.com/x', title: 'A
 
 function mountRow(removable?: boolean) {
   return mount(HistoryEntryRow, {
-    props: { entry, locale: 'en', use24: true, timeBeforeTitle: false, ...(removable === undefined ? {} : { removable }) }
+    props: { entry, use24: true, timeBeforeTitle: false, ...(removable === undefined ? {} : { removable }) }
   })
 }
 
@@ -56,7 +56,7 @@ describe('HistoryEntry', () => {
   })
 
   it('hides the domain when showDomain is false', () => {
-    const w = mount(HistoryEntryRow, { props: { entry, locale: 'en', use24: true, timeBeforeTitle: false, showDomain: false } })
+    const w = mount(HistoryEntryRow, { props: { entry, use24: true, timeBeforeTitle: false, showDomain: false } })
     expect(w.text()).not.toContain('a.com')
   })
 

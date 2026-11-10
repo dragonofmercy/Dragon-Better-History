@@ -4,7 +4,7 @@ const store: Record<string, unknown> = {}
 
 ;(globalThis as unknown as { chrome: unknown }).chrome = {
   runtime: { lastError: undefined, id: 'test', getURL: (p: string) => `chrome-extension://test${p}` },
-  i18n: { getMessage: (key: string) => key },
+  i18n: { getMessage: (key: string) => (key === 'language' ? 'en' : key) },
   storage: {
     sync: {
       get: () => Promise.resolve({ ...store }),

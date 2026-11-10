@@ -131,11 +131,19 @@
             }
         }
     },
-    "history_filter_empty": {
-        "message": "Nessun risultato. Prova un'altra parola o rimuovi il filtro del sito."
-    },
     "history_remove_error": {
         "message": "Alcune voci non sono state eliminate. Il browser potrebbe non consentire l'eliminazione della cronologia."
+    },
+    "search_clear": {
+        "message": "Cancella ricerca"
+    },
+    "footer_created_by": {
+        "message": "Creato da $author$",
+        "placeholders": {
+            "author": {
+                "content": "$1"
+            }
+        }
     },
     "history_activity_chart": {
         "message": "Visite per ora"

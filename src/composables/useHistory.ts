@@ -28,7 +28,8 @@ export function domainOf(url: string): string {
 export function parseQuery(query: string): { text: string; site: string } {
   const m = /(?:^|\s)site:(\S+)/i.exec(query)
   if (!m) return { text: query, site: '' }
-  const site = m[1].toLowerCase().replace(/^www\./, '')
+  // Accept a pasted url: drop the scheme, a leading www. and anything after the host (port, path, query).
+  const site = m[1].toLowerCase().replace(/^[a-z]+:\/\//, '').replace(/^www\./, '').replace(/[/:?#].*$/, '')
   return { text: `${query.replace(m[0], ' ')} ${site}`.replace(/\s+/g, ' ').trim(), site }
 }
 
@@ -47,7 +48,8 @@ export function groupRuns(entries: HistoryEntry[], mode: GroupMode = 'title'): D
     let j = i + 1
     while (key && j < entries.length && groupKey(entries[j]) === key) j++
     const run = entries.slice(i, j)
-    if (run.length >= 2) items.push({ type: 'run', key: run[0].key, entries: run })
+    // Key the run on its oldest entry (ties broken by key) so it survives a sort order change.
+    if (run.length >= 2) items.push({ type: 'run', key: run.reduce((a, b) => ((b.lastVisitTime - a.lastVisitTime || (b.key < a.key ? -1 : 1)) < 0 ? b : a)).key, entries: run })
     else items.push({ type: 'single', entry: run[0] })
     i = j
   }
@@ -63,12 +65,12 @@ export function entryKey(item: { url?: string; lastVisitTime?: number }): string
   return `${item.url}::${item.lastVisitTime}`
 }
 
-export function groupByDay(items: chrome.history.HistoryItem[], start: Date, end: Date): DayGroup[] {
+export function groupByDay(items: chrome.history.HistoryItem[], start?: Date, end?: Date): DayGroup[] {
   const map = new Map<number, DayGroup>()
   for (const it of items) {
     if (it.lastVisitTime == null) continue
     const d = new Date(it.lastVisitTime)
-    if (d < start || d > end) continue
+    if ((start && d < start) || (end && d > end)) continue
     const midnight = startOfDay(d)
     const key = midnight.getTime()
     let group = map.get(key)
@@ -98,25 +100,45 @@ export function useHistory() {
   // Only the latest getDay/search may write `days`: a slow earlier query must not overwrite a newer one.
   let request = 0
 
-  async function getDay(day: Date, max = 0): Promise<void> {
+  // `searching` flips together with `days`, so the heading never describes a view that is not on screen yet.
+  function show(id: number, groups: DayGroup[], isSearch: boolean): boolean {
+    if (id !== request) return false
+    days.value = groups
+    searching.value = isSearch
+    return true
+  }
+
+  async function getDay(day: Date): Promise<void> {
     const start = startOfDay(day)
     const end = endOfDay(day)
     if (start.getTime() > Date.now()) return
     const id = ++request
-    searching.value = false
-    const results = await chrome.history.search({ text: '', startTime: start.getTime(), endTime: end.getTime(), maxResults: max })
+    const results = await chrome.history.search({ text: '', startTime: start.getTime(), endTime: end.getTime(), maxResults: 0 })
     const resolved = await resolveVisitTimes(results, start.getTime(), end.getTime())
-    if (id === request) days.value = groupByDay(resolved, start, end)
+    show(id, groupByDay(resolved, start, end), false)
   }
 
-  async function search(query: string, today: Date, max = 0): Promise<void> {
+  // The `max` most recently visited urls, whatever the day.
+  async function getRecent(max: number): Promise<void> {
+    const id = ++request
+    const results = await chrome.history.search({ text: '', startTime: 0, maxResults: max })
+    show(id, groupByDay(results), false)
+  }
+
+  // Resolves to false when a newer request superseded this one.
+  async function search(query: string, today: Date, max = 0): Promise<boolean> {
     const start = new Date(1970, 0, 1)
     const end = endOfDay(today)
     const id = ++request
-    searching.value = true
     const { text, site } = parseQuery(query)
-    const results = await chrome.history.search({ text, startTime: start.getTime(), endTime: end.getTime(), maxResults: max })
-    if (id === request) days.value = groupByDay(site ? results.filter((r) => matchesSite(r.url ?? '', site)) : results, start, end)
+    // With a site filter the cap has to apply after the client-side filtering, so fetch everything.
+    const results = await chrome.history.search({ text, startTime: start.getTime(), endTime: end.getTime(), maxResults: site ? 0 : max })
+    let hits = results
+    if (site) {
+      hits = results.filter((r) => matchesSite(r.url ?? '', site)).sort((a, b) => (b.lastVisitTime ?? 0) - (a.lastVisitTime ?? 0))
+      if (max) hits = hits.slice(0, max)
+    }
+    return show(id, groupByDay(hits, start, end), true)
   }
 
   // Never rejects: a failed deleteUrl (e.g. deletion disabled by policy) leaves its entry listed, the others are removed.
@@ -131,5 +153,5 @@ export function useHistory() {
     return unique.length - gone.size
   }
 
-  return { days, searching, getDay, search, remove }
+  return { days, searching, getDay, getRecent, search, remove }
 }

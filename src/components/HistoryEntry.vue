@@ -4,11 +4,10 @@ import { computed } from 'vue'
 import { domainOf, type HistoryEntry } from '@/composables/useHistory'
 import { faviconUrl } from '@/lib/chrome'
 import { formatTime } from '@/lib/dates'
-import { t } from '@/lib/i18n'
+import { t, locale } from '@/lib/i18n'
 
 const props = withDefaults(defineProps<{
   entry: HistoryEntry
-  locale: string
   use24: boolean
   timeBeforeTitle: boolean
   selected?: boolean
@@ -19,7 +18,7 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{ (e: 'toggle', ev: MouseEvent | KeyboardEvent): void; (e: 'remove'): void }>()
 
-const time = computed(() => formatTime(new Date(props.entry.lastVisitTime), props.locale, props.use24))
+const time = computed(() => formatTime(new Date(props.entry.lastVisitTime), locale, props.use24))
 const domain = computed(() => domainOf(props.entry.url))
 </script>
 

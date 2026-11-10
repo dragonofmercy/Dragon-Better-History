@@ -131,11 +131,19 @@
             }
         }
     },
-    "history_filter_empty": {
-        "message": "Sin resultados. Prueba con otra palabra o quita el filtro de sitio."
-    },
     "history_remove_error": {
         "message": "Algunas entradas no se pudieron eliminar. Es posible que tu navegador no permita eliminar el historial."
+    },
+    "search_clear": {
+        "message": "Borrar búsqueda"
+    },
+    "footer_created_by": {
+        "message": "Creado por $author$",
+        "placeholders": {
+            "author": {
+                "content": "$1"
+            }
+        }
     },
     "history_activity_chart": {
         "message": "Visitas por hora"

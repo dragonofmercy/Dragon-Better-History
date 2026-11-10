@@ -131,11 +131,19 @@
             }
         }
     },
-    "history_filter_empty": {
-        "message": "Sonuç yok. Başka bir sözcük deneyin veya site filtresini kaldırın."
-    },
     "history_remove_error": {
         "message": "Bazı girişler silinemedi. Tarayıcınız geçmişin silinmesine izin vermiyor olabilir."
+    },
+    "search_clear": {
+        "message": "Aramayı temizle"
+    },
+    "footer_created_by": {
+        "message": "Geliştiren: $author$",
+        "placeholders": {
+            "author": {
+                "content": "$1"
+            }
+        }
     },
     "history_activity_chart": {
         "message": "Saate göre ziyaretler"

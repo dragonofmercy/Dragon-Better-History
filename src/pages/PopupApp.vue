@@ -5,7 +5,6 @@ import { useOptions } from '@/composables/useOptions'
 import { useTheme } from '@/composables/useTheme'
 import { useHistory } from '@/composables/useHistory'
 import { useRecentlyClosed } from '@/composables/useRecentlyClosed'
-import { startOfDay } from '@/lib/dates'
 import { t, locale } from '@/lib/i18n'
 import HistoryEntryRow from '@/components/HistoryEntry.vue'
 import ClosedRow from '@/components/ClosedRow.vue'
@@ -15,7 +14,6 @@ const { options, load } = useOptions()
 useTheme(() => options.theme)
 const history = useHistory()
 const closed = useRecentlyClosed()
-const today = startOfDay(new Date())
 const tab = ref<'recent' | 'closed'>('recent')
 let closedLoaded = false
 
@@ -23,7 +21,7 @@ const entries = computed(() => history.days.value.flatMap((g) => g.entries))
 
 onMounted(async () => {
   await load()
-  await history.getDay(today, options.popupNbItems)
+  await history.getRecent(options.popupNbItems)
 })
 
 function selectTab(next: 'recent' | 'closed'): void {
@@ -49,7 +47,7 @@ function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('
           @click="selectTab(id)"
         >{{ id === 'recent' ? t('history_recent') : t('tab_recently_closed') }}</button>
       </div>
-      <SearchBar v-show="tab === 'recent'" @search="(q) => history.search(q, today, options.popupNbItems)" @clear="() => history.getDay(today, options.popupNbItems)" />
+      <SearchBar v-show="tab === 'recent'" @search="(q) => history.search(q, new Date(), options.popupNbItems)" @clear="() => history.getRecent(options.popupNbItems)" />
     </div>
     <div class="min-h-0 flex-1 overflow-y-auto px-3 pb-2">
       <div v-show="tab === 'recent'">
@@ -57,7 +55,6 @@ function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('
           v-for="e in entries"
           :key="e.key"
           :entry="e"
-          :locale="locale"
           :use24="options.use24HoursFormat"
           :time-before-title="options.timeBeforeTitle"
           :removable="false"

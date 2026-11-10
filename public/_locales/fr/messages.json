@@ -131,11 +131,19 @@
             }
         }
     },
-    "history_filter_empty": {
-        "message": "Aucun résultat. Essayez un autre mot ou retirez le filtre de site."
-    },
     "history_remove_error": {
         "message": "Certaines entrées n'ont pas pu être supprimées. Votre navigateur n'autorise peut-être pas la suppression de l'historique."
+    },
+    "search_clear": {
+        "message": "Effacer la recherche"
+    },
+    "footer_created_by": {
+        "message": "Créé par $author$",
+        "placeholders": {
+            "author": {
+                "content": "$1"
+            }
+        }
     },
     "history_activity_chart": {
         "message": "Répartition des visites par heure"

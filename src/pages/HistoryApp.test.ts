@@ -1,10 +1,13 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { mount, flushPromises } from '@vue/test-utils'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { mount, flushPromises, enableAutoUnmount } from '@vue/test-utils'
 import HistoryApp from '@/pages/HistoryApp.vue'
 
 const at = (h: number, m: number) => new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m).getTime()
 let items: { url: string; title: string; lastVisitTime: number }[] = []
 const c = chrome as unknown as { history: { search: unknown; deleteUrl: unknown }; storage: { sync: { set: ReturnType<typeof vi.fn> } } }
+
+// The app binds its shortcuts on window: unmount between tests so earlier instances stop listening.
+enableAutoUnmount(afterEach)
 
 async function mountApp() {
   const w = mount(HistoryApp, { attachTo: document.body })
@@ -49,7 +52,7 @@ describe('HistoryApp', () => {
     const w = await mountApp()
     await w.findAll('.dbh-site')[0].trigger('click')
     expect(w.find('.dbh-site.is-on').exists()).toBe(true)
-    await w.find('a.dbh-link').trigger('click')
+    await w.find('button.dbh-link').trigger('click')
     await flushPromises()
     expect(w.find('.dbh-site.is-on').exists()).toBe(false)
     expect(rows(w)).toHaveLength(3)
@@ -83,6 +86,13 @@ describe('HistoryApp', () => {
     expect(rows(w)).toHaveLength(3)
     expect(w.find('[role="alert"]').text()).toBe('history_remove_error')
     expect(w.find('[role="status"]').exists()).toBe(false)
+  })
+
+  it('Ctrl+A works when the focus is on body', async () => {
+    const w = await mountApp()
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', ctrlKey: true, bubbles: true }))
+    await flushPromises()
+    expect(w.find('[role="status"]').text()).toContain('3')
   })
 
   it('group segmented control saves groupMode', async () => {

@@ -131,11 +131,19 @@
             }
         }
     },
-    "history_filter_empty": {
-        "message": "Нет результатов. Попробуйте другое слово или уберите фильтр по сайту."
-    },
     "history_remove_error": {
         "message": "Некоторые записи не удалось удалить. Возможно, ваш браузер не разрешает удаление истории."
+    },
+    "search_clear": {
+        "message": "Очистить поиск"
+    },
+    "footer_created_by": {
+        "message": "Автор: $author$",
+        "placeholders": {
+            "author": {
+                "content": "$1"
+            }
+        }
     },
     "history_activity_chart": {
         "message": "Посещения по часам"

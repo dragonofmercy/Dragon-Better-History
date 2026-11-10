@@ -223,3 +223,45 @@ describe('review regressions', () => {
     expect(h.days.value[0].entries.map((e) => e.url)).toEqual(['https://b'])
   })
 })
+
+describe('review regressions (second batch)', () => {
+  it('site: accepts a pasted url', () => {
+    expect(parseQuery('site:https://www.GitHub.com/vuejs?x=1').site).toBe('github.com')
+    expect(parseQuery('site:github.com/').site).toBe('github.com')
+  })
+
+  it('a run keeps its key when the order is reversed', () => {
+    const run = [entry('https://a/3', 'T', 3), entry('https://a/2', 'T', 2), entry('https://a/1', 'T', 1)]
+    const key = (list: typeof run) => { const it = groupRuns(list, 'title')[0]; return it.type === 'run' ? it.key : '' }
+    expect(key(run)).toBe('https://a/1::1')
+    expect(key([...run].reverse())).toBe(key(run))
+  })
+
+  it('searching only flips once the results are shown', async () => {
+    let resolveSearch!: (v: unknown[]) => void
+    vi.spyOn(chrome.history, 'search').mockImplementationOnce((() => new Promise((r) => { resolveSearch = r })) as never)
+    const h = useHistory()
+    const pending = h.search('x', new Date(2024, 0, 2))
+    expect(h.searching.value).toBe(false)
+    resolveSearch([])
+    expect(await pending).toBe(true)
+    expect(h.searching.value).toBe(true)
+  })
+
+  it('getRecent spans several days', async () => {
+    const spy = vi.spyOn(chrome.history, 'search').mockResolvedValue([item('https://a', new Date(2024, 0, 2, 0, 5).getTime()), item('https://b', new Date(2024, 0, 1, 23, 50).getTime())] as never)
+    const h = useHistory()
+    await h.getRecent(10)
+    expect(spy).toHaveBeenLastCalledWith({ text: '', startTime: 0, maxResults: 10 })
+    expect(h.days.value.flatMap((g) => g.entries.map((e) => e.url))).toEqual(['https://a', 'https://b'])
+  })
+
+  it('a site: search applies the cap after filtering', async () => {
+    const t = new Date(2024, 0, 2, 12, 0).getTime()
+    const spy = vi.spyOn(chrome.history, 'search').mockResolvedValue([item('https://other.com/', t + 3), item('https://a.com/1', t + 2), item('https://a.com/2', t + 1), item('https://a.com/3', t)] as never)
+    const h = useHistory()
+    await h.search('site:a.com', new Date(2024, 0, 2), 2)
+    expect(spy.mock.calls.at(-1)![0]).toMatchObject({ maxResults: 0 })
+    expect(h.days.value[0].entries.map((e) => e.url)).toEqual(['https://a.com/1', 'https://a.com/2'])
+  })
+})

@@ -90,3 +90,14 @@ describe('load limit', () => {
     expect(getSpy).toHaveBeenCalledWith({ maxResults: 25 })
   })
 })
+
+describe('restore fallback', () => {
+  it('reloads with the limit of the first load', async () => {
+    const getSpy = vi.spyOn(chrome.sessions, 'getRecentlyClosed').mockResolvedValue([] as never)
+    vi.spyOn(chrome.sessions, 'restore').mockRejectedValue(new Error('gone'))
+    const rc = useRecentlyClosed()
+    await rc.load(5)
+    await rc.restore('t1')
+    expect(getSpy).toHaveBeenLastCalledWith({ maxResults: 5 })
+  })
+})

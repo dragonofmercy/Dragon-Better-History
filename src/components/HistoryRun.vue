@@ -8,7 +8,6 @@ import { t } from '@/lib/i18n'
 
 const props = defineProps<{
   run: Extract<DisplayItem, { type: 'run' }>
-  locale: string
   use24: boolean
   timeBeforeTitle: boolean
   expanded: boolean
@@ -42,7 +41,7 @@ const domain = computed(() => domainOf(props.run.entries[0].url))
       </button>
     </div>
     <template v-if="expanded">
-      <HistoryEntry v-for="entry in run.entries" :key="entry.key" child :entry="entry" :locale="locale" :use24="use24" :time-before-title="timeBeforeTitle" :selected="isSelected(entry.key)" @toggle="(ev) => emit('toggle', entry, ev)" @remove="emit('remove', entry)" />
+      <HistoryEntry v-for="entry in run.entries" :key="entry.key" child :entry="entry" :use24="use24" :time-before-title="timeBeforeTitle" :selected="isSelected(entry.key)" @toggle="(ev) => emit('toggle', entry, ev)" @remove="emit('remove', entry)" />
     </template>
   </div>
 </template>

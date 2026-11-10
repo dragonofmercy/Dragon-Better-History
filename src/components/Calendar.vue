@@ -11,7 +11,9 @@ const view = ref({ year: props.today.getFullYear(), month: props.today.getMonth(
 
 const firstDayOfWeek = computed<number>(() => {
   try {
-    const info = (new Intl.Locale(normalizeLocale(props.locale)) as unknown as { weekInfo?: { firstDay?: number } }).weekInfo
+    // getWeekInfo() is the standard form; the weekInfo accessor is the deprecated one older engines expose.
+    const loc = new Intl.Locale(normalizeLocale(props.locale)) as unknown as { getWeekInfo?: () => { firstDay?: number }; weekInfo?: { firstDay?: number } }
+    const info = loc.getWeekInfo?.() ?? loc.weekInfo
     return info?.firstDay ?? 1
   } catch { return 1 }
 })

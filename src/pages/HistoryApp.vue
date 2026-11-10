@@ -54,7 +54,7 @@ const orderedKeys = computed(() => displayDays.value.flatMap((g) => g.entries.ma
 const totalCount = computed(() => orderedKeys.value.length)
 const summary = computed(() => t('history_summary', [String(totalCount.value), String(new Set(displayDays.value.flatMap((g) => g.entries.map((e) => domainOf(e.url))).filter(Boolean)).size)]))
 const heading = computed(() => (history.searching.value ? `${t('search_display')} "${query.value}"` : siteFilter.value ?? (selectedDay.value ? formatDayHeading(selectedDay.value, locale) : '')))
-const emptyMessage = computed(() => (siteFilter.value ? 'history_filter_empty' : history.searching.value ? 'search_empty' : 'history_date_empty'))
+const emptyMessage = computed(() => (history.searching.value ? 'search_empty' : 'history_date_empty'))
 
 // A removal can empty the filtered domain: drop the filter so the list never shows a dead state.
 watch(dayEntries, (all) => { if (siteFilter.value && !all.some((e) => domainOf(e.url) === siteFilter.value)) siteFilter.value = null })
@@ -75,14 +75,15 @@ let midnightTimer: ReturnType<typeof setTimeout> | undefined
 function scheduleMidnight(): void {
   midnightTimer = setTimeout(() => { today.value = startOfDay(new Date()); scheduleMidnight() }, endOfDay(today.value).getTime() + 1 - Date.now())
 }
-onUnmounted(() => clearTimeout(midnightTimer))
+onUnmounted(() => { window.removeEventListener('keydown', onKeydown); clearTimeout(midnightTimer) })
 
-onMounted(() => { scheduleMidnight(); return Promise.all([load(), history.getDay(today.value)]) })
+onMounted(() => { window.addEventListener('keydown', onKeydown); scheduleMidnight(); return Promise.all([load(), history.getDay(today.value)]) })
 
 function resetView(): void { removeFailed.value = false; siteFilter.value = null; expanded.clear(); selection.clear(); mainEl.value?.scrollTo({ top: 0 }) }
 function onSelectDay(d: Date): void { resetView(); query.value = ''; searchBar.value?.clear(); selectedDay.value = startOfDay(d); history.getDay(d) }
 function onToday(): void { onSelectDay(today.value) }
-function onSearch(q: string): void { resetView(); query.value = q; selectedDay.value = null; history.search(q, today.value) }
+// The day stays selected until the results are on screen; a superseded search must not deselect a day picked meanwhile.
+async function onSearch(q: string): Promise<void> { resetView(); query.value = q; if (await history.search(q, today.value)) selectedDay.value = null }
 function onClear(): void { if (query.value) onSelectDay(today.value) }
 
 function onToggle(entry: HistoryEntry, ev: MouseEvent | KeyboardEvent): void {
@@ -99,6 +100,7 @@ async function removeSelected(): Promise<void> {
   await removeUrls(dayEntries.value.filter((e) => keys.has(e.key)).map((e) => e.url))
 }
 
+// Bound on window: after a deletion the focus falls back to <body>, outside any element of the app.
 function onKeydown(e: KeyboardEvent): void {
   if (optionsOpen.value) return
   const target = e.target as HTMLElement
@@ -109,7 +111,7 @@ function onKeydown(e: KeyboardEvent): void {
 </script>
 
 <template>
-  <div class="compact dbh-root flex h-screen flex-col" :class="{ 'is-dense': options.dense }" tabindex="0" @keydown="onKeydown" @click.self="selection.clear()">
+  <div class="compact dbh-root flex h-screen flex-col" :class="{ 'is-dense': options.dense }" @click.self="selection.clear()">
     <header class="dbh-headerbar flex flex-wrap items-center gap-4 px-6 py-3.5">
       <h1 class="w-[296px] flex-none"><AppWordmark /></h1>
       <SearchBar ref="searchBar" class="flex-1 basis-80" @search="onSearch" @clear="onClear" />
@@ -127,13 +129,13 @@ function onKeydown(e: KeyboardEvent): void {
       <aside class="dbh-panel flex w-[304px] shrink-0 flex-col gap-7 overflow-y-auto p-6">
         <div class="dbh-card">
           <Calendar :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" :density="density.levels.value" @select="onSelectDay" @month-change="onMonth" />
-          <a class="dbh-link mt-3 block border-t border-[color:var(--border)] pt-2 text-center text-sm" @click="onToday">{{ t('datepicker_go_today') }}</a>
+          <button type="button" class="dbh-link mt-3 block w-full border-t border-[color:var(--border)] pt-2 text-center text-sm" @click="onToday">{{ t('datepicker_go_today') }}</button>
         </div>
         <SiteList v-if="!history.searching.value" :sites="sites" :active="siteFilter" @pick="onSite" />
         <footer class="dbh-muted mt-auto flex flex-col gap-2 text-xs">
           <img :src="logo" alt="DragonOfMercy" class="h-12 w-12" />
           <div>
-            <div>Created by DragonOfMercy</div>
+            <div>{{ t('footer_created_by', 'DragonOfMercy') }}</div>
             <a href="https://github.com/dragonofmercy" target="_blank" class="dbh-link">https://github.com/dragonofmercy</a>
           </div>
         </footer>
@@ -159,7 +161,7 @@ function onKeydown(e: KeyboardEvent): void {
             </button>
           </div>
           <p v-if="removeFailed" role="alert" class="mb-4 rounded-lg border border-[color:var(--border)] px-3.5 py-2.5 text-sm" style="color: #da373c">{{ t('history_remove_error') }}</p>
-          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded.selected.value" :is-selected="selection.isSelected" :flat="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="expanded.toggle" @remove-group="selection.selectAll" />
+          <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded.selected.value" :is-selected="selection.isSelected" :flat="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="expanded.toggle" @remove-group="selection.selectAll" />
           <p v-if="!displayDays.length" class="dbh-muted border-t border-[color:var(--border)] py-12 text-center">{{ t(emptyMessage) }}</p>
           <div v-if="selection.count.value > 0" class="sticky bottom-5 mt-4 flex justify-center">
             <div role="status" class="flex items-center gap-3 rounded-xl py-2 pl-[18px] pr-2 shadow-lg" style="background: var(--raised); border: 1px solid var(--border)">

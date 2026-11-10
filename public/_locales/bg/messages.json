@@ -131,11 +131,19 @@
             }
         }
     },
-    "history_filter_empty": {
-        "message": "Няма резултати. Опитайте друга дума или премахнете филтъра за сайт."
-    },
     "history_remove_error": {
         "message": "Някои записи не можаха да бъдат изтрити. Възможно е браузърът ви да не позволява изтриване на историята."
+    },
+    "search_clear": {
+        "message": "Изчистване на търсенето"
+    },
+    "footer_created_by": {
+        "message": "Създадено от $author$",
+        "placeholders": {
+            "author": {
+                "content": "$1"
+            }
+        }
     },
     "history_activity_chart": {
         "message": "Посещения по часове"

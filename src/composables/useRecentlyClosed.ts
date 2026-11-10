@@ -23,7 +23,11 @@ export function useRecentlyClosed() {
   const loading = ref(false)
   const error = ref(false)
 
-  async function load(maxResults?: number): Promise<void> {
+  let limit: number | undefined
+
+  // The limit is remembered so the reload after a failed restore keeps it.
+  async function load(maxResults = limit): Promise<void> {
+    limit = maxResults
     loading.value = true
     error.value = false
     try {

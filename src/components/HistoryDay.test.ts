@@ -11,7 +11,7 @@ function mountDay(entries: ReturnType<typeof e>[], props: Record<string, unknown
   return mount(HistoryDay, {
     props: {
       group: { dayKey: 1, date: new Date(2024, 0, 2), entries },
-      locale: 'en', use24: true, timeBeforeTitle: false, groupMode: 'title', expanded: new Set<string>(), isSelected: () => false, ...props
+      use24: true, timeBeforeTitle: false, groupMode: 'title', expanded: new Set<string>(), isSelected: () => false, ...props
     }
   })
 }
