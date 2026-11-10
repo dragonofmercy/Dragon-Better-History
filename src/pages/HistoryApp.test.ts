@@ -154,6 +154,20 @@ describe('HistoryApp', () => {
     expect(w.find('[role="status"]').text()).toContain('1')
   })
 
+  it('a pending search shows the search title and a loading note, without the day list', async () => {
+    const w = await mountApp()
+    let resolveSearch!: (v: unknown[]) => void
+    c.history.search = vi.fn(() => new Promise((r) => { resolveSearch = r }))
+    await searchFor(w, 'a')
+    expect(w.find('h2').text()).toContain('search_display')
+    expect(w.text()).toContain('search_loading')
+    expect(rows(w)).toHaveLength(0)
+    resolveSearch(items.slice())
+    await flushPromises()
+    expect(w.text()).not.toContain('search_loading')
+    expect(rows(w)).toHaveLength(3)
+  })
+
   it('picking a day during a search stays on that day', async () => {
     const w = await mountApp()
     await searchFor(w, 'a')

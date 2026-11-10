@@ -60,7 +60,10 @@ let observer: IntersectionObserver | undefined
 const orderedKeys = computed(() => displayDays.value.flatMap((g) => g.entries.map((e) => e.key)))
 const totalCount = computed(() => orderedKeys.value.length)
 const summary = computed(() => t('history_summary', [String(totalCount.value), String(new Set(displayDays.value.flatMap((g) => g.entries.map((e) => e.domain)).filter(Boolean)).size)]))
-const heading = computed(() => (history.searching.value ? `${t('search_display')} "${query.value}"` : siteFilter.value ?? (selectedDay.value ? formatDayHeading(selectedDay.value, locale) : '')))
+// A pending search already owns the header (title, no chart, no site list) while Chrome is still answering.
+const loading = history.loadingSearch
+const searchView = computed(() => history.searching.value || loading.value)
+const heading = computed(() => (searchView.value ? `${t('search_display')} "${query.value}"` : siteFilter.value ?? (selectedDay.value ? formatDayHeading(selectedDay.value, locale) : '')))
 const emptyMessage = computed(() => (history.searching.value ? 'search_empty' : 'history_date_empty'))
 
 // A removal can empty the filtered domain: drop the filter so the list never shows a dead state.
@@ -147,7 +150,7 @@ function onKeydown(e: KeyboardEvent): void {
           <Calendar :locale="locale" :today="today" :selected="selectedDay" :min-year="minYear" :density="density.levels.value" @select="onSelectDay" @month-change="onMonth" />
           <button type="button" class="dbh-link mt-3 block w-full border-t border-[color:var(--border)] pt-2 text-center text-sm" @click="onToday">{{ t('datepicker_go_today') }}</button>
         </div>
-        <SiteList v-if="!history.searching.value" :sites="sites" :active="siteFilter" @pick="onSite" />
+        <SiteList v-if="!searchView" :sites="sites" :active="siteFilter" @pick="onSite" />
         <footer class="dbh-muted mt-auto flex flex-col gap-2 text-xs">
           <img :src="logo" alt="DragonOfMercy" class="h-12 w-12" />
           <div>
@@ -161,13 +164,14 @@ function onKeydown(e: KeyboardEvent): void {
           <div class="mb-6 flex flex-wrap items-end gap-x-8 gap-y-4">
             <div class="min-w-[280px] flex-1">
               <h2 class="text-[30px] font-semibold leading-tight tracking-tight">{{ heading }}</h2>
-              <p v-if="history.searching.value && totalCount > 0" class="dbh-muted mt-1.5">{{ t('search_found', String(totalCount)) }}</p>
-              <p v-else-if="!history.searching.value" class="dbh-muted mt-1.5">{{ summary }}</p>
+              <p v-if="loading" class="dbh-muted mt-1.5" aria-live="polite">{{ t('search_loading') }}</p>
+              <p v-else-if="history.searching.value && totalCount > 0" class="dbh-muted mt-1.5">{{ t('search_found', String(totalCount)) }}</p>
+              <p v-else-if="!searchView" class="dbh-muted mt-1.5">{{ summary }}</p>
             </div>
-            <ActivityChart v-if="!history.searching.value" :counts="histogram" />
+            <ActivityChart v-if="!searchView" :counts="histogram" />
           </div>
           <div class="mb-4 flex flex-wrap items-center gap-2">
-            <div v-if="!history.searching.value" role="group" class="dbh-segs">
+            <div v-if="!searchView" role="group" class="dbh-segs">
               <button v-for="g in groupModes" :key="g.mode" class="dbh-seg" :class="{ 'is-on': options.groupMode === g.mode }" :aria-pressed="options.groupMode === g.mode" @click="save({ groupMode: g.mode })">{{ t(g.label) }}</button>
             </div>
             <button class="dbh-seg dbh-sort ml-auto flex items-center gap-1.5" @click="toggleSort">
@@ -177,9 +181,12 @@ function onKeydown(e: KeyboardEvent): void {
             </button>
           </div>
           <p v-if="removeFailed" role="alert" class="mb-4 rounded-lg border border-[color:var(--border)] px-3.5 py-2.5 text-sm" style="color: #da373c">{{ t('history_remove_error') }}</p>
-          <HistoryDay v-for="g in renderedDays" :key="g.dayKey" :group="g" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded.selected.value" :is-selected="selection.isSelected" :flat="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="expanded.toggle" @remove-group="selection.selectAll" />
+          <!-- While a search loads: previous search results stay, dimmed; a day list is hidden (it would sit under the search title). -->
+          <div v-if="!loading || history.searching.value" :class="{ 'opacity-50': loading }">
+            <HistoryDay v-for="g in renderedDays" :key="g.dayKey" :group="g" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded.selected.value" :is-selected="selection.isSelected" :flat="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="expanded.toggle" @remove-group="selection.selectAll" />
+          </div>
           <div ref="sentinel" class="h-px"></div>
-          <p v-if="!displayDays.length" class="dbh-muted border-t border-[color:var(--border)] py-12 text-center">{{ t(emptyMessage) }}</p>
+          <p v-if="!displayDays.length && !loading" class="dbh-muted border-t border-[color:var(--border)] py-12 text-center">{{ t(emptyMessage) }}</p>
           <div v-if="selection.count.value > 0" class="sticky bottom-5 mt-4 flex justify-center">
             <div role="status" class="flex items-center gap-3 rounded-xl py-2 pl-[18px] pr-2 shadow-lg" style="background: var(--raised); border: 1px solid var(--border)">
               <span><strong class="mono font-medium">{{ selection.count.value }}</strong> {{ t('history_remove_confirm_count') }}</span>

@@ -31,6 +31,9 @@
             }
         }
     },
+    "search_loading": {
+        "message": "正在搜索..."
+    },
     "search_empty": {
         "message": "未搜索到任何信息"
     },

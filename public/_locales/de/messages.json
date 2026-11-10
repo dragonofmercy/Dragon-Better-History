@@ -31,6 +31,9 @@
             }
         }
     },
+    "search_loading": {
+        "message": "Suche läuft..."
+    },
     "search_empty": {
         "message": "Keine Ergebnisse gefunden"
     },

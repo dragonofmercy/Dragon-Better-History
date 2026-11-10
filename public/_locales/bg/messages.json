@@ -31,6 +31,9 @@
             }
         }
     },
+    "search_loading": {
+        "message": "Търсене..."
+    },
     "search_empty": {
         "message": "Няма разултати"
     },

@@ -31,6 +31,9 @@
             }
         }
     },
+    "search_loading": {
+        "message": "Aranıyor..."
+    },
     "search_empty": {
         "message": "Hiçbir netice bulunmadı"
     },

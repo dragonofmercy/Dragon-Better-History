@@ -114,6 +114,8 @@ export function useHistory() {
   // Always replaced wholesale, never mutated in place: no need to make every entry deeply reactive.
   const days = shallowRef<DayGroup[]>([])
   const searching = ref(false)
+  // True while the latest request is a search still waiting for Chrome (a full-history text query can take seconds).
+  const loadingSearch = ref(false)
   // Only the latest getDay/search may write `days`: a slow earlier query must not overwrite a newer one.
   let request = 0
 
@@ -130,6 +132,7 @@ export function useHistory() {
     const end = endOfDay(day)
     if (start.getTime() > Date.now()) return
     const id = ++request
+    loadingSearch.value = false
     const results = await chrome.history.search({ text: '', startTime: start.getTime(), endTime: end.getTime(), maxResults: 0 })
     const resolved = await resolveVisitTimes(results, start.getTime(), end.getTime())
     show(id, groupByDay(resolved, start, end), false)
@@ -138,6 +141,7 @@ export function useHistory() {
   // The `max` most recently visited urls, whatever the day.
   async function getRecent(max: number): Promise<void> {
     const id = ++request
+    loadingSearch.value = false
     const results = await chrome.history.search({ text: '', startTime: 0, maxResults: max })
     show(id, groupByDay(results), false)
   }
@@ -149,13 +153,18 @@ export function useHistory() {
     const id = ++request
     const { text, site } = parseQuery(query)
     // With a site filter the cap has to apply after the client-side filtering, so fetch everything.
-    const results = await chrome.history.search({ text, startTime: start.getTime(), endTime: end.getTime(), maxResults: site ? 0 : max })
-    let hits = results
-    if (site) {
-      hits = results.filter((r) => matchesSite(r.url ?? '', site)).sort((a, b) => (b.lastVisitTime ?? 0) - (a.lastVisitTime ?? 0))
-      if (max) hits = hits.slice(0, max)
+    loadingSearch.value = true
+    try {
+      const results = await chrome.history.search({ text, startTime: start.getTime(), endTime: end.getTime(), maxResults: site ? 0 : max })
+      let hits = results
+      if (site) {
+        hits = results.filter((r) => matchesSite(r.url ?? '', site)).sort((a, b) => (b.lastVisitTime ?? 0) - (a.lastVisitTime ?? 0))
+        if (max) hits = hits.slice(0, max)
+      }
+      return show(id, groupByDay(hits, start, end), true)
+    } finally {
+      if (id === request) loadingSearch.value = false
     }
-    return show(id, groupByDay(hits, start, end), true)
   }
 
   // Never rejects: a failed deleteUrl (e.g. deletion disabled by policy) leaves its entry listed, the others are removed.
@@ -170,5 +179,5 @@ export function useHistory() {
     return unique.length - gone.size
   }
 
-  return { days, searching, getDay, getRecent, search, remove }
+  return { days, searching, loadingSearch, getDay, getRecent, search, remove }
 }

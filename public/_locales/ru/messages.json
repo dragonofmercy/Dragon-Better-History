@@ -31,6 +31,9 @@
             }
         }
     },
+    "search_loading": {
+        "message": "Поиск..."
+    },
     "search_empty": {
         "message": "Ничего не найдено"
     },
