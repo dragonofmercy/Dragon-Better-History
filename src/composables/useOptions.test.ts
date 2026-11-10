@@ -54,6 +54,6 @@ describe('useOptions', () => {
     const { options, save } = useOptions()
     await save({ theme: 'light' })
     expect(options.theme).toBe('light')
-    expect(set).toHaveBeenCalled()
+    expect(set).toHaveBeenCalledWith({ theme: 'light' })
   })
 })

@@ -127,7 +127,7 @@ describe('useHistory', () => {
     const h = useHistory()
     await h.getDay(new Date(2024, 0, 2))
     expect(h.days.value[0].entries.length).toBe(2)
-    await h.remove('https://a')
+    await h.remove(['https://a'])
     expect(h.days.value[0].entries.length).toBe(1)
     expect(h.days.value[0].entries[0].url).toBe('https://b')
   })
@@ -139,7 +139,7 @@ describe('useHistory', () => {
     const h = useHistory()
     await h.getDay(new Date(2024, 0, 2))
     expect(h.days.value.length).toBe(1)
-    await h.remove('https://a')
+    await h.remove(['https://a'])
     expect(h.days.value.length).toBe(0)
   })
 
@@ -185,5 +185,41 @@ describe('useHistory', () => {
   it('groupRuns domain mode does not group chrome:// URLs', () => {
     const items = groupRuns([entry('chrome://settings', 'S', 2), entry('chrome://settings/a', 'F', 1)], 'domain')
     expect(items.map((i) => i.type)).toEqual(['single', 'single'])
+  })
+})
+
+describe('review regressions', () => {
+  it('getDay keeps a url revisited later, at its visit time inside the day', async () => {
+    const monday = new Date(2024, 0, 1, 10, 0).getTime()
+    const tuesday = new Date(2024, 0, 2, 9, 0).getTime()
+    vi.spyOn(chrome.history, 'search').mockResolvedValue([item('https://a', tuesday, 'A')] as never)
+    vi.spyOn(chrome.history, 'getVisits').mockResolvedValue([{ visitTime: monday - 1000 }, { visitTime: monday }, { visitTime: tuesday }] as never)
+    const h = useHistory()
+    await h.getDay(new Date(2024, 0, 1))
+    expect(h.days.value[0].entries.map((e) => e.lastVisitTime)).toEqual([monday])
+  })
+
+  it('a slow search does not overwrite a newer getDay', async () => {
+    const t = new Date(2024, 0, 2, 12, 0).getTime()
+    let resolveSearch!: (v: unknown[]) => void
+    vi.spyOn(chrome.history, 'search')
+      .mockImplementationOnce((() => new Promise((r) => { resolveSearch = r })) as never)
+      .mockResolvedValueOnce([item('https://day', t, 'Day')] as never)
+    const h = useHistory()
+    const slow = h.search('x', new Date(2024, 0, 2))
+    await h.getDay(new Date(2024, 0, 2))
+    resolveSearch([item('https://search', t, 'Search')])
+    await slow
+    expect(h.days.value[0].entries.map((e) => e.url)).toEqual(['https://day'])
+  })
+
+  it('remove survives a rejected deleteUrl and only drops the deleted urls', async () => {
+    const t = new Date(2024, 0, 2, 12, 0).getTime()
+    vi.spyOn(chrome.history, 'search').mockResolvedValue([item('https://a', t, 'A'), item('https://b', t, 'B')] as never)
+    vi.spyOn(chrome.history, 'deleteUrl').mockImplementation((({ url }: { url: string }) => (url === 'https://b' ? Promise.reject(new Error('policy')) : Promise.resolve())) as never)
+    const h = useHistory()
+    await h.getDay(new Date(2024, 0, 2))
+    await h.remove(['https://a', 'https://b'])
+    expect(h.days.value[0].entries.map((e) => e.url)).toEqual(['https://b'])
   })
 })

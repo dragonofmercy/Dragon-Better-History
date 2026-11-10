@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Sun, Moon, SlidersHorizontal, ArrowDownNarrowWide, ArrowUpNarrowWide } from '@lucide/vue'
-import { onMounted, ref, computed, watch } from 'vue'
+import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
 import { useOptions, type GroupMode } from '@/composables/useOptions'
 import { useTheme } from '@/composables/useTheme'
 import { useHistory, orderDays, domainOf, type HistoryEntry } from '@/composables/useHistory'
 import { useSelection } from '@/composables/useSelection'
 import { useMonthDensity } from '@/composables/useMonthDensity'
-import { startOfDay, formatDayHeading } from '@/lib/dates'
+import { startOfDay, endOfDay, formatDayHeading } from '@/lib/dates'
 import { siteCounts, hourHistogram } from '@/lib/dayStats'
 import { t, locale } from '@/lib/i18n'
 import Calendar from '@/components/Calendar.vue'
@@ -31,12 +31,12 @@ const selection = useSelection()
 const density = useMonthDensity()
 
 const now = new Date()
-const today = startOfDay(now)
+const today = ref(startOfDay(now))
 const minYear = now.getFullYear() - 3
 const optionsOpen = ref(false)
 const query = ref('')
 const searchBar = ref<InstanceType<typeof SearchBar> | null>(null)
-const selectedDay = ref<Date | null>(today)
+const selectedDay = ref<Date | null>(today.value)
 const expanded = useSelection()
 const siteFilter = ref<string | null>(null)
 
@@ -69,24 +69,31 @@ function toggleSort(): void { save({ sortOldestFirst: !options.sortOldestFirst }
 function onSite(domain: string): void { siteFilter.value = siteFilter.value === domain ? null : domain; selection.clear() }
 function onMonth(year: number, month: number): void { density.load(year, month).catch(() => {}) }
 
-onMounted(() => Promise.all([load(), history.getDay(today)]))
+// The page can stay open past midnight: roll `today` over so the new day becomes selectable and searchable.
+let midnightTimer: ReturnType<typeof setTimeout> | undefined
+function scheduleMidnight(): void {
+  midnightTimer = setTimeout(() => { today.value = startOfDay(new Date()); scheduleMidnight() }, endOfDay(today.value).getTime() + 1 - Date.now())
+}
+onUnmounted(() => clearTimeout(midnightTimer))
+
+onMounted(() => { scheduleMidnight(); return Promise.all([load(), history.getDay(today.value)]) })
 
 function resetView(): void { siteFilter.value = null; expanded.clear(); selection.clear(); mainEl.value?.scrollTo({ top: 0 }) }
 function onSelectDay(d: Date): void { resetView(); query.value = ''; searchBar.value?.clear(); selectedDay.value = startOfDay(d); history.getDay(d) }
-function onToday(): void { onSelectDay(today) }
-function onSearch(q: string): void { resetView(); query.value = q; selectedDay.value = null; history.search(q, today) }
-function onClear(): void { if (query.value) onSelectDay(today) }
+function onToday(): void { onSelectDay(today.value) }
+function onSearch(q: string): void { resetView(); query.value = q; selectedDay.value = null; history.search(q, today.value) }
+function onClear(): void { if (query.value) onSelectDay(today.value) }
 
 function onToggle(entry: HistoryEntry, ev: MouseEvent | KeyboardEvent): void {
   if (ev.shiftKey) selection.range(entry.key, orderedKeys.value)
   else selection.toggle(entry.key)
 }
 
-async function onRemove(entry: HistoryEntry): Promise<void> { await history.remove(entry.url); selection.clear() }
+async function onRemove(entry: HistoryEntry): Promise<void> { await history.remove([entry.url]); selection.clear() }
 
 async function removeSelected(): Promise<void> {
   const keys = selection.selected.value
-  await history.remove(...dayEntries.value.filter((e) => keys.has(e.key)).map((e) => e.url))
+  await history.remove(dayEntries.value.filter((e) => keys.has(e.key)).map((e) => e.url))
   selection.clear()
 }
 

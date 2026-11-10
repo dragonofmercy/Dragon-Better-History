@@ -13,6 +13,7 @@ const store: Record<string, unknown> = {}
   },
   history: {
     search: () => Promise.resolve([]),
+    getVisits: () => Promise.resolve([]),
     deleteUrl: () => Promise.resolve()
   },
   sessions: {

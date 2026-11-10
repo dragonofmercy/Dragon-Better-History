@@ -37,7 +37,8 @@ export function useOptions() {
 
   async function save(next: Partial<Options>): Promise<void> {
     Object.assign(options, next)
-    await chrome.storage.sync.set({ ...options })
+    // Write only the delta: a full snapshot would revert changes made from another tab or device.
+    await chrome.storage.sync.set(next)
   }
 
   return { options, load, save }

@@ -27,7 +27,8 @@ export function useRecentlyClosed() {
     loading.value = true
     error.value = false
     try {
-      const raw = await chrome.sessions.getRecentlyClosed(maxResults ? { maxResults } : {})
+      // The API rejects maxResults above MAX_SESSION_RESULTS (25).
+      const raw = await chrome.sessions.getRecentlyClosed(maxResults ? { maxResults: Math.min(maxResults, chrome.sessions.MAX_SESSION_RESULTS) } : {})
       sessions.value = normalizeSessions(raw)
     } catch {
       error.value = true

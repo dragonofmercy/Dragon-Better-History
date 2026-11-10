@@ -80,31 +80,50 @@ export function groupByDay(items: chrome.history.HistoryItem[], start: Date, end
   return [...map.values()].sort((a, b) => b.dayKey - a.dayKey)
 }
 
+// HistoryItem.lastVisitTime is the URL's latest visit overall, not the one inside the queried range.
+// For URLs revisited after `end`, look up the latest visit inside [start, end]; 0 (filtered out by callers) when there is none.
+// ponytail: one getVisits call per revisited URL; batch or cache if a month of heavy history gets slow.
+export async function resolveVisitTimes(items: chrome.history.HistoryItem[], start: number, end: number): Promise<chrome.history.HistoryItem[]> {
+  return Promise.all(items.map(async (it) => {
+    if (it.lastVisitTime == null || it.lastVisitTime <= end || !it.url) return it
+    const visits = await chrome.history.getVisits({ url: it.url }).catch(() => [])
+    const lastVisitTime = visits.reduce((best, v) => { const t = v.visitTime ?? 0; return t >= start && t <= end && t > best ? t : best }, 0)
+    return { ...it, lastVisitTime }
+  }))
+}
+
 export function useHistory() {
   const days = ref<DayGroup[]>([])
   const searching = ref(false)
+  // Only the latest getDay/search may write `days`: a slow earlier query must not overwrite a newer one.
+  let request = 0
 
   async function getDay(day: Date, max = 0): Promise<void> {
     const start = startOfDay(day)
     const end = endOfDay(day)
     if (start.getTime() > Date.now()) return
+    const id = ++request
     searching.value = false
     const results = await chrome.history.search({ text: '', startTime: start.getTime(), endTime: end.getTime(), maxResults: max })
-    days.value = groupByDay(results, start, end)
+    const resolved = await resolveVisitTimes(results, start.getTime(), end.getTime())
+    if (id === request) days.value = groupByDay(resolved, start, end)
   }
 
   async function search(query: string, today: Date, max = 0): Promise<void> {
     const start = new Date(1970, 0, 1)
     const end = endOfDay(today)
+    const id = ++request
     searching.value = true
     const { text, site } = parseQuery(query)
     const results = await chrome.history.search({ text, startTime: start.getTime(), endTime: end.getTime(), maxResults: max })
-    days.value = groupByDay(site ? results.filter((r) => matchesSite(r.url ?? '', site)) : results, start, end)
+    if (id === request) days.value = groupByDay(site ? results.filter((r) => matchesSite(r.url ?? '', site)) : results, start, end)
   }
 
-  async function remove(...urls: string[]): Promise<void> {
-    const gone = new Set(urls)
-    await Promise.all([...gone].map((url) => chrome.history.deleteUrl({ url })))
+  // Never rejects: a failed deleteUrl (e.g. deletion disabled by policy) leaves its entry listed, the others are removed.
+  async function remove(urls: string[]): Promise<void> {
+    const unique = [...new Set(urls)]
+    const results = await Promise.allSettled(unique.map((url) => chrome.history.deleteUrl({ url })))
+    const gone = new Set(unique.filter((_, i) => results[i].status === 'fulfilled'))
     days.value = days.value
       .map((g) => { const entries = g.entries.filter((e) => !gone.has(e.url)); return entries.length === g.entries.length ? g : { ...g, entries } })
       .filter((g) => g.entries.length > 0)

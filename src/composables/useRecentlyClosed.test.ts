@@ -82,3 +82,11 @@ describe('useRecentlyClosed', () => {
     expect(getSpy).toHaveBeenCalledTimes(2)
   })
 })
+
+describe('load limit', () => {
+  it('caps maxResults at MAX_SESSION_RESULTS', async () => {
+    const getSpy = vi.spyOn(chrome.sessions, 'getRecentlyClosed').mockResolvedValue([] as never)
+    await useRecentlyClosed().load(30)
+    expect(getSpy).toHaveBeenCalledWith({ maxResults: 25 })
+  })
+})
