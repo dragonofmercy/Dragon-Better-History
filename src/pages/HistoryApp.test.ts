@@ -95,6 +95,12 @@ describe('HistoryApp', () => {
     expect(w.find('[role="status"]').text()).toContain('3')
   })
 
+  it('a clicked row gets the selected state', async () => {
+    const w = await mountApp()
+    await rows(w)[1].trigger('click')
+    expect(rows(w).map((r) => r.classes().includes('is-selected'))).toEqual([false, true, false])
+  })
+
   it('group segmented control saves groupMode', async () => {
     const w = await mountApp()
     const seg = w.findAll('[aria-label="options_group_title"], .dbh-seg').filter((b) => b.text() === 'options_group_domain')[0]

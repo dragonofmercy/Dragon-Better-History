@@ -1,13 +1,12 @@
 import { ref, computed } from 'vue'
 
 export function useSelection() {
+  // The set is mutated in place: Vue tracks `has(key)` per key, so a change only re-renders the rows it touches.
   const selected = ref<Set<string>>(new Set())
   let lastKey: string | null = null
 
   function toggle(key: string): void {
-    const next = new Set(selected.value)
-    if (next.has(key)) next.delete(key); else next.add(key)
-    selected.value = next
+    if (!selected.value.delete(key)) selected.value.add(key)
     lastKey = key
   }
 
@@ -17,18 +16,17 @@ export function useSelection() {
     const b = orderedKeys.indexOf(key)
     if (a === -1 || b === -1) { toggle(key); return }
     const [lo, hi] = a < b ? [a, b] : [b, a]
-    const next = new Set(selected.value)
-    for (let i = lo; i <= hi; i++) next.add(orderedKeys[i])
-    selected.value = next
+    for (let i = lo; i <= hi; i++) selected.value.add(orderedKeys[i])
     lastKey = key
   }
 
   function selectAll(orderedKeys: string[]): void {
-    selected.value = new Set(orderedKeys)
+    selected.value.clear()
+    for (const k of orderedKeys) selected.value.add(k)
   }
 
   function clear(): void {
-    selected.value = new Set()
+    selected.value.clear()
     lastKey = null
   }
 

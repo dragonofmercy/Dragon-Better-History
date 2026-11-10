@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from 'vitest'
-import { groupByDay, entryKey, groupRuns, orderDays, domainOf, parseQuery, matchesSite, useHistory } from '@/composables/useHistory'
+import { groupByDay, entryKey, groupRuns, takeEntries, orderDays, domainOf, parseQuery, matchesSite, useHistory } from '@/composables/useHistory'
 
 function item(url: string, time: number, title = ''): chrome.history.HistoryItem {
   return { id: url, url, title, lastVisitTime: time } as chrome.history.HistoryItem
 }
 
-function entry(url: string, title: string, time = 1): { key: string; url: string; title: string; lastVisitTime: number } {
-  return { key: `${url}::${time}`, url, title, lastVisitTime: time }
+function entry(url: string, title: string, time = 1): { key: string; url: string; title: string; lastVisitTime: number; domain: string } {
+  return { key: `${url}::${time}`, url, title, lastVisitTime: time, domain: domainOf(url) }
 }
 
 describe('groupRuns', () => {
@@ -263,5 +263,24 @@ describe('review regressions (second batch)', () => {
     await h.search('site:a.com', new Date(2024, 0, 2), 2)
     expect(spy.mock.calls.at(-1)![0]).toMatchObject({ maxResults: 0 })
     expect(h.days.value[0].entries.map((e) => e.url)).toEqual(['https://a.com/1', 'https://a.com/2'])
+  })
+})
+
+describe('takeEntries', () => {
+  const day = (dayKey: number, n: number) => ({ dayKey, date: new Date(dayKey), entries: Array.from({ length: n }, (_, i) => entry(`https://a.com/${dayKey}/${i}`, 'T', i)) })
+
+  it('cuts across groups and records the real size of a cut group', () => {
+    const out = takeEntries([day(3, 2), day(2, 3), day(1, 4)], 4)
+    expect(out.map((g) => g.entries.length)).toEqual([2, 2])
+    expect(out.map((g) => g.total)).toEqual([undefined, 3])
+  })
+
+  it('returns the same groups when the limit covers everything', () => {
+    const days = [day(2, 2), day(1, 1)]
+    expect(takeEntries(days, Infinity)).toEqual(days)
+  })
+
+  it('groupByDay precomputes the domain', () => {
+    expect(groupByDay([item('https://www.a.com/x', new Date(2024, 0, 2, 12, 0).getTime())])[0].entries[0].domain).toBe('a.com')
   })
 })

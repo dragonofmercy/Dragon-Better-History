@@ -7,12 +7,16 @@ export interface HistoryEntry {
   url: string
   title: string
   lastVisitTime: number
+  // Hostname without www., '' for non-http urls; computed once in groupByDay.
+  domain: string
 }
 
 export interface DayGroup {
   dayKey: number
   date: Date
   entries: HistoryEntry[]
+  // Real entry count when takeEntries cut the group.
+  total?: number
 }
 
 export type DisplayItem =
@@ -40,7 +44,7 @@ export function matchesSite(url: string, site: string): boolean {
 
 // mode 'none' yields an empty key, so every entry stays single.
 export function groupRuns(entries: HistoryEntry[], mode: GroupMode = 'title'): DisplayItem[] {
-  const groupKey = (e: HistoryEntry): string => (mode === 'none' ? '' : mode === 'domain' ? domainOf(e.url) : e.title)
+  const groupKey = (e: HistoryEntry): string => (mode === 'none' ? '' : mode === 'domain' ? e.domain : e.title)
   const items: DisplayItem[] = []
   let i = 0
   while (i < entries.length) {
@@ -61,6 +65,18 @@ export function orderDays(days: DayGroup[], oldestFirst: boolean): DayGroup[] {
   return days.map((g) => ({ ...g, entries: [...g.entries].reverse() })).reverse()
 }
 
+// Keeps the first `limit` entries across the day groups, so a huge list can be mounted chunk by chunk.
+export function takeEntries(days: DayGroup[], limit: number): DayGroup[] {
+  const out: DayGroup[] = []
+  let left = limit
+  for (const g of days) {
+    if (left <= 0) break
+    out.push(g.entries.length <= left ? g : { ...g, total: g.entries.length, entries: g.entries.slice(0, left) })
+    left -= g.entries.length
+  }
+  return out
+}
+
 export function entryKey(item: { url?: string; lastVisitTime?: number }): string {
   return `${item.url}::${item.lastVisitTime}`
 }
@@ -75,7 +91,7 @@ export function groupByDay(items: chrome.history.HistoryItem[], start?: Date, en
     const key = midnight.getTime()
     let group = map.get(key)
     if (!group) { group = { dayKey: key, date: midnight, entries: [] }; map.set(key, group) }
-    group.entries.push({ key: entryKey(it), url: it.url ?? '', title: it.title || (it.url ?? ''), lastVisitTime: it.lastVisitTime })
+    group.entries.push({ key: entryKey(it), url: it.url ?? '', title: it.title || (it.url ?? ''), lastVisitTime: it.lastVisitTime, domain: domainOf(it.url ?? '') })
   }
   // Chrome does not guarantee chronological order (search results especially); orderDays and groupByHour rely on it.
   for (const g of map.values()) g.entries.sort((a, b) => b.lastVisitTime - a.lastVisitTime)

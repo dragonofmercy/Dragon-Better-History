@@ -1,4 +1,4 @@
-import { domainOf, type HistoryEntry } from '@/composables/useHistory'
+import type { HistoryEntry } from '@/composables/useHistory'
 import { startOfDay } from '@/lib/dates'
 
 interface HourBlock { hour: number; entries: HistoryEntry[] }
@@ -18,7 +18,7 @@ export function groupByHour(entries: HistoryEntry[]): HourBlock[] {
 export function siteCounts(entries: HistoryEntry[], limit = 6): SiteCount[] {
   const map = new Map<string, SiteCount>()
   for (const e of entries) {
-    const domain = domainOf(e.url)
+    const domain = e.domain
     if (!domain) continue
     const s = map.get(domain)
     if (s) s.count++

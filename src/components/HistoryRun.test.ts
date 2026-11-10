@@ -3,8 +3,8 @@ import { mount } from '@vue/test-utils'
 import HistoryRun from '@/components/HistoryRun.vue'
 
 const entries = [
-  { key: 'https://fb/1::1', url: 'https://fb/1', title: 'Facebook', lastVisitTime: new Date(2024, 0, 2, 12, 0).getTime() },
-  { key: 'https://fb/2::2', url: 'https://fb/2', title: 'Facebook', lastVisitTime: new Date(2024, 0, 2, 12, 1).getTime() }
+  { key: 'https://fb/1::1', url: 'https://fb/1', title: 'Facebook', lastVisitTime: new Date(2024, 0, 2, 12, 0).getTime(), domain: 'fb' },
+  { key: 'https://fb/2::2', url: 'https://fb/2', title: 'Facebook', lastVisitTime: new Date(2024, 0, 2, 12, 1).getTime(), domain: 'fb' }
 ]
 const run = { type: 'run' as const, key: 'https://fb/1::1', title: 'Facebook', entries }
 

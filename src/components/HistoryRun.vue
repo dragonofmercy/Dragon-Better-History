@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ChevronRight, X } from '@lucide/vue'
-import { computed } from 'vue'
-import { domainOf, type HistoryEntry as Entry, type DisplayItem } from '@/composables/useHistory'
+import type { HistoryEntry as Entry, DisplayItem } from '@/composables/useHistory'
 import HistoryEntry from '@/components/HistoryEntry.vue'
 import { faviconUrl } from '@/lib/chrome'
 import { t } from '@/lib/i18n'
 
-const props = defineProps<{
+defineProps<{
   run: Extract<DisplayItem, { type: 'run' }>
   use24: boolean
   timeBeforeTitle: boolean
@@ -20,8 +19,6 @@ const emit = defineEmits<{
   (e: 'toggle', entry: Entry, ev: MouseEvent | KeyboardEvent): void
   (e: 'remove', entry: Entry): void
 }>()
-
-const domain = computed(() => domainOf(props.run.entries[0].url))
 </script>
 
 <template>
@@ -33,7 +30,7 @@ const domain = computed(() => domainOf(props.run.entries[0].url))
       <img class="h-5 w-5 shrink-0 rounded-sm" :src="faviconUrl(run.entries[0].url)" alt="" loading="lazy" />
       <div class="flex min-w-0 flex-1 items-baseline gap-2.5">
         <span class="dbh-title truncate">{{ run.entries[0].title }}</span>
-        <span v-if="domain" class="dbh-muted shrink-0 text-xs">{{ domain }}</span>
+        <span v-if="run.entries[0].domain" class="dbh-muted shrink-0 text-xs">{{ run.entries[0].domain }}</span>
         <span class="dbh-count-badge shrink-0 self-center">{{ run.entries.length }}</span>
       </div>
       <button class="dbh-rm" :title="t('history_remove_group')" :aria-label="t('history_remove_group')" @click.stop="emit('remove-group')">
@@ -41,7 +38,7 @@ const domain = computed(() => domainOf(props.run.entries[0].url))
       </button>
     </div>
     <template v-if="expanded">
-      <HistoryEntry v-for="entry in run.entries" :key="entry.key" child :entry="entry" :use24="use24" :time-before-title="timeBeforeTitle" :selected="isSelected(entry.key)" @toggle="(ev) => emit('toggle', entry, ev)" @remove="emit('remove', entry)" />
+      <HistoryEntry v-for="entry in run.entries" :key="entry.key" child :entry="entry" :use24="use24" :time-before-title="timeBeforeTitle" :is-selected="isSelected" @toggle="(ev) => emit('toggle', entry, ev)" @remove="emit('remove', entry)" />
     </template>
   </div>
 </template>

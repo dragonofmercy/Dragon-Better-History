@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import HistoryEntryRow from '@/components/HistoryEntry.vue'
 
-const entry = { key: 'https://a.com/x::1', url: 'https://www.a.com/x', title: 'A', lastVisitTime: new Date(2024, 0, 2, 12, 0).getTime() }
+const entry = { key: 'https://a.com/x::1', url: 'https://www.a.com/x', title: 'A', lastVisitTime: new Date(2024, 0, 2, 12, 0).getTime(), domain: 'a.com' }
 
 function mountRow(removable?: boolean) {
   return mount(HistoryEntryRow, {

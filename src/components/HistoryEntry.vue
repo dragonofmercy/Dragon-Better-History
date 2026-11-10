@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { X } from '@lucide/vue'
 import { computed } from 'vue'
-import { domainOf, type HistoryEntry } from '@/composables/useHistory'
+import type { HistoryEntry } from '@/composables/useHistory'
 import { faviconUrl } from '@/lib/chrome'
 import { formatTime } from '@/lib/dates'
 import { t, locale } from '@/lib/i18n'
@@ -10,16 +10,17 @@ const props = withDefaults(defineProps<{
   entry: HistoryEntry
   use24: boolean
   timeBeforeTitle: boolean
-  selected?: boolean
+  // Called by the row itself (not by its parent) so a selection change re-renders this row only.
+  isSelected?: (key: string) => boolean
   removable?: boolean
   child?: boolean
   showDomain?: boolean
-}>(), { selected: false, removable: true, child: false, showDomain: true })
+}>(), { removable: true, child: false, showDomain: true })
 
 const emit = defineEmits<{ (e: 'toggle', ev: MouseEvent | KeyboardEvent): void; (e: 'remove'): void }>()
 
 const time = computed(() => formatTime(new Date(props.entry.lastVisitTime), locale, props.use24))
-const domain = computed(() => domainOf(props.entry.url))
+const selected = computed(() => props.isSelected?.(props.entry.key) ?? false)
 </script>
 
 <template>
@@ -28,7 +29,7 @@ const domain = computed(() => domainOf(props.entry.url))
     <img class="h-5 w-5 shrink-0 rounded-sm" :src="faviconUrl(entry.url)" alt="" loading="lazy" />
     <div class="flex min-w-0 flex-1 items-baseline gap-2.5">
       <a class="dbh-title truncate underline-offset-4 hover:underline" :href="entry.url" :title="entry.url" target="_blank" @click.stop>{{ entry.title }}</a>
-      <span v-if="showDomain && domain" class="dbh-muted shrink-0 text-xs">{{ domain }}</span>
+      <span v-if="showDomain && entry.domain" class="dbh-muted shrink-0 text-xs">{{ entry.domain }}</span>
     </div>
     <span v-if="!timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
     <button v-if="removable" class="dbh-rm" :title="t('history_remove_single')" :aria-label="t('history_remove_single')" @click.stop="emit('remove')">

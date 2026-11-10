@@ -4,7 +4,7 @@ import HistoryDay from '@/components/HistoryDay.vue'
 import { formatHour } from '@/lib/dates'
 
 function e(n: number, h: number, m: number, title = 'Same') {
-  return { key: `https://x.com/${n}::${n}`, url: `https://x.com/${n}`, title, lastVisitTime: new Date(2024, 0, 2, h, m).getTime() }
+  return { key: `https://x.com/${n}::${n}`, url: `https://x.com/${n}`, title, lastVisitTime: new Date(2024, 0, 2, h, m).getTime(), domain: 'x.com' }
 }
 
 function mountDay(entries: ReturnType<typeof e>[], props: Record<string, unknown> = {}) {

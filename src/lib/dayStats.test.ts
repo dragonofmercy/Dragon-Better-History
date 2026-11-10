@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { groupByHour, siteCounts, hourHistogram, densityLevels } from '@/lib/dayStats'
-import type { HistoryEntry } from '@/composables/useHistory'
+import { domainOf, type HistoryEntry } from '@/composables/useHistory'
 
 const at = (y: number, m: number, d: number, h: number, url = 'https://a.com/'): HistoryEntry => ({
-  key: `${url}${h}`, url, title: url, lastVisitTime: new Date(y, m, d, h, 5).getTime(),
+  key: `${url}${h}`, url, title: url, lastVisitTime: new Date(y, m, d, h, 5).getTime(), domain: domainOf(url),
 })
 
 describe('dayStats', () => {

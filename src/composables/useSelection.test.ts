@@ -38,4 +38,14 @@ describe('useSelection', () => {
     s.clear()
     expect(s.count.value).toBe(0)
   })
+
+  it('keeps the same set instance so rows are tracked per key', () => {
+    const s = useSelection()
+    const set = s.selected.value
+    s.toggle('a')
+    s.selectAll(keys)
+    s.clear()
+    expect(s.selected.value).toBe(set)
+    expect(s.count.value).toBe(0)
+  })
 })

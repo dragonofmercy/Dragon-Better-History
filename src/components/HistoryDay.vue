@@ -38,14 +38,14 @@ const blocks = computed(() =>
     <h2 v-if="flat" class="dbh-day mb-2">
       <span>{{ formatDayHeading(group.date, locale) }}</span>
       <span class="dbh-rule"></span>
-      <span class="dbh-count">{{ group.entries.length }}</span>
+      <span class="dbh-count">{{ group.total ?? group.entries.length }}</span>
     </h2>
     <section v-for="b in blocks" :key="b.hour" class="dbh-hour">
       <h3 v-if="!flat" class="dbh-hour-label mono">{{ formatHour(b.hour, locale, use24) }}</h3>
       <div class="min-w-0 flex-1">
         <template v-for="it in b.items" :key="it.type === 'run' ? it.key : it.entry.key">
           <HistoryRun v-if="it.type === 'run'" :run="it" :use24="use24" :time-before-title="timeBeforeTitle" :expanded="expanded.has(it.key)" :is-selected="isSelected" @toggle-expand="emit('toggle-expand', it.key)" @remove-group="emit('remove-group', it.entries.map((e) => e.key))" @toggle="(entry, ev) => emit('toggle', entry, ev)" @remove="(entry) => emit('remove', entry)" />
-          <HistoryEntry v-else :entry="it.entry" :use24="use24" :time-before-title="timeBeforeTitle" :selected="isSelected(it.entry.key)" @toggle="(ev) => emit('toggle', it.entry, ev)" @remove="emit('remove', it.entry)" />
+          <HistoryEntry v-else :entry="it.entry" :use24="use24" :time-before-title="timeBeforeTitle" :is-selected="isSelected" @toggle="(ev) => emit('toggle', it.entry, ev)" @remove="emit('remove', it.entry)" />
         </template>
       </div>
     </section>
