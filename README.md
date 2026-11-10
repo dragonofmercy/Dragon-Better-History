@@ -69,6 +69,12 @@ npm test         # run the Vitest suite
 Load `dist/` as an unpacked extension at `chrome://extensions` (or `edge://extensions`)
 with developer mode enabled.
 
+## AI disclaimer
+
+This extension is developed with the help of [Claude Code](https://claude.com/claude-code),
+an AI coding assistant. I decide what gets built and review the changes, and every
+feature is tested by hand by me before it is released.
+
 ## License
 
 MIT - Copyright (c) Dragon.
