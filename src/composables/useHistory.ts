@@ -73,6 +73,8 @@ export function groupByDay(items: chrome.history.HistoryItem[], start: Date, end
     if (!group) { group = { dayKey: key, date: midnight, entries: [] }; map.set(key, group) }
     group.entries.push({ key: entryKey(it), url: it.url ?? '', title: it.title || (it.url ?? ''), lastVisitTime: it.lastVisitTime })
   }
+  // Chrome does not guarantee chronological order (search results especially); orderDays and groupByHour rely on it.
+  for (const g of map.values()) g.entries.sort((a, b) => b.lastVisitTime - a.lastVisitTime)
   return [...map.values()].sort((a, b) => b.dayKey - a.dayKey)
 }
 

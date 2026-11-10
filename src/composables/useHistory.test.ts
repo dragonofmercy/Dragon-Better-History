@@ -91,6 +91,12 @@ describe('groupByDay', () => {
     expect(jan1?.entries.length).toBe(2)
   })
 
+  it('sorts entries newest first within a day regardless of input order', () => {
+    const t = (h: number): number => new Date(2024, 0, 1, h).getTime()
+    const [g] = groupByDay([item('https://a', t(9)), item('https://b', t(14)), item('https://c', t(11))], new Date(2024, 0, 1), new Date(2024, 0, 1, 23, 59, 59))
+    expect(g.entries.map((e) => e.url)).toEqual(['https://b', 'https://c', 'https://a'])
+  })
+
   it('drops entries outside the range', () => {
     const inRange = new Date(2024, 0, 2, 12, 0).getTime()
     const outRange = new Date(2024, 0, 5, 12, 0).getTime()
@@ -159,7 +165,7 @@ describe('useHistory', () => {
     const h = useHistory()
     await h.search('vue site:GitHub.com', new Date(2024, 0, 2))
     expect(spy).toHaveBeenLastCalledWith(expect.objectContaining({ text: 'vue github.com' }))
-    expect(h.days.value.flatMap((g) => g.entries.map((e) => e.url))).toEqual(['https://www.github.com/a', 'https://gist.github.com/b'])
+    expect(h.days.value.flatMap((g) => g.entries.map((e) => e.url))).toEqual(['https://gist.github.com/b', 'https://www.github.com/a'])
   })
 
   it('parseQuery and matchesSite', () => {
