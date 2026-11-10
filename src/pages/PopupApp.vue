@@ -73,6 +73,7 @@ function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('
             :session="s"
             :locale="locale"
             :use24="options.use24HoursFormat"
+            :time-before-title="options.timeBeforeTitle"
             @restore="closed.restore(s.sessionId)"
           />
           <p v-if="!closed.sessions.value.length" class="dbh-muted my-8 text-center">{{ t('closed_empty') }}</p>

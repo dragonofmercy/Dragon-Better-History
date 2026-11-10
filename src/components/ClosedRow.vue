@@ -10,6 +10,7 @@ const props = defineProps<{
   session: ClosedSession
   locale: string
   use24: boolean
+  timeBeforeTitle: boolean
 }>()
 
 const emit = defineEmits<{ (e: 'restore'): void }>()
@@ -21,7 +22,8 @@ const tooltip = computed(() => (props.session.type === 'tab' ? props.session.url
 
 <template>
   <div class="dbh-entry group" tabindex="0" @click="emit('restore')" @keydown.enter.space.self.prevent="emit('restore')">
-    <img v-if="session.type === 'tab'" class="h-4 w-4 shrink-0 rounded-sm" :src="faviconUrl(session.url)" alt="" />
+    <span v-if="timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
+    <img v-if="session.type === 'tab'" class="h-4 w-4 shrink-0 rounded-sm" :src="faviconUrl(session.url)" alt="" loading="lazy" />
     <span v-else class="dbh-faint flex h-4 w-4 shrink-0 items-center justify-center">
       <PanelTop :size="14" />
     </span>
@@ -29,6 +31,6 @@ const tooltip = computed(() => (props.session.type === 'tab' ? props.session.url
       <span class="dbh-title" :title="tooltip">{{ label }}</span>
     </div>
     <span class="shrink-0 text-xs font-medium text-[var(--link)] opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100">{{ t('closed_restore') }}</span>
-    <span class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
+    <span v-if="!timeBeforeTitle" class="dbh-time mono shrink-0 text-xs">{{ time }}</span>
   </div>
 </template>

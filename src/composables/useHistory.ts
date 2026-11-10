@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { startOfDay, endOfDay } from '@/lib/dates'
 import type { GroupMode } from '@/composables/useOptions'
 
@@ -95,7 +95,8 @@ export async function resolveVisitTimes(items: chrome.history.HistoryItem[], sta
 }
 
 export function useHistory() {
-  const days = ref<DayGroup[]>([])
+  // Always replaced wholesale, never mutated in place: no need to make every entry deeply reactive.
+  const days = shallowRef<DayGroup[]>([])
   const searching = ref(false)
   // Only the latest getDay/search may write `days`: a slow earlier query must not overwrite a newer one.
   let request = 0

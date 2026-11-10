@@ -91,7 +91,7 @@ function onToggle(entry: HistoryEntry, ev: MouseEvent | KeyboardEvent): void {
   else selection.toggle(entry.key)
 }
 
-async function removeUrls(urls: string[]): Promise<void> { removeFailed.value = (await history.remove(urls)) > 0; selection.clear() }
+async function removeUrls(urls: string[]): Promise<void> { removeFailed.value = (await history.remove(urls)) > 0; density.invalidate(); selection.clear() }
 
 async function onRemove(entry: HistoryEntry): Promise<void> { await removeUrls([entry.url]) }
 

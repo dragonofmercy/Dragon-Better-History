@@ -30,7 +30,7 @@ const domain = computed(() => domainOf(props.run.entries[0].url))
       <button class="dbh-chevron" :class="expanded ? 'is-open' : ''" :aria-expanded="expanded" :aria-label="expanded ? t('history_collapse_group') : t('history_expand_group')">
         <ChevronRight :size="14" :stroke-width="2.5" />
       </button>
-      <img class="h-5 w-5 shrink-0 rounded-sm" :src="faviconUrl(run.entries[0].url)" alt="" />
+      <img class="h-5 w-5 shrink-0 rounded-sm" :src="faviconUrl(run.entries[0].url)" alt="" loading="lazy" />
       <div class="flex min-w-0 flex-1 items-baseline gap-2.5">
         <span class="dbh-title truncate">{{ run.entries[0].title }}</span>
         <span v-if="domain" class="dbh-muted shrink-0 text-xs">{{ domain }}</span>

@@ -4,11 +4,16 @@ import ClosedRow from '@/components/ClosedRow.vue'
 
 const session = { type: 'tab' as const, sessionId: 's1', title: 'Tab', url: 'https://a', lastModified: new Date(2024, 0, 2, 12, 0).getTime() }
 
-function mountRow() {
-  return mount(ClosedRow, { props: { session, locale: 'en', use24: true } })
+function mountRow(timeBeforeTitle = false) {
+  return mount(ClosedRow, { props: { session, locale: 'en', use24: true, timeBeforeTitle } })
 }
 
 describe('ClosedRow', () => {
+  it('puts the time first when timeBeforeTitle is on', () => {
+    expect(mountRow(false).find('.dbh-entry > :first-child').classes()).not.toContain('dbh-time')
+    expect(mountRow(true).find('.dbh-entry > :first-child').classes()).toContain('dbh-time')
+  })
+
   it('does not render a separate restore button', () => {
     expect(mountRow().find('button').exists()).toBe(false)
   })

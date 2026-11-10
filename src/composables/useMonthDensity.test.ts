@@ -27,4 +27,26 @@ describe('useMonthDensity', () => {
     await load(2024, 4)
     expect([...levels.value.keys()]).toEqual([inside])
   })
+
+  it('serves a past month from the cache until invalidated', async () => {
+    const search = vi.fn(async () => [{ lastVisitTime: new Date(2024, 4, 7).getTime() }])
+    ;(chrome.history as unknown as { search: unknown }).search = search
+    const { load, invalidate } = useMonthDensity()
+    await load(2024, 4)
+    await load(2024, 4)
+    expect(search).toHaveBeenCalledTimes(1)
+    invalidate()
+    await load(2024, 4)
+    expect(search).toHaveBeenCalledTimes(2)
+  })
+
+  it('never caches the current month', async () => {
+    const search = vi.fn(async () => [])
+    ;(chrome.history as unknown as { search: unknown }).search = search
+    const { load } = useMonthDensity()
+    const now = new Date()
+    await load(now.getFullYear(), now.getMonth())
+    await load(now.getFullYear(), now.getMonth())
+    expect(search).toHaveBeenCalledTimes(2)
+  })
 })
