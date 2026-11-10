@@ -134,6 +134,9 @@
     "history_filter_empty": {
         "message": "Keine Ergebnisse. Versuchen Sie ein anderes Wort oder entfernen Sie den Seitenfilter."
     },
+    "history_remove_error": {
+        "message": "Einige Einträge konnten nicht gelöscht werden. Ihr Browser erlaubt das Löschen des Verlaufs möglicherweise nicht."
+    },
     "history_activity_chart": {
         "message": "Besuche nach Uhrzeit"
     },

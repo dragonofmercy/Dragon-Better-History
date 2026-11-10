@@ -120,13 +120,15 @@ export function useHistory() {
   }
 
   // Never rejects: a failed deleteUrl (e.g. deletion disabled by policy) leaves its entry listed, the others are removed.
-  async function remove(urls: string[]): Promise<void> {
+  // Returns the number of urls that could not be deleted.
+  async function remove(urls: string[]): Promise<number> {
     const unique = [...new Set(urls)]
     const results = await Promise.allSettled(unique.map((url) => chrome.history.deleteUrl({ url })))
     const gone = new Set(unique.filter((_, i) => results[i].status === 'fulfilled'))
     days.value = days.value
       .map((g) => { const entries = g.entries.filter((e) => !gone.has(e.url)); return entries.length === g.entries.length ? g : { ...g, entries } })
       .filter((g) => g.entries.length > 0)
+    return unique.length - gone.size
   }
 
   return { days, searching, getDay, search, remove }

@@ -134,6 +134,9 @@
     "history_filter_empty": {
         "message": "Sonuç yok. Başka bir sözcük deneyin veya site filtresini kaldırın."
     },
+    "history_remove_error": {
+        "message": "Bazı girişler silinemedi. Tarayıcınız geçmişin silinmesine izin vermiyor olabilir."
+    },
     "history_activity_chart": {
         "message": "Saate göre ziyaretler"
     },

@@ -134,6 +134,9 @@
     "history_filter_empty": {
         "message": "No results. Try another word or remove the site filter."
     },
+    "history_remove_error": {
+        "message": "Some entries could not be deleted. Your browser may not allow deleting history."
+    },
     "history_activity_chart": {
         "message": "Visits by hour"
     },

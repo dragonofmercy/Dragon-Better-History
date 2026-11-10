@@ -39,6 +39,7 @@ const searchBar = ref<InstanceType<typeof SearchBar> | null>(null)
 const selectedDay = ref<Date | null>(today.value)
 const expanded = useSelection()
 const siteFilter = ref<string | null>(null)
+const removeFailed = ref(false)
 
 const dayEntries = computed(() => history.days.value.flatMap((g) => g.entries))
 const sites = computed(() => siteCounts(dayEntries.value))
@@ -78,7 +79,7 @@ onUnmounted(() => clearTimeout(midnightTimer))
 
 onMounted(() => { scheduleMidnight(); return Promise.all([load(), history.getDay(today.value)]) })
 
-function resetView(): void { siteFilter.value = null; expanded.clear(); selection.clear(); mainEl.value?.scrollTo({ top: 0 }) }
+function resetView(): void { removeFailed.value = false; siteFilter.value = null; expanded.clear(); selection.clear(); mainEl.value?.scrollTo({ top: 0 }) }
 function onSelectDay(d: Date): void { resetView(); query.value = ''; searchBar.value?.clear(); selectedDay.value = startOfDay(d); history.getDay(d) }
 function onToday(): void { onSelectDay(today.value) }
 function onSearch(q: string): void { resetView(); query.value = q; selectedDay.value = null; history.search(q, today.value) }
@@ -89,12 +90,13 @@ function onToggle(entry: HistoryEntry, ev: MouseEvent | KeyboardEvent): void {
   else selection.toggle(entry.key)
 }
 
-async function onRemove(entry: HistoryEntry): Promise<void> { await history.remove([entry.url]); selection.clear() }
+async function removeUrls(urls: string[]): Promise<void> { removeFailed.value = (await history.remove(urls)) > 0; selection.clear() }
+
+async function onRemove(entry: HistoryEntry): Promise<void> { await removeUrls([entry.url]) }
 
 async function removeSelected(): Promise<void> {
   const keys = selection.selected.value
-  await history.remove(dayEntries.value.filter((e) => keys.has(e.key)).map((e) => e.url))
-  selection.clear()
+  await removeUrls(dayEntries.value.filter((e) => keys.has(e.key)).map((e) => e.url))
 }
 
 function onKeydown(e: KeyboardEvent): void {
@@ -156,6 +158,7 @@ function onKeydown(e: KeyboardEvent): void {
               {{ sortLabel }}
             </button>
           </div>
+          <p v-if="removeFailed" role="alert" class="mb-4 rounded-lg border border-[color:var(--border)] px-3.5 py-2.5 text-sm" style="color: #da373c">{{ t('history_remove_error') }}</p>
           <HistoryDay v-for="g in displayDays" :key="g.dayKey" :group="g" :locale="locale" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded.selected.value" :is-selected="selection.isSelected" :flat="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="expanded.toggle" @remove-group="selection.selectAll" />
           <p v-if="!displayDays.length" class="dbh-muted border-t border-[color:var(--border)] py-12 text-center">{{ t(emptyMessage) }}</p>
           <div v-if="selection.count.value > 0" class="sticky bottom-5 mt-4 flex justify-center">

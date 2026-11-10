@@ -134,6 +134,9 @@
     "history_filter_empty": {
         "message": "Aucun résultat. Essayez un autre mot ou retirez le filtre de site."
     },
+    "history_remove_error": {
+        "message": "Certaines entrées n'ont pas pu être supprimées. Votre navigateur n'autorise peut-être pas la suppression de l'historique."
+    },
     "history_activity_chart": {
         "message": "Répartition des visites par heure"
     },

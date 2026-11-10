@@ -219,7 +219,7 @@ describe('review regressions', () => {
     vi.spyOn(chrome.history, 'deleteUrl').mockImplementation((({ url }: { url: string }) => (url === 'https://b' ? Promise.reject(new Error('policy')) : Promise.resolve())) as never)
     const h = useHistory()
     await h.getDay(new Date(2024, 0, 2))
-    await h.remove(['https://a', 'https://b'])
+    expect(await h.remove(['https://a', 'https://b'])).toBe(1)
     expect(h.days.value[0].entries.map((e) => e.url)).toEqual(['https://b'])
   })
 })

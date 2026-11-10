@@ -73,6 +73,18 @@ describe('HistoryApp', () => {
     expect(w.find('[role="status"]').exists()).toBe(false)
   })
 
+  it('a failed deletion shows an error and keeps the entry', async () => {
+    c.history.deleteUrl = vi.fn(() => Promise.reject(new Error('policy')))
+    const w = await mountApp()
+    expect(w.find('[role="alert"]').exists()).toBe(false)
+    await rows(w)[0].trigger('click')
+    await w.find('.dbh-danger').trigger('click')
+    await flushPromises()
+    expect(rows(w)).toHaveLength(3)
+    expect(w.find('[role="alert"]').text()).toBe('history_remove_error')
+    expect(w.find('[role="status"]').exists()).toBe(false)
+  })
+
   it('group segmented control saves groupMode', async () => {
     const w = await mountApp()
     const seg = w.findAll('[aria-label="options_group_title"], .dbh-seg').filter((b) => b.text() === 'options_group_domain')[0]
