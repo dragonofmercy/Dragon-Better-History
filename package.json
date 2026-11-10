@@ -1,6 +1,6 @@
 {
   "name": "dragon-better-history",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Better browser history extension",
   "private": true,
   "type": "module",
