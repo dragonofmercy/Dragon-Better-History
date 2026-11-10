@@ -100,14 +100,30 @@ export function groupByDay(items: chrome.history.HistoryItem[], start?: Date, en
 
 // HistoryItem.lastVisitTime is the URL's latest visit overall, not the one inside the queried range.
 // For URLs revisited after `end`, look up the latest visit inside [start, end]; 0 (filtered out by callers) when there is none.
-// ponytail: one getVisits call per revisited URL; batch or cache if a month of heavy history gets slow.
+// ponytail: the getVisits calls of one request all start at once; cap the concurrency if a heavy month stalls the browser.
 export async function resolveVisitTimes(items: chrome.history.HistoryItem[], start: number, end: number): Promise<chrome.history.HistoryItem[]> {
   return Promise.all(items.map(async (it) => {
     if (it.lastVisitTime == null || it.lastVisitTime <= end || !it.url) return it
-    const visits = await chrome.history.getVisits({ url: it.url }).catch(() => [])
-    const lastVisitTime = visits.reduce((best, v) => { const t = v.visitTime ?? 0; return t >= start && t <= end && t > best ? t : best }, 0)
-    return { ...it, lastVisitTime }
+    const times = await visitTimes(it.url, end)
+    return { ...it, lastVisitTime: times.reduce((best, t) => (t >= start && t <= end && t > best ? t : best), 0) }
   }))
+}
+
+// url -> its visit times and when they were fetched, shared by the day view and the calendar density.
+// Chrome fires onVisitRemoved for every deletion (ours included), which is the only event that can shrink a list.
+const visitCache = new Map<string, { at: number; times: number[] }>()
+chrome.history.onVisitRemoved.addListener(() => visitCache.clear())
+
+async function visitTimes(url: string, end: number): Promise<number[]> {
+  const hit = visitCache.get(url)
+  // Visits made after the fetch are missing from a cached list, so it only answers ranges that ended before it.
+  if (hit && end <= hit.at) return hit.times
+  const at = Date.now()
+  try {
+    const times = (await chrome.history.getVisits({ url })).map((v) => v.visitTime ?? 0)
+    visitCache.set(url, { at, times })
+    return times
+  } catch { return [] }
 }
 
 export function useHistory() {
@@ -127,12 +143,16 @@ export function useHistory() {
     return true
   }
 
+  function begin(isSearch: boolean): number {
+    loadingSearch.value = isSearch
+    return ++request
+  }
+
   async function getDay(day: Date): Promise<void> {
     const start = startOfDay(day)
     const end = endOfDay(day)
     if (start.getTime() > Date.now()) return
-    const id = ++request
-    loadingSearch.value = false
+    const id = begin(false)
     const results = await chrome.history.search({ text: '', startTime: start.getTime(), endTime: end.getTime(), maxResults: 0 })
     const resolved = await resolveVisitTimes(results, start.getTime(), end.getTime())
     show(id, groupByDay(resolved, start, end), false)
@@ -140,8 +160,7 @@ export function useHistory() {
 
   // The `max` most recently visited urls, whatever the day.
   async function getRecent(max: number): Promise<void> {
-    const id = ++request
-    loadingSearch.value = false
+    const id = begin(false)
     const results = await chrome.history.search({ text: '', startTime: 0, maxResults: max })
     show(id, groupByDay(results), false)
   }
@@ -150,10 +169,9 @@ export function useHistory() {
   async function search(query: string, today: Date, max = 0): Promise<boolean> {
     const start = new Date(1970, 0, 1)
     const end = endOfDay(today)
-    const id = ++request
+    const id = begin(true)
     const { text, site } = parseQuery(query)
     // With a site filter the cap has to apply after the client-side filtering, so fetch everything.
-    loadingSearch.value = true
     try {
       const results = await chrome.history.search({ text, startTime: start.getTime(), endTime: end.getTime(), maxResults: site ? 0 : max })
       let hits = results

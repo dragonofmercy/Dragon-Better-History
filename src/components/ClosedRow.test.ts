@@ -5,7 +5,7 @@ import ClosedRow from '@/components/ClosedRow.vue'
 const session = { type: 'tab' as const, sessionId: 's1', title: 'Tab', url: 'https://a', lastModified: new Date(2024, 0, 2, 12, 0).getTime() }
 
 function mountRow(timeBeforeTitle = false) {
-  return mount(ClosedRow, { props: { session, locale: 'en', use24: true, timeBeforeTitle } })
+  return mount(ClosedRow, { props: { session, use24: true, timeBeforeTitle } })
 }
 
 describe('ClosedRow', () => {

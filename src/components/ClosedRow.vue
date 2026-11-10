@@ -4,18 +4,17 @@ import { computed } from 'vue'
 import type { ClosedSession } from '@/composables/useRecentlyClosed'
 import { faviconUrl } from '@/lib/chrome'
 import { formatTime } from '@/lib/dates'
-import { t } from '@/lib/i18n'
+import { t, locale } from '@/lib/i18n'
 
 const props = defineProps<{
   session: ClosedSession
-  locale: string
   use24: boolean
   timeBeforeTitle: boolean
 }>()
 
 const emit = defineEmits<{ (e: 'restore'): void }>()
 
-const time = computed(() => formatTime(new Date(props.session.lastModified), props.locale, props.use24))
+const time = computed(() => formatTime(new Date(props.session.lastModified), locale, props.use24))
 const label = computed(() => (props.session.type === 'tab' ? props.session.title : t('closed_window_tabs', String(props.session.tabCount))))
 const tooltip = computed(() => (props.session.type === 'tab' ? props.session.url : label.value))
 </script>

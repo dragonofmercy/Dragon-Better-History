@@ -51,14 +51,13 @@ const filteredDays = computed(() => {
 })
 const displayDays = computed(() => orderDays(filteredDays.value, options.sortOldestFirst))
 // Mount the list chunk by chunk: a search can return tens of thousands of entries. Selection and counts still cover the whole list.
-// Without IntersectionObserver (tests) everything is rendered at once.
-const CHUNK = 'IntersectionObserver' in window ? 500 : Infinity
+const CHUNK = 500
 const shown = ref(CHUNK)
 const renderedDays = computed(() => takeEntries(displayDays.value, shown.value))
 const sentinel = ref<HTMLElement | null>(null)
 let observer: IntersectionObserver | undefined
 const orderedKeys = computed(() => displayDays.value.flatMap((g) => g.entries.map((e) => e.key)))
-const totalCount = computed(() => orderedKeys.value.length)
+const totalCount = computed(() => displayDays.value.reduce((n, g) => n + g.entries.length, 0))
 const summary = computed(() => t('history_summary', [String(totalCount.value), String(new Set(displayDays.value.flatMap((g) => g.entries.map((e) => e.domain)).filter(Boolean)).size)]))
 // A pending search already owns the header (title, no chart, no site list) while Chrome is still answering.
 const loading = history.loadingSearch
@@ -88,15 +87,15 @@ let midnightTimer: ReturnType<typeof setTimeout> | undefined
 function scheduleMidnight(): void {
   midnightTimer = setTimeout(() => { today.value = startOfDay(new Date()); scheduleMidnight() }, endOfDay(today.value).getTime() + 1 - Date.now())
 }
-onUnmounted(() => { observer?.disconnect(); window.removeEventListener('keydown', onKeydown); clearTimeout(midnightTimer) })
 
 onMounted(() => {
-  if (!sentinel.value || CHUNK === Infinity) return
   observer = new IntersectionObserver((hits) => { if (hits.some((h) => h.isIntersecting) && shown.value < totalCount.value) shown.value += CHUNK }, { root: mainEl.value, rootMargin: '800px' })
-  observer.observe(sentinel.value)
+  if (sentinel.value) observer.observe(sentinel.value)
+  window.addEventListener('keydown', onKeydown)
+  scheduleMidnight()
+  return Promise.all([load(), history.getDay(today.value)])
 })
-
-onMounted(() => { window.addEventListener('keydown', onKeydown); scheduleMidnight(); return Promise.all([load(), history.getDay(today.value)]) })
+onUnmounted(() => { observer?.disconnect(); window.removeEventListener('keydown', onKeydown); clearTimeout(midnightTimer) })
 
 function resetView(): void { shown.value = CHUNK; removeFailed.value = false; siteFilter.value = null; expanded.clear(); selection.clear(); mainEl.value?.scrollTo({ top: 0 }) }
 function onSelectDay(d: Date): void { resetView(); query.value = ''; searchBar.value?.clear(); selectedDay.value = startOfDay(d); history.getDay(d) }
@@ -110,9 +109,7 @@ function onToggle(entry: HistoryEntry, ev: MouseEvent | KeyboardEvent): void {
   else selection.toggle(entry.key)
 }
 
-async function removeUrls(urls: string[]): Promise<void> { removeFailed.value = (await history.remove(urls)) > 0; density.invalidate(); selection.clear() }
-
-async function onRemove(entry: HistoryEntry): Promise<void> { await removeUrls([entry.url]) }
+async function removeUrls(urls: string[]): Promise<void> { removeFailed.value = (await history.remove(urls)) > 0; selection.clear() }
 
 async function removeSelected(): Promise<void> {
   const keys = selection.selected.value
@@ -166,7 +163,7 @@ function onKeydown(e: KeyboardEvent): void {
               <h2 class="text-[30px] font-semibold leading-tight tracking-tight">{{ heading }}</h2>
               <p v-if="loading" class="dbh-muted mt-1.5" aria-live="polite">{{ t('search_loading') }}</p>
               <p v-else-if="history.searching.value && totalCount > 0" class="dbh-muted mt-1.5">{{ t('search_found', String(totalCount)) }}</p>
-              <p v-else-if="!searchView" class="dbh-muted mt-1.5">{{ summary }}</p>
+              <p v-else-if="!history.searching.value" class="dbh-muted mt-1.5">{{ summary }}</p>
             </div>
             <ActivityChart v-if="!searchView" :counts="histogram" />
           </div>
@@ -183,7 +180,7 @@ function onKeydown(e: KeyboardEvent): void {
           <p v-if="removeFailed" role="alert" class="mb-4 rounded-lg border border-[color:var(--border)] px-3.5 py-2.5 text-sm" style="color: #da373c">{{ t('history_remove_error') }}</p>
           <!-- While a search loads: previous search results stay, dimmed; a day list is hidden (it would sit under the search title). -->
           <div v-if="!loading || history.searching.value" :class="{ 'opacity-50': loading }">
-            <HistoryDay v-for="g in renderedDays" :key="g.dayKey" :group="g" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded.selected.value" :is-selected="selection.isSelected" :flat="history.searching.value" @toggle="onToggle" @remove="onRemove" @toggle-expand="expanded.toggle" @remove-group="selection.selectAll" />
+            <HistoryDay v-for="g in renderedDays" :key="g.dayKey" :group="g" :use24="options.use24HoursFormat" :time-before-title="options.timeBeforeTitle" :group-mode="history.searching.value ? 'none' : options.groupMode" :expanded="expanded.selected.value" :is-selected="selection.isSelected" :flat="history.searching.value" @toggle="onToggle" @remove="(e) => removeUrls([e.url])" @toggle-expand="expanded.toggle" @remove-group="selection.selectAll" />
           </div>
           <div ref="sentinel" class="h-px"></div>
           <p v-if="!displayDays.length && !loading" class="dbh-muted border-t border-[color:var(--border)] py-12 text-center">{{ t(emptyMessage) }}</p>

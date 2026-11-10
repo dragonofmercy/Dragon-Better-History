@@ -14,6 +14,7 @@ const store: Record<string, unknown> = {}
   history: {
     search: () => Promise.resolve([]),
     getVisits: () => Promise.resolve([]),
+    onVisitRemoved: { addListener: () => {} },
     deleteUrl: () => Promise.resolve()
   },
   sessions: {
@@ -23,6 +24,9 @@ const store: Record<string, unknown> = {}
   },
   tabs: { create: vi.fn(() => Promise.resolve({})), getCurrent: vi.fn(() => Promise.resolve(undefined)) }
 }
+
+// jsdom has no IntersectionObserver; the history list only needs it to exist.
+globalThis.IntersectionObserver = class { observe(): void {} unobserve(): void {} disconnect(): void {} } as unknown as typeof IntersectionObserver
 
 if (!window.matchMedia) {
   window.matchMedia = vi.fn().mockImplementation((query: string) => ({

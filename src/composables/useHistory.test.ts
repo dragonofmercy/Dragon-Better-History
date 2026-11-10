@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { groupByDay, entryKey, groupRuns, takeEntries, orderDays, domainOf, parseQuery, matchesSite, useHistory } from '@/composables/useHistory'
+import { groupByDay, entryKey, groupRuns, takeEntries, resolveVisitTimes, orderDays, domainOf, parseQuery, matchesSite, useHistory } from '@/composables/useHistory'
 
 function item(url: string, time: number, title = ''): chrome.history.HistoryItem {
   return { id: url, url, title, lastVisitTime: time } as chrome.history.HistoryItem
@@ -282,5 +282,19 @@ describe('takeEntries', () => {
 
   it('groupByDay precomputes the domain', () => {
     expect(groupByDay([item('https://www.a.com/x', new Date(2024, 0, 2, 12, 0).getTime())])[0].entries[0].domain).toBe('a.com')
+  })
+})
+
+describe('visit cache', () => {
+  it('asks Chrome once for the visits of a url across ranges', async () => {
+    const monday = new Date(2023, 0, 2, 10, 0).getTime()
+    const tuesday = new Date(2023, 0, 3, 9, 0).getTime()
+    const getVisits = vi.spyOn(chrome.history, 'getVisits').mockResolvedValue([{ visitTime: monday }, { visitTime: tuesday }] as never)
+    getVisits.mockClear() // the spy is shared with earlier tests
+    const later = [item('https://cached.example/', new Date(2023, 0, 4).getTime())]
+    const day = (d: number) => [new Date(2023, 0, d).getTime(), new Date(2023, 0, d, 23, 59).getTime()] as const
+    expect((await resolveVisitTimes(later, ...day(2)))[0].lastVisitTime).toBe(monday)
+    expect((await resolveVisitTimes(later, ...day(3)))[0].lastVisitTime).toBe(tuesday)
+    expect(getVisits).toHaveBeenCalledTimes(1)
   })
 })

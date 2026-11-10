@@ -5,7 +5,7 @@ import { useOptions } from '@/composables/useOptions'
 import { useTheme } from '@/composables/useTheme'
 import { useHistory } from '@/composables/useHistory'
 import { useRecentlyClosed } from '@/composables/useRecentlyClosed'
-import { t, locale } from '@/lib/i18n'
+import { t } from '@/lib/i18n'
 import HistoryEntryRow from '@/components/HistoryEntry.vue'
 import ClosedRow from '@/components/ClosedRow.vue'
 import SearchBar from '@/components/SearchBar.vue'
@@ -71,7 +71,6 @@ function openHistory(): void { chrome.tabs.create({ url: chrome.runtime.getURL('
             v-for="s in closed.sessions.value"
             :key="s.type + '-' + s.sessionId"
             :session="s"
-            :locale="locale"
             :use24="options.use24HoursFormat"
             :time-before-title="options.timeBeforeTitle"
             @restore="closed.restore(s.sessionId)"
